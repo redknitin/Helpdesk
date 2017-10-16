@@ -1,0 +1,49 @@
+<h1 style="margin-top: 20px; margin-bottom: 20px;">Service Request</h1>
+
+<table class="table table-striped">
+  <thead class="thead-inverse">
+  <tr>
+    <th>Request ID</th>
+    <th>Complaint</th>
+    <th>Last Updated</th>
+  </tr>
+  </thead>
+  <tbody>
+  <% @list.each do |iter| %>
+      <tr>
+        <td><%= iter[:code] %></td>
+        <td>
+          <span class="badge badge-info"><%= iter[:status] %></span>
+          <%= iter[:complaint] %>
+        </td>
+        <td><%= iter[:updatedat] %></td>
+      </tr>
+  <% end%>
+  <!--
+  <tr>
+    <td>ea1620</td>
+    <td>
+      <span class="badge badge-warning">Awaiting Material</span>
+      False ceiling tile broken
+    </td>
+    <td>18-SEP-2017</td>
+  </tr>
+  <tr>
+    <td>ea1621</td>
+    <td>
+      <span class="badge badge-info">Scheduled</span>
+      No water supply
+    </td>
+    <td>3-OCT-2017</td>
+  </tr>
+  <tr>
+    <td>ea1622</td>
+    <td>
+      <span class="badge badge-danger">Unassigned</span>
+      Warning sign needed for wet floor
+    </td>
+    <td>5-OCT-2017</td>
+  </tr>
+  -->
+  </tbody>
+</table>
