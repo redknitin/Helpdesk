@@ -1,5 +1,38 @@
 <h1 style="margin-top: 20px; margin-bottom: 20px;">Service Request</h1>
 
+<script>
+cascadingData = {
+    <% @departments.each do |iter| %>
+    '<%= iter[:org] %>' : [
+        <% iter[:dept].each do |subiter| %>
+        '<%= subiter %>',
+        <% end %>
+    ],
+    <% end %>
+};
+</script>
+<script>
+//jQuery is not loaded till the end of the page, so use native JS (?)
+function cascDdl() {
+    deptddl = document.getElementById("dept");
+    deptddl.options.length = 0;
+    ddlvals = cascadingData[document.getElementById("org").value]; //cascadingData[this.value]; //$('#org').val() //$(this).val()
+    if (ddlvals != null) {
+        //deptddl = document.getElementById("dept"); //$('#dept')[0]; //$('#dept').get(0)
+
+        iteropt = document.createElement('option');
+        iteropt.innerHTML = iteropt.value = '';
+        deptddl.appendChild(iteropt);
+
+        for (i=0; i<ddlvals.length; i++) {
+            iteropt = document.createElement('option');
+            iteropt.innerHTML = iteropt.value = ddlvals[i]; //.text
+            deptddl.appendChild(iteropt);
+        }
+    }
+}
+</script>
+
 <form method="post" action="#" class="row"><!--confirm.html enctype="multipart/form-data" -->
   <div class="col-6">
     <div class="form-group">
@@ -22,21 +55,28 @@
     </div>
     <div class="form-group">
       <label>Organization</label>
-      <select name="org" id="org" class="form-control">
+      <select name="org" id="org" class="form-control" onchange="cascDdl()">
         <option></option>
+        <% @departments.each do |iter| %>
+        <option><%= iter[:org] %></option>
+        <% end %>
+        <!--
         <option>FOSS Foundation</option>
         <option>Apache Foundation</option>
         <option>Google</option>
+        -->
       </select>
     </div>
     <div class="form-group">
       <label>Department</label>
       <select name="dept" id="dept" class="form-control">
         <option></option>
-        <option>Softwre Development</option>
+        <!--
+        <option>Software Development</option>
         <option>Quality Control</option>
         <option>Administration</option>
         <option>Marketing</option>
+        -->
       </select>
     </div>
   </div>

@@ -6,6 +6,9 @@
     <th>Request ID</th>
     <th>Complaint</th>
     <th>Last Updated</th>
+    <% if @rolename != 'requester' %>
+      <th>Actions</th>
+    <% end %>
   </tr>
   </thead>
   <tbody>
@@ -17,6 +20,21 @@
           <%= iter[:complaint] %>
         </td>
         <td><%= iter[:updatedat] %></td>
+        <% if @rolename != 'requester' %>
+            <td>
+              <form method="post" action="/ticket-status" class="form-inline">
+                <input type="hidden" name="code" value="<%= iter[:code] %>" />
+                <select name="status" class="form-control form-control-sm" style="margin-right: 10px;">
+                  <option>New</option>
+                  <option>Assigned</option>
+                  <option>Suspended</option>
+                  <option>Closed</option>
+                  <option>Cancelled</option>
+                </select>
+                <input type="submit" value="Set Status" class="btn btn-primary btn-sm" />
+              </form>
+            </td>
+        <% end %>
       </tr>
   <% end%>
   <!--

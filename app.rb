@@ -12,6 +12,13 @@ class Helpdesk < Sinatra::Base
     super()
     @db = Mongo::Client.new(['127.0.0.1:27017'], :database => 'helpdesk')
     #@db = Mongo::Client.new('mongodb://127.0.0.1:27017/helpdesk')
+    @datetimefmt = '%Y-%m-%d %H:%M:%S'
+    #@datetimefmt = '%Y-%m-%d %H:%M:%S %z'
+
+    @departments = [
+        {:org => 'Apache Foundation', :dept => ['Software Development', 'Quality Control']},
+        {:org => 'Canonical', :dept => ['System Administration', 'Marketing']}
+    ]
   end
 
   def is_user_logged_in
@@ -20,6 +27,7 @@ class Helpdesk < Sinatra::Base
 
   def init_ctx
     @username = session[:username]
+    @rolename = session[:rolename]
   end
 
   get '/' do
@@ -46,8 +54,11 @@ class Helpdesk < Sinatra::Base
     self.generate_code
 
     @params[:status] = 'New'
-    @params[:updatedat] = @params[:createdat] = Time.now.strftime('%Y-%m-%d %H:%M:%S %z')
+    @params[:updatedat] = @params[:createdat] = Time.now.strftime(@datetimefmt)
     @params[:myguid] = SecureRandom.uuid
+    if @username != nil && @username != ''
+      @params[:createdby] = @params[:updatedby] = @username
+    end
     @db[:requests].insert_one @params
     @db.close
     redirect '/'
@@ -61,16 +72,25 @@ class Helpdesk < Sinatra::Base
   post '/login' do
     self.init_ctx
     if @params[:id] == 'admin' && @params[:pw] == 'admin'
-      session[:username] = 'admin'
-      redirect '/'
+      session[:rolename] = 'admin'
+    elsif @params[:id] == 'helpdesk' && @params[:pw] == 'helpdesk'
+      session[:rolename] = 'helpdesk'
+    elsif @params[:id] == 'requester01' && @params[:pw] == 'requester01'
+      session[:rolename] = 'requester'
+    elsif @params[:id] == 'requester02' && @params[:pw] == 'requester02'
+      session[:rolename] = 'requester'
     else
       redirect '/login?msg=Invalid+login'
+      return #redirect is supposed to stop execution of this method, but just to be sure
     end
+    session[:username] = @params[:id]
+    redirect '/'
   end
 
   get '/logout' do
-    self.init_ctx
-    session[:username] = nil
+    #self.init_ctx
+    session[:username] = session[:rolename] = nil
+    @username = @rolename = nil
     redirect '/'
   end
 
@@ -80,8 +100,34 @@ class Helpdesk < Sinatra::Base
       redirect '/login'
       return
     end
-    @list = @db[:requests].find()
+
+    if @rolename == 'requester'
+      @list = @db[:requests].find('createdby' => @username)
+    else
+      @list = @db[:requests].find()
+    end
+
     erb :ticketslist
+  end
+
+  post '/ticket-status' do
+    self.init_ctx
+
+    @record = @db[:requests].find('code' => @params[:code]).limit(1).first;
+
+    @record[:updatedat] = Time.now.strftime(@datetimefmt)
+    @record[:updatedby] = @username
+    @record[:status] = @params[:status]
+
+    @db[:requests].update_one(
+        {'code' => params[:code]},
+        @record,
+        {:upsert => false}
+    )
+
+    @db.close
+
+    redirect '/tickets-list'
   end
 end
 
