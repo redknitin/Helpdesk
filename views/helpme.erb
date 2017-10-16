@@ -1,0 +1,53 @@
+<h1 style="margin-top: 20px; margin-bottom: 20px;">Service Request</h1>
+
+<form method="post" action="#" class="row"><!--confirm.html enctype="multipart/form-data" -->
+  <div class="col-6">
+    <div class="form-group">
+      <label>Contact Name</label>
+      <input name="name" required="required" class="form-control" />
+    </div>
+    <div class="form-group">
+      <label>Phone</label>
+      <input name="phone" type="tel" class="form-control" /><!-- pattern="^\+[0-9]{11,12}$" title="+971501545643"-->
+    </div>
+    <div class="form-group">
+      <label>Email</label>
+      <input name="email" type="email" class="form-control" />
+    </div>
+  </div>
+  <div class="col-6">
+    <div class="form-group">
+      <label>Complaint</label>
+      <input name="complaint" required="required" class="form-control" />
+    </div>
+    <div class="form-group">
+      <label>Organization</label>
+      <select name="org" id="org" class="form-control">
+        <option></option>
+        <option>FOSS Foundation</option>
+        <option>Apache Foundation</option>
+        <option>Google</option>
+      </select>
+    </div>
+    <div class="form-group">
+      <label>Department</label>
+      <select name="dept" id="dept" class="form-control">
+        <option></option>
+        <option>Softwre Development</option>
+        <option>Quality Control</option>
+        <option>Administration</option>
+        <option>Marketing</option>
+      </select>
+    </div>
+  </div>
+  <div class="col-12">
+    <div class="form-group">
+      <label>Description</label>
+      <textarea name="description" class="form-control" rows="7"></textarea>
+    </div>
+  </div>
+  <div>
+    <input type="submit" name="" class="btn btn-primary" style="margin-left: 20px">
+  </div>
+  <!--<input type="hidden" name="status" value="open">-->
+</form>
