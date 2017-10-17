@@ -75,7 +75,8 @@ class Helpdesk < Sinatra::Base
           :username => 'admin',
           :password => Digest::SHA1.hexdigest('admin'),
           :rolename => 'admin',
-          :email => 'root@localhost'
+          :email => 'root@localhost',
+          :islocked => 'false'
       }
 
       @db[:users].insert_one recuser
