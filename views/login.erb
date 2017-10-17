@@ -1,5 +1,11 @@
 <h1 style="margin-top: 20px; margin-bottom: 20px;">Login</h1>
 
+<% if @params[:msg] != nil && @params[:msg] != '' %>
+    <div class="alert alert-warning">
+      <%= @params[:msg] %>
+    </div>
+<% end %>
+
 <form method="post" action="#" class="row">
   <div class="col-6">
     <div class="form-group">

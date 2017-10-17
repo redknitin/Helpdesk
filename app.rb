@@ -19,6 +19,8 @@ class Helpdesk < Sinatra::Base
         {:org => 'Apache Foundation', :dept => ['Software Development', 'Quality Control']},
         {:org => 'Canonical', :dept => ['System Administration', 'Marketing']}
     ]
+
+    @pagesize = 3
   end
 
   def is_user_logged_in
@@ -66,6 +68,9 @@ class Helpdesk < Sinatra::Base
 
   get '/login' do
     self.init_ctx
+    #if @params[:msg] != nil && @params[:msg] != ''
+    #  @msg = @params[:msg]
+    #end
     erb :login
   end
 
@@ -101,10 +106,18 @@ class Helpdesk < Sinatra::Base
       return
     end
 
+    @skip = 0
+    if @skip != nil && @skip != ''
+      @skip = @params[:skip].to_i
+    end
+
+    @totalrowcount = 0
     if @rolename == 'requester'
-      @list = @db[:requests].find('createdby' => @username)
+      @totalrowcount = @list = @db[:requests].find('createdby' => @username).count()
+      @list = @db[:requests].find('createdby' => @username).skip(@skip).limit(@pagesize)
     else
-      @list = @db[:requests].find()
+      @totalrowcount = @list = @db[:requests].count()
+      @list = @db[:requests].find().skip(@skip).limit(@pagesize)
     end
 
     erb :ticketslist

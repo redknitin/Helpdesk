@@ -65,3 +65,20 @@
   -->
   </tbody>
 </table>
+
+<% if @totalrowcount > @pagesize %>
+
+<%
+  @next = @skip + @pagesize
+  @prev = (@skip - @pagesize) < 0 ? 0 : (@skip - @pagesize)
+%>
+
+<% if @skip > 0 %>
+<a href="?skip=<%= @prev %>">Prev</a>
+<% end %>
+&nbsp;
+<% if @skip+@pagesize < @totalrowcount %>
+<a href="?skip=<%= @next %>">Next</a>
+<% end %>
+
+<% end # if @totalrowcount > @pagesize %>
