@@ -4,6 +4,12 @@ Helpdesk web application built with Ruby, Sinatra, Bootstrap and jQuery
 
 ## Getting Started
 
+Get a local install of MongoDB with the default configuration (no auth) and create a database named "helpdesk".
+
+Then, install Ruby and Bundler, and run a "bundle install", followed by running app.rb with the Ruby interpreter.
+
+The default username is "admin" and the default password is "admin".
+
 TODO: Instructions here will get you a copy of the project up and running on your local machine for development and testing purposes. Deployment notes will explain how to deploy the project on a live system.
 
 ### Prerequisites
@@ -60,11 +66,12 @@ Please read [CONTRIBUTING.md](https://github.com/redknitin/Helpdesk/blob/master/
 
 TODO: We will use [SemVer](http://semver.org/) for versioning. For the versions available, see the [tags on this repository](https://github.com/your/project/tags). 
 
-## Authors
+## Contributors
 
-The following individuals had contributed code to this project
+The following individuals contributed code to this project:
 
 * **Nitin Reddy**
+* When we accept your pull request or patch, your name will appear here 
 
 ## License
 
