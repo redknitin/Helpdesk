@@ -79,5 +79,5 @@ This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md
 
 ## Acknowledgments
 
-* TODO: Hat tip to anyone who's code was not directly used in this project
+* TODO: Hat tip to anyone whose code was not directly used in this project
 * TODO: Inspiration
