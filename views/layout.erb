@@ -29,6 +29,13 @@
           <a class="nav-link" href="/login">Login</a>
         </li>
       <% end %>
+
+      <% if @rolename == 'admin' %>
+      <li class="nav-item">
+        <a class="nav-link" href="/users-list">Users</a>
+      </li>
+      <% end %>
+
       <!--
       <li class="nav-item dropdown">
         <a class="nav-link dropdown-toggle" href="http://example.com" id="dropdown01" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Dropdown</a>

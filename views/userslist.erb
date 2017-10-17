@@ -1,0 +1,102 @@
+<h1 style="margin-top: 20px; margin-bottom: 20px;">Service Request</h1>
+
+<table class="table table-striped">
+  <thead class="thead-inverse">
+  <tr>
+    <th>User ID</th>
+    <th>Role</th>
+    <th>Email</th>
+    <th>Actions</th>
+  </tr>
+  </thead>
+  <tbody>
+  <% @list.each do |iter| %>
+      <tr>
+        <td>
+          <%= iter[:username] %>
+        </td>
+        <td>
+          <%= iter[:rolename] %>
+        </td>
+        <td>
+          <%= iter[:email] %>
+          <a href="#" class="btn btn-primary btn-sm">Edit</a>
+        </td>
+        <!--
+        <td>
+          lastlogin
+        </td>
+        -->
+        <td>
+          <a href="#" class="btn btn-primary btn-sm">Reset Password</a>
+          <a href="#" class="btn btn-primary btn-sm">Deactivate</a>
+        </td>
+      </tr>
+  <% end%>
+  <!--
+  <tr>
+    <td>ea1620</td>
+    <td>
+      <span class="badge badge-warning">Awaiting Material</span>
+      False ceiling tile broken
+    </td>
+    <td>18-SEP-2017</td>
+  </tr>
+  <tr>
+    <td>ea1621</td>
+    <td>
+      <span class="badge badge-info">Scheduled</span>
+      No water supply
+    </td>
+    <td>3-OCT-2017</td>
+  </tr>
+  <tr>
+    <td>ea1622</td>
+    <td>
+      <span class="badge badge-danger">Unassigned</span>
+      Warning sign needed for wet floor
+    </td>
+    <td>5-OCT-2017</td>
+  </tr>
+  -->
+  </tbody>
+</table>
+
+<form method="post" action="/user-save">
+  <div class="col-6">
+    <div class="form-group">
+      <label>User ID</label>
+      <input name="id" required="required" class="form-control" />
+    </div>
+    <div class="form-group">
+      <label>Password</label>
+      <input name="pw" type="password" class="form-control" /><!-- pattern="^\+[0-9]{11,12}$" title="+971501545643"-->
+    </div>
+    <div class="form-group">
+      <label>Email</label>
+      <input name="email" type="email" class="form-control" />
+    </div>
+  </div>
+  <div class="col-6">
+  </div>
+  <div>
+    <input type="submit" value="Save User" class="btn btn-primary" style="margin-left: 20px">
+  </div>
+</form>
+
+<% if @totalrowcount > @pagesize %>
+
+    <%
+      @next = @skip + @pagesize
+      @prev = (@skip - @pagesize) < 0 ? 0 : (@skip - @pagesize)
+    %>
+
+    <% if @skip > 0 %>
+        <a href="?skip=<%= @prev %>">Prev</a>
+    <% end %>
+    &nbsp;
+    <% if @skip+@pagesize < @totalrowcount %>
+        <a href="?skip=<%= @next %>">Next</a>
+    <% end %>
+
+<% end # if @totalrowcount > @pagesize %>

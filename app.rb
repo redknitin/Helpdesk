@@ -142,6 +142,37 @@ class Helpdesk < Sinatra::Base
 
     redirect '/tickets-list'
   end
+
+  get '/users-list' do
+    self.init_ctx
+    #check if role is admin
+    if !self.is_user_logged_in() || @rolename != 'admin'
+      redirect '/'
+      return #Does execution stop with a redirect, or do we need a return in this framework?
+    end
+
+    @skip = 0
+    if @skip != nil && @skip != ''
+      @skip = @params[:skip].to_i
+    end
+
+    @totalrowcount = 0
+    @totalrowcount = @list = @db[:users].count()
+    @list = @db[:users].find().skip(@skip).limit(@pagesize)
+
+    erb :userslist
+  end
+
+  post 'user-save' do
+    self.init_ctx
+    #check if role is admin
+    if !self.is_user_logged_in() || @rolename != 'admin'
+      redirect '/'
+      return #Does execution stop with a redirect, or do we need a return in this framework?
+    end
+
+    redirect '/users-list?msg=Saved'
+  end
 end
 
 
