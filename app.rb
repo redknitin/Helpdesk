@@ -93,7 +93,11 @@ class Helpdesk < Sinatra::Base
   post '/login' do
     self.init_ctx
 
-    usr = @db[:users].find('username' => @params[:id], 'password' => Digest::SHA1.hexdigest(@params[:pw])).limit(1).first
+    usr = @db[:users].find(
+        'username' => @params[:id],
+        'password' => Digest::SHA1.hexdigest(@params[:pw]),
+        'islocked' => 'false'
+    ).limit(1).first
     session[:rolename] = usr[:rolename]
     session[:username] = usr[:username]
 
@@ -205,7 +209,8 @@ class Helpdesk < Sinatra::Base
         :username => @params[:id],
         :password => Digest::SHA1.hexdigest(@params[:pw]),
         :rolename => @params[:rolename],
-        :email => @params[:email]
+        :email => @params[:email],
+        :islocked => 'false'
     }
 
     cnt = @db[:users].find('username' => @params[:id]).count()
