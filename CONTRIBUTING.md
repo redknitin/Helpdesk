@@ -1,4 +1,4 @@
-#Contributing to Helpdesk
+# Contributing to Helpdesk
 
 As part of Hacktoberfest, we're labelling issues with "Hacktoberfest" and "Help Wanted" to make the low-hanging fruit easy to spot.
 
