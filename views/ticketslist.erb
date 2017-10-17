@@ -14,7 +14,11 @@
   <tbody>
   <% @list.each do |iter| %>
       <tr>
-        <td><%= iter[:code] %></td>
+        <td>
+          <a href="/ticket-detail/<%= iter[:code] %>">
+            <%= iter[:code] %>
+          </a>
+        </td>
         <td>
           <span class="badge badge-info"><%= iter[:status] %></span>
           <%= iter[:complaint] %>
@@ -25,18 +29,19 @@
               <form method="post" action="/ticket-status" class="form-inline">
                 <input type="hidden" name="code" value="<%= iter[:code] %>" />
                 <select name="status" class="form-control form-control-sm" style="margin-right: 10px;">
-                  <option>New</option>
-                  <option>Assigned</option>
-                  <option>Suspended</option>
-                  <option>Closed</option>
-                  <option>Cancelled</option>
+                  <% @statuses.each do |iterstat| %>
+                  <option <%= iterstat==iter[:status]?'selected':'' %>><%= iterstat %></option>
+                  <% end %>
                 </select>
                 <input type="submit" value="Set Status" class="btn btn-primary btn-sm" />
               </form>
+              <!--
+              <a href="/ticket-detail/<%= iter[:code] %>" class="btn btn-primary btn-sm">Details</a>
+              -->
             </td>
         <% end %>
       </tr>
-  <% end%>
+  <% end %>
   <!--
   <tr>
     <td>ea1620</td>
@@ -66,6 +71,10 @@
   </tbody>
 </table>
 
+<div class="alert alert-info">
+  Click on the request ID to view details of the event
+</div>
+
 <% if @totalrowcount > @pagesize %>
 
 <%
@@ -74,11 +83,11 @@
 %>
 
 <% if @skip > 0 %>
-<a href="?skip=<%= @prev %>">Prev</a>
+<a href="?skip=<%= @prev %>" class="btn btn-primary btn-sm" style="margin-right: 15px">Prev</a>
 <% end %>
 &nbsp;
 <% if @skip+@pagesize < @totalrowcount %>
-<a href="?skip=<%= @next %>">Next</a>
+<a href="?skip=<%= @next %>" class="btn btn-primary btn-sm">Next</a>
 <% end %>
 
 <% end # if @totalrowcount > @pagesize %>

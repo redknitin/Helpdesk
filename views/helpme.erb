@@ -86,6 +86,31 @@ function cascDdl() {
       <textarea name="description" class="form-control" rows="7"></textarea>
     </div>
   </div>
+
+
+  <div class="col-6">
+    <div class="form-group">
+      <label>Building</label>
+      <input name="building" class="form-control" />
+    </div>
+    <div class="form-group">
+      <label>Floor</label>
+      <input name="floor" class="form-control" /><!-- pattern="^\+[0-9]{11,12}$" title="+971501545643"-->
+    </div>
+    <div class="form-group">
+      <label>Room</label>
+      <input name="room" class="form-control" />
+    </div>
+  </div>
+  <div class="col-6">
+    <div class="form-group">
+      <label>Location</label>
+      <input name="locationdescription" required="required" class="form-control" />
+    </div>
+  </div>
+
+
+
   <div>
     <input type="submit" value="Submit Request" class="btn btn-primary" style="margin-left: 20px">
   </div>

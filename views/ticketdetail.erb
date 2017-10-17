@@ -1,0 +1,35 @@
+<%
+fields = {
+    'code' => 'Code',
+    'name' => 'Name',
+    'phone' => 'Phone',
+    'email' => 'Email',
+    'org' => 'Organization',
+    'dept' => 'Department',
+    'complaint' => 'Complaint',
+    'description' => 'Description',
+    'building' => 'Building',
+    'floor' => 'Floor',
+    'room' => 'Room',
+    'locationdescription' => 'Location Info'
+}
+%>
+
+<form method="post" action="/ticket-status" class="form-inline" style="margin-bottom: 20px;">
+  <label style="margin-right: 10px;">Status</label>
+  <input type="hidden" name="code" value="<%= @rec[:code] %>" />
+  <select name="status" class="form-control form-control-sm" style="margin-right: 10px;">
+    <% @statuses.each do |iterstat| %>
+        <option <%= iterstat==@rec[:status]?'selected':'' %>><%= iterstat %></option>
+    <% end %>
+  </select>
+  <input type="submit" value="Set Status" class="btn btn-primary btn-sm" />
+</form>
+
+
+<% fields.each do |colname,labeltxt| %>
+<div class="row" style="margin-bottom: 10px">
+  <div class="col-2" style="font-weight: bold;"><%= labeltxt %></div>
+  <div class="col-10"><%= @rec[colname] %></div>
+</div>
+<% end %>

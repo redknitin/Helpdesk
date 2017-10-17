@@ -20,6 +20,7 @@ class Helpdesk < Sinatra::Base
         {:org => 'Apache Foundation', :dept => ['Software Development', 'Quality Control']},
         {:org => 'Canonical', :dept => ['System Administration', 'Marketing']}
     ]
+    @statuses = ['New', 'Assigned', 'Suspended', 'Completed', 'Cancelled']
 
     @pagesize = 3
   end
@@ -111,6 +112,7 @@ class Helpdesk < Sinatra::Base
     redirect '/'
   end
 
+  #Helpdesk users can view the statuses of all requests
   get '/tickets-list' do
     self.init_ctx
     if !self.is_user_logged_in()
@@ -153,6 +155,22 @@ class Helpdesk < Sinatra::Base
     @db.close
 
     redirect '/tickets-list'
+  end
+
+  get '/ticket-detail/:code' do
+    self.init_ctx
+    if !self.is_user_logged_in()
+      redirect '/login'
+      return
+    end
+
+    if @rolename == 'requester'
+      @rec = @db[:requests].find('createdby' => @username, 'code' => @params[:code]).limit(1).first
+    else
+      @rec = @db[:requests].find('code' => @params[:code]).limit(1).first
+    end
+
+    erb :ticketdetail
   end
 
   get '/users-list' do
