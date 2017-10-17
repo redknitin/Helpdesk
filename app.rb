@@ -3,6 +3,7 @@ require 'mongo'
 #require 'securerandom'
 require 'erb'
 require 'sinatra/base'
+require 'digest/sha1'
 
 class Helpdesk < Sinatra::Base
   #Dont enable :sessions because it adds Rack::Session::Cookie to the stack
@@ -34,6 +35,7 @@ class Helpdesk < Sinatra::Base
 
   get '/' do
     self.init_ctx
+    appsetup() #Check if the app needs first-time setup
     erb :index
   end
 
@@ -66,6 +68,19 @@ class Helpdesk < Sinatra::Base
     redirect '/'
   end
 
+  def appsetup()
+    if @db[:users].count == 0
+      recuser = {
+          :username => 'admin',
+          :password => Digest::SHA1.hexdigest('admin'),
+          :rolename => 'admin',
+          :email => 'root@localhost'
+      }
+
+      @db[:users].insert_one recuser
+    end
+  end
+
   get '/login' do
     self.init_ctx
     #if @params[:msg] != nil && @params[:msg] != ''
@@ -76,19 +91,16 @@ class Helpdesk < Sinatra::Base
 
   post '/login' do
     self.init_ctx
-    if @params[:id] == 'admin' && @params[:pw] == 'admin'
-      session[:rolename] = 'admin'
-    elsif @params[:id] == 'helpdesk' && @params[:pw] == 'helpdesk'
-      session[:rolename] = 'helpdesk'
-    elsif @params[:id] == 'requester01' && @params[:pw] == 'requester01'
-      session[:rolename] = 'requester'
-    elsif @params[:id] == 'requester02' && @params[:pw] == 'requester02'
-      session[:rolename] = 'requester'
-    else
+
+    usr = @db[:users].find('username' => @params[:id], 'password' => Digest::SHA1.hexdigest(@params[:pw])).limit(1).first
+    session[:rolename] = usr[:rolename]
+    session[:username] = usr[:username]
+
+    if usr == nil
       redirect '/login?msg=Invalid+login'
       return #redirect is supposed to stop execution of this method, but just to be sure
     end
-    session[:username] = @params[:id]
+
     redirect '/'
   end
 
@@ -163,12 +175,27 @@ class Helpdesk < Sinatra::Base
     erb :userslist
   end
 
-  post 'user-save' do
+  post '/user-save' do
     self.init_ctx
     #check if role is admin
     if !self.is_user_logged_in() || @rolename != 'admin'
       redirect '/'
       return #Does execution stop with a redirect, or do we need a return in this framework?
+    end
+
+    recuser = {
+        :username => @params[:id],
+        :password => Digest::SHA1.hexdigest(@params[:pw]),
+        :rolename => @params[:rolename],
+        :email => @params[:email]
+    }
+
+    cnt = @db[:users].find('username' => @params[:id]).count()
+    if cnt == 0
+      @db[:users].insert_one recuser
+      @db.close
+    else
+      #toss a warning
     end
 
     redirect '/users-list?msg=Saved'
