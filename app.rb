@@ -6,6 +6,7 @@ require 'sinatra/base'
 require 'digest/sha1'
 require_relative 'app_config'
 require_relative 'routes/init'
+require_relative 'models/init'
 require_relative 'helpers/init'
 
 class Helpdesk < Sinatra::Base

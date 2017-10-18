@@ -17,6 +17,8 @@ class Helpdesk < Sinatra::Base
     @totalrowcount = @list = @db[:users].count()
     @list = @db[:users].find().skip(@skip).limit(@pagesize)
 
+    @showpager = true
+
     erb :userslist
   end
 

@@ -52,20 +52,3 @@ TODO: This should append to the query string to ensure it plays nice with the pa
 <div class="alert alert-info">
   Click on the request ID to view details of the event
 </div>
-
-<% if @totalrowcount > @pagesize %>
-
-<%
-  @next = @skip + @pagesize
-  @prev = (@skip - @pagesize) < 0 ? 0 : (@skip - @pagesize)
-%>
-
-<% if @skip > 0 %>
-<a href="?skip=<%= @prev %>" class="btn btn-primary btn-sm" style="margin-right: 15px">Prev</a>
-<% end %>
-&nbsp;
-<% if @skip+@pagesize < @totalrowcount %>
-<a href="?skip=<%= @next %>" class="btn btn-primary btn-sm">Next</a>
-<% end %>
-
-<% end # if @totalrowcount > @pagesize %>

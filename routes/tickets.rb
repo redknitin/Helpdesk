@@ -53,6 +53,8 @@ class Helpdesk < Sinatra::Base
       @list = @db[:requests].find({}, :sort => [{'updatedat': -1}]).skip(@skip).limit(@pagesize)
     end
 
+    @showpager = true
+
     erb :ticketslist
   end
 
