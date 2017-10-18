@@ -1,5 +1,7 @@
 require_relative 'auth'
 require_relative 'dashboards'
 require_relative 'filters'
+require_relative 'personnel'
 require_relative 'tickets'
+require_relative 'uom'
 require_relative 'usermgt'

@@ -1,0 +1,38 @@
+<h1 style="margin-top: 20px; margin-bottom: 20px;">UOM List</h1>
+
+<div style="margin-bottom: 15px">
+  <a href="/uom-detail/new" class="btn btn-primary">
+    Create New
+  </a>
+</div>
+
+<table class="table table-striped">
+  <thead class="thead-inverse">
+  <tr>
+    <th>Code</th>
+    <th>Description</th>
+    <th>Type</th>
+    <th>Whole</th>
+  </tr>
+  </thead>
+  <tbody>
+  <% @list.each do |iter| %>
+      <tr>
+        <td>
+          <a href="/uom-detail/<%= iter[:code] %>">
+            <%= iter[:code] %>
+          </a>
+        </td>
+        <td>
+          <%= iter[:description] %>
+        </td>
+        <td>
+          <%= iter[:type] %><!-- Weight, Volume, Count -->
+        </td>
+        <td>
+          <%= iter[:whole] %><!-- Prevent fractions, if whole -->
+        </td>
+      </tr>
+  <% end%>
+  </tbody>
+</table>

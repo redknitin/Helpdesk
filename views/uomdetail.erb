@@ -1,0 +1,31 @@
+<h1 style="margin-left: 10px; margin-bottom: 20px;">Edit UOM</h1>
+
+<form method="post" action="/uom-save">
+  <div class="col-6">
+    <div class="form-group">
+      <label>Code</label>
+      <input name="code" value="<%= @rec == nil ? '' : @rec[:code] %>" required="required" class="form-control" />
+    </div>
+    <div class="form-group">
+      <label>Description</label>
+      <input name="description" value="<%= @rec == nil ? '' : @rec[:description] %>" required="required" class="form-control" />
+    </div>
+    <div class="form-group">
+      <label>Type</label>
+      <select name="type" class="form-control">
+        <% @uomtypes.each do |itertype| %>
+            <option<%= @rec == nil ? '' : (@rec[:type] == itertype ? ' selected' : '') %>><%= itertype %></option>
+        <% end %>
+      </select>
+    </div>
+    <div class="form-group">
+      <label>Whole (Untick to allow fractional quantity)</label>
+      <input name="whole" <%= @rec == nil ? '' : (@rec[:whole] == 'yes' ? 'selected="selected"' : '') %> type="checkbox" class="form-control" />
+    </div>
+  </div>
+  <div class="col-6">
+  </div>
+  <div>
+    <input type="submit" value="Save" class="btn btn-primary" style="margin-left: 20px">
+  </div>
+</form>
