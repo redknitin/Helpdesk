@@ -1,3 +1,13 @@
+<style>
+  input[required] {
+    border: solid 2px #bbd;
+  }
+  /*	label.required:after {
+      content: "*";
+    }*/
+  /*content: " (" attr(href) ")";*/
+</style>
+
 <h1 style="margin-top: 20px; margin-bottom: 20px;">Service Request</h1>
 
 <script>
@@ -37,15 +47,15 @@ function cascDdl() {
   <div class="col-6">
     <div class="form-group">
       <label>Contact Name</label>
-      <input name="name" required="required" class="form-control" />
+      <input name="name" required="required" class="form-control" value="<%= @display != nil ? @display : '' %>" />
     </div>
     <div class="form-group">
       <label>Phone</label>
-      <input name="phone" type="tel" class="form-control" /><!-- pattern="^\+[0-9]{11,12}$" title="+971501545643"-->
+      <input name="phone" type="tel" class="form-control" value="<%= @phone != nil ? @phone : '' %>" /><!-- pattern="^\+[0-9]{11,12}$" title="+971501545643"-->
     </div>
     <div class="form-group">
       <label>Email</label>
-      <input name="email" type="email" class="form-control" />
+      <input name="email" type="email" class="form-control" value="<%= @email != nil ? @email : '' %>" />
     </div>
   </div>
   <div class="col-6">
@@ -105,7 +115,7 @@ function cascDdl() {
   <div class="col-6">
     <div class="form-group">
       <label>Location</label>
-      <input name="locationdescription" required="required" class="form-control" />
+      <input name="locationdescription" class="form-control" />
     </div>
   </div>
 

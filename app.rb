@@ -12,19 +12,20 @@ class Helpdesk < Sinatra::Base
   #Initialize data needed for the application
   def initialize()
     super()
-    @db = Mongo::Client.new((defined? AppConfig::DB_URL != nil) ? AppConfig::DB_URL : 'mongodb://127.0.0.1:27017/helpdesk')
-    #@db = Mongo::Client.new(['127.0.0.1:27017'], :database => 'helpdesk') #The URL notation helps reduce this to a single config setting Eg. Mongo::Client.new('mongodb://127.0.0.1:27017/helpdesk')
-    @datetimefmt = '%Y-%m-%d %H:%M:%S' #Add %z for timezone; make this a configuration option
 
-    #Currently, anything that is hardcoded but needs to be moved into master data can be defined here as, for example, an array or dictionary
+    @datetimefmt = '%Y-%m-%d %H:%M:%S %z'
+    @db = Mongo::Client.new((defined? AppConfig::DB_URL != nil) ? AppConfig::DB_URL : 'mongodb://127.0.0.1:27017/helpdesk')
     @departments = (defined? AppConfig::MASTER_ORG_DEPT != nil) ? AppConfig::MASTER_ORG_DEPT : [
         {:org => 'Helpdesk Foundation', :dept => ['Software Development', 'Quality Control', 'Social Media Marketing', 'Training', 'Consulting', 'Administration', 'Human Resources', 'Procurement', 'Information Technology']},
         {:org => 'Mars Habitation Corporation', :dept => ['HVAC', 'MEP (Mechanical-Electrical-Plumbing)', 'QHSE (Quality-Health-Safety-Environment)', 'Cleaning', 'Security', 'Visitor Experience', 'Guest Relations', 'Procurement']}
     ]
-    @statuses = (defined? AppConfig::MASTER_STATUSES != nil) ? AppConfig::MASTER_STATUSES : ['New', 'Assigned', 'Suspended', 'Completed', 'Cancelled']
-    @roles = (defined? AppConfig::MASTER_ROLES != nil) ? AppConfig::MASTER_ROLES : ['requester', 'helpdesk', 'admin']
-
+    @floors = (defined? AppConfig::MASTER_BLDG_FLOOR != nil) ? AppConfig::MASTER_BLDG_FLOOR : [
+        {:building => 'Building A', :floors => ['Roof Top', '2nd Floor (2)', '1st Floor (1)', 'Ground Floor (0)', 'Lower Ground (B1/-1)', 'Basement 1 (B2/-2)', 'Basement 2 (B3/-3)']},
+        {:building => 'Building B', :floors => ['2nd Floor (2)', '1st Floor (1)', 'Ground Floor (0)', 'Lower Ground (B1/-1)', 'Basement 1 (B2/-2)']}
+    ]
     @pagesize = (defined? AppConfig::UI_PAGE_SIZE != nil) ? AppConfig::UI_PAGE_SIZE : 10
+    @roles = (defined? AppConfig::MASTER_ROLES != nil) ? AppConfig::MASTER_ROLES : ['requester', 'helpdesk', 'admin']
+    @statuses = (defined? AppConfig::MASTER_STATUSES != nil) ? AppConfig::MASTER_STATUSES : ['New', 'Assigned', 'Suspended', 'Completed', 'Cancelled']
   end
 
   # before do #Why doesn't my regex work up here /^(?!\/(login|logout)
@@ -61,6 +62,14 @@ class Helpdesk < Sinatra::Base
   #Display the new trouble ticket form
   get '/help-me' do
     self.init_ctx
+    if self.is_user_logged_in
+      rec = @db[:users].find('username' => @username).limit(1).first
+      if rec != nil
+        @phone = rec[:phone]
+        @email = rec[:email]
+        @display = rec[:display]
+      end
+    end
     erb :helpme
   end
 
@@ -81,10 +90,10 @@ class Helpdesk < Sinatra::Base
 
     @params[:status] = 'New'
     @params[:updatedat] = @params[:createdat] = Time.now.strftime(@datetimefmt)
-    @params[:myguid] = SecureRandom.uuid
     if @username != nil && @username != ''
       @params[:createdby] = @params[:updatedby] = @username
     end
+    @params[:myguid] = SecureRandom.uuid
     @db[:requests].insert_one @params
     @db.close
     redirect '/'
@@ -124,14 +133,14 @@ class Helpdesk < Sinatra::Base
         'password' => Digest::SHA1.hexdigest(@params[:pw]),
         'islocked' => 'false'
     ).limit(1).first
-    session[:rolename] = usr[:rolename]
-    session[:username] = usr[:username]
 
     if usr == nil
       redirect '/login?msg=Invalid+login'
       return #redirect is supposed to stop execution of this method, but just to be sure
     end
 
+    session[:rolename] = usr[:rolename]
+    session[:username] = usr[:username]
     redirect '/'
   end
 
@@ -159,11 +168,11 @@ class Helpdesk < Sinatra::Base
     @totalrowcount = 0
     if @rolename == 'requester'
       @totalrowcount = @list = @db[:requests].find('createdby' => @username).count()
-      @list = @db[:requests].find('createdby' => @username).skip(@skip).limit(@pagesize)
+      @list = @db[:requests].find('createdby' => @username, :sort => [{'updatedat': -1}]).skip(@skip).limit(@pagesize)
     else
       #Helpdesk agents and admins can view the statuses of all requests
       @totalrowcount = @list = @db[:requests].count()
-      @list = @db[:requests].find().skip(@skip).limit(@pagesize)
+      @list = @db[:requests].find({}, :sort => [{'updatedat': -1}]).skip(@skip).limit(@pagesize)
     end
 
     erb :ticketslist
@@ -270,26 +279,41 @@ class Helpdesk < Sinatra::Base
       return #Does execution stop with a redirect, or do we need a return in this framework?
     end
 
-    recuser = {
-        :username => @params[:id],
-        :password => Digest::SHA1.hexdigest(@params[:pw]),
-        :rolename => @params[:rolename],
-        :email => @params[:email],
-        :phone => @params[:phone],
-        :display => @params[:display],
-        :islocked => 'false'
-    }
-
     cnt = @db[:users].find('username' => @params[:id]).count()
     if cnt == 0 && @params[:opmode] == 'new'
+      recuser = {
+          :username => @params[:id],
+          :password => Digest::SHA1.hexdigest(@params[:pw]),
+          :rolename => @params[:rolename],
+          :email => @params[:email],
+          :phone => @params[:phone],
+          :display => @params[:display],
+          :islocked => 'false'
+      }
+
       @db[:users].insert_one recuser
-      @db.close
     elsif cnt == 1 && @params[:opmode] == 'update'
-      #TODO: Update the user
+      recuser = @db[:users].find('username' => @params[:id]).limit(1).first
+      recuser[:rolename] = @params[:rolename]
+      recuser[:email] = @params[:email]
+      recuser[:phone] = @params[:phone]
+      recuser[:display] = @params[:display]
+      #recuser[:islocked] = 'false'
+
+      if @params[:pw] != nil && @params[:pw] != ''
+        recuser[:password] = Digest::SHA1.hexdigest(@params[:pw])
+      end
+
+      @db[:users].update_one(
+          {'username' => @params[:id]},
+          recuser,
+          {:upsert => false}
+      )
     else
       #TODO: Toss a warning
     end
 
+    @db.close
     redirect '/users-list?msg=Saved'
   end
 

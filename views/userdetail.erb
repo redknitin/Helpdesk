@@ -1,3 +1,43 @@
+<h1 style="margin-left: 10px; margin-bottom: 20px;">Edit User</h1>
+
+<form method="post" action="/user-save/update">
+  <div class="col-6">
+    <input name="id" value="<%= @rec[:username] %>" type="hidden" required="required" />
+    <div class="form-group">
+      <label>Change Password (blank for no change)</label>
+      <input name="pw" type="password" class="form-control" /><!-- pattern="^\+[0-9]{11,12}$" title="+971501545643"-->
+    </div>
+    <div class="form-group">
+      <label>Email</label>
+      <input name="email" value="<%= @rec[:email] %>" type="email" class="form-control" />
+    </div>
+    <div class="form-group">
+      <label>Phone</label>
+      <input name="phone" value="<%= @rec[:phone] %>" type="tel" class="form-control" />
+    </div>
+    <div class="form-group">
+      <label>Display Name</label>
+      <input name="display" value="<%= @rec[:display] %>" id="field_display" type="text" class="form-control" />
+    </div>
+    <div class="form-group">
+      <label>Role</label>
+      <select name="rolename" class="form-control">
+        <% @roles.each do |iterrole| %>
+            <option<%= @rec[:rolename] == iterrole ? ' selected' : '' %>><%= iterrole %></option>
+        <% end %>
+      </select>
+    </div>
+  </div>
+  <div class="col-6">
+  </div>
+  <div>
+    <input type="submit" value="Save User" class="btn btn-primary" style="margin-left: 20px">
+  </div>
+</form>
+
+
+
+<!--
 <%
   fields = {
       'username' => 'Login ID',
@@ -20,3 +60,4 @@
       <div class="col-4" style="border: solid 1px #bbb; border-radius: 4px"><%= @rec[colname] %></div>
     </div>
 <% end %>
+-->
