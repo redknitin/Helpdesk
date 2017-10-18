@@ -203,7 +203,7 @@ class Helpdesk < Sinatra::Base
     else
       @rec = @db[:requests].find('code' => @params[:ticket]).limit(1).first
     end
-
+    #TODO: Replace this drama queen of a code with a simple count check if we aren't using any of the record fields when posting
     if @rec == nil
       redirect '/'
       return #Is a return absolutely necessary?
