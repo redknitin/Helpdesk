@@ -1,0 +1,22 @@
+<%
+  fields = {
+      'username' => 'Login ID',
+      'rolename' => 'Role',
+      'display' => 'Display Name',
+      'email' => 'Email',
+      'phone' => 'Phone',
+      'islocked' => 'Is Locked',
+  }
+%>
+
+<%
+  fields.each do |colname,labeltxt|
+    if colname=='comments'
+      continue
+    end
+%>
+    <div class="row" style="margin-bottom: 10px">
+      <div class="col-2" style="font-weight: bold;"><%= labeltxt %></div>
+      <div class="col-4" style="border: solid 1px #bbb; border-radius: 4px"><%= @rec[colname] %></div>
+    </div>
+<% end %>

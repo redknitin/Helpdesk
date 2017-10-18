@@ -4,6 +4,7 @@ require 'mongo'
 require 'erb'
 require 'sinatra/base'
 require 'digest/sha1'
+require './app_config'
 
 class Helpdesk < Sinatra::Base
   use Rack::Session::Pool #Dont "enable :sessions" because it adds Rack::Session::Cookie to the stack but we want Rack::Session::Pool instead
@@ -11,18 +12,33 @@ class Helpdesk < Sinatra::Base
   #Initialize data needed for the application
   def initialize()
     super()
-    @db = Mongo::Client.new(['127.0.0.1:27017'], :database => 'helpdesk') #The URL notation helps reduce this to a single config setting Eg. Mongo::Client.new('mongodb://127.0.0.1:27017/helpdesk')
+    @db = Mongo::Client.new((defined? AppConfig::DB_URL != nil) ? AppConfig::DB_URL : 'mongodb://127.0.0.1:27017/helpdesk')
+    #@db = Mongo::Client.new(['127.0.0.1:27017'], :database => 'helpdesk') #The URL notation helps reduce this to a single config setting Eg. Mongo::Client.new('mongodb://127.0.0.1:27017/helpdesk')
     @datetimefmt = '%Y-%m-%d %H:%M:%S' #Add %z for timezone; make this a configuration option
 
     #Currently, anything that is hardcoded but needs to be moved into master data can be defined here as, for example, an array or dictionary
-    @departments = [
-        {:org => 'Apache Foundation', :dept => ['Software Development', 'Quality Control']},
-        {:org => 'Canonical', :dept => ['System Administration', 'Marketing']}
+    @departments = (defined? AppConfig::MASTER_ORG_DEPT != nil) ? AppConfig::MASTER_ORG_DEPT : [
+        {:org => 'Helpdesk Foundation', :dept => ['Software Development', 'Quality Control', 'Social Media Marketing', 'Training', 'Consulting', 'Administration', 'Human Resources', 'Procurement', 'Information Technology']},
+        {:org => 'Mars Habitation Corporation', :dept => ['HVAC', 'MEP (Mechanical-Electrical-Plumbing)', 'QHSE (Quality-Health-Safety-Environment)', 'Cleaning', 'Security', 'Visitor Experience', 'Guest Relations', 'Procurement']}
     ]
-    @statuses = ['New', 'Assigned', 'Suspended', 'Completed', 'Cancelled']
+    @statuses = (defined? AppConfig::MASTER_STATUSES != nil) ? AppConfig::MASTER_STATUSES : ['New', 'Assigned', 'Suspended', 'Completed', 'Cancelled']
+    @roles = (defined? AppConfig::MASTER_ROLES != nil) ? AppConfig::MASTER_ROLES : ['requester', 'helpdesk', 'admin']
 
-    @pagesize = 10
+    @pagesize = (defined? AppConfig::UI_PAGE_SIZE != nil) ? AppConfig::UI_PAGE_SIZE : 10
   end
+
+  # before do #Why doesn't my regex work up here /^(?!\/(login|logout)
+  #   allowed_anony = ['/login', '/', '/submit-request', '/usecode']
+  #   pass if allowed_anony.include? request.path_info
+  #   if session[:username] == nil || session[:username] == ''
+  #     if request.request_method.downcase == 'get'
+  #       session[:returnurl] = request.path_info
+  #     else
+  #       session[:returnurl] = nil
+  #     end
+  #     redirect '/login'
+  #   end
+  # end
 
   #Checks if the username session value has been set
   def is_user_logged_in
@@ -246,7 +262,7 @@ class Helpdesk < Sinatra::Base
   end
 
   #Create a user account
-  post '/user-save' do
+  post '/user-save/:opmode' do
     self.init_ctx
     #check if role is admin before saving
     if !self.is_user_logged_in() || @rolename != 'admin'
@@ -259,18 +275,40 @@ class Helpdesk < Sinatra::Base
         :password => Digest::SHA1.hexdigest(@params[:pw]),
         :rolename => @params[:rolename],
         :email => @params[:email],
+        :phone => @params[:phone],
+        :display => @params[:display],
         :islocked => 'false'
     }
 
     cnt = @db[:users].find('username' => @params[:id]).count()
-    if cnt == 0
+    if cnt == 0 && @params[:opmode] == 'new'
       @db[:users].insert_one recuser
       @db.close
+    elsif cnt == 1 && @params[:opmode] == 'update'
+      #TODO: Update the user
     else
-      #TODO: Toss a warning saying the user already exists
+      #TODO: Toss a warning
     end
 
     redirect '/users-list?msg=Saved'
+  end
+
+  #Get info about a single user
+  get '/user-detail/:username' do
+    self.init_ctx
+    if !self.is_user_logged_in()
+      redirect '/login'
+      return
+    end
+
+    if @rolename != 'admin'
+      redirect '/'
+      return
+    end
+
+    @rec = @db[:users].find('username' => @params[:username]).limit(1).first
+
+    erb :userdetail
   end
 end
 

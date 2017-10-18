@@ -11,12 +11,25 @@
   <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbarsExampleDefault" aria-controls="navbarsExampleDefault" aria-expanded="false" aria-label="Toggle navigation">
     <span class="navbar-toggler-icon"></span>
   </button>
-  <a class="navbar-brand" href="/">Service Portal</a>
+  <a class="navbar-brand" href="/">
+    <% if (defined? AppConfig::UI_LOGO_URL != nil) %>
+      <img src="<%= AppConfig::UI_LOGO_URL %>" alt="<%= (defined? AppConfig::UI_LOGO_ALT_TEXT != nil) ? AppConfig::UI_LOGO_ALT_TEXT : 'Service Desk' %>" />
+    <% else %>
+      Service Portal
+    <% end %>
+  </a>
   <div class="collapse navbar-collapse" id="navbarsExampleDefault">
     <ul class="navbar-nav mr-auto">
       <li class="nav-item">
         <a class="nav-link" href="/help-me">Submit New Request <span class="sr-only">(current)</span></a>
       </li>
+
+      <% if @rolename == 'admin' %>
+          <li class="nav-item">
+            <a class="nav-link" href="/users-list">Users</a>
+          </li>
+      <% end %>
+
       <% if @username != nil && @username != '' %>
         <li class="nav-item">
           <a class="nav-link" href="/tickets-list">View Request Status</a>
@@ -28,12 +41,6 @@
         <li class="nav-item">
           <a class="nav-link" href="/login">Login</a>
         </li>
-      <% end %>
-
-      <% if @rolename == 'admin' %>
-      <li class="nav-item">
-        <a class="nav-link" href="/users-list">Users</a>
-      </li>
       <% end %>
 
       <!--
