@@ -21,7 +21,7 @@ class Helpdesk < Sinatra::Base
     ]
     @statuses = ['New', 'Assigned', 'Suspended', 'Completed', 'Cancelled']
 
-    @pagesize = 3
+    @pagesize = 10
   end
 
   #Checks if the username session value has been set
@@ -189,6 +189,39 @@ class Helpdesk < Sinatra::Base
     end
 
     erb :ticketdetail
+  end
+
+  post '/comment-add/:ticket' do
+    self.init_ctx
+    if !self.is_user_logged_in()
+      redirect '/login'
+      return
+    end
+
+    if @rolename == 'requester'
+      @rec = @db[:requests].find('createdby' => @username, 'code' => @params[:ticket]).limit(1).first
+    else
+      @rec = @db[:requests].find('code' => @params[:ticket]).limit(1).first
+    end
+
+    if @rec == nil
+      redirect '/'
+      return #Is a return absolutely necessary?
+    end
+
+    @db[:requests].update_one(
+        {'code' => params[:ticket]},
+        {'$push' => {'comments' => {
+            :txt => @params[:txt],
+            :at => Time.now.strftime(@datetimefmt),
+            :by => @username
+        }}},
+        {:upsert => false}
+    )
+
+    @db.close
+
+    redirect '/ticket-detail/'+@params[:ticket]
   end
 
   #List all users

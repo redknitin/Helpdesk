@@ -15,6 +15,7 @@ fields = {
 }
 %>
 
+<% if @rolename != 'requester' %>
 <form method="post" action="/ticket-status" class="form-inline" style="margin-bottom: 20px;">
   <label style="margin-right: 10px;">Status</label>
   <input type="hidden" name="code" value="<%= @rec[:code] %>" />
@@ -25,11 +26,36 @@ fields = {
   </select>
   <input type="submit" value="Set Status" class="btn btn-primary btn-sm" />
 </form>
+<% end %>
 
 
-<% fields.each do |colname,labeltxt| %>
+<%
+  fields.each do |colname,labeltxt|
+    if colname=='comments'
+      continue
+    end
+%>
 <div class="row" style="margin-bottom: 10px">
   <div class="col-2" style="font-weight: bold;"><%= labeltxt %></div>
   <div class="col-10"><%= @rec[colname] %></div>
 </div>
 <% end %>
+
+
+<%
+  if @rec['comments'] != nil
+  @rec['comments'].each do |itercomm|
+%>
+  <div>
+    <%= itercomm[:by] %>, <%= itercomm[:at] %><br />
+    <%= itercomm[:txt] %>
+  </div>
+<%
+  end
+  end
+%>
+
+<form method="post" action="/comment-add/<%= @rec[:code] %>" style="margin-bottom: 20px;">
+  <textarea name="txt"></textarea>
+  <input type="submit" value="Post Comment" class="btn btn-primary btn-sm" />
+</form>

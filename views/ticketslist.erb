@@ -20,7 +20,7 @@
           </a>
         </td>
         <td>
-          <span class="badge badge-info"><%= iter[:status] %></span>
+          <span class="badge badge-info"><%= iter[:status] %></span><!-- TODO: associate status with info, warning, danger -->
           <%= iter[:complaint] %>
         </td>
         <td><%= iter[:updatedat] %></td>
@@ -35,39 +35,10 @@
                 </select>
                 <input type="submit" value="Set Status" class="btn btn-primary btn-sm" />
               </form>
-              <!--
-              <a href="/ticket-detail/<%= iter[:code] %>" class="btn btn-primary btn-sm">Details</a>
-              -->
             </td>
         <% end %>
       </tr>
   <% end %>
-  <!--
-  <tr>
-    <td>ea1620</td>
-    <td>
-      <span class="badge badge-warning">Awaiting Material</span>
-      False ceiling tile broken
-    </td>
-    <td>18-SEP-2017</td>
-  </tr>
-  <tr>
-    <td>ea1621</td>
-    <td>
-      <span class="badge badge-info">Scheduled</span>
-      No water supply
-    </td>
-    <td>3-OCT-2017</td>
-  </tr>
-  <tr>
-    <td>ea1622</td>
-    <td>
-      <span class="badge badge-danger">Unassigned</span>
-      Warning sign needed for wet floor
-    </td>
-    <td>5-OCT-2017</td>
-  </tr>
-  -->
   </tbody>
 </table>
 
