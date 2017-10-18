@@ -1,6 +1,6 @@
 <%
 fields = {
-    'code' => 'Code',
+    'code' => 'SR #',
     'name' => 'Name',
     'phone' => 'Phone',
     'email' => 'Email',
@@ -37,7 +37,7 @@ fields = {
 %>
 <div class="row" style="margin-bottom: 10px">
   <div class="col-2" style="font-weight: bold;"><%= labeltxt %></div>
-  <div class="col-10"><%= @rec[colname] %></div>
+  <div class="col-4" style="border: solid 1px #bbb; border-radius: 4px"><%= @rec[colname] %></div>
 </div>
 <% end %>
 
@@ -46,8 +46,8 @@ fields = {
   if @rec['comments'] != nil
   @rec['comments'].each do |itercomm|
 %>
-  <div>
-    <%= itercomm[:by] %>, <%= itercomm[:at] %><br />
+  <div class="col-6" style="background-color: #fff9c2; padding: 8px; margin: 15px 0; border-radius: 8px;">
+    <strong><%= itercomm[:by] %></strong>, <small><%= itercomm[:at] %></small><br />
     <%= itercomm[:txt] %>
   </div>
 <%
@@ -56,6 +56,6 @@ fields = {
 %>
 
 <form method="post" action="/comment-add/<%= @rec[:code] %>" style="margin-bottom: 20px;">
-  <textarea name="txt"></textarea>
+  <textarea class="form-control col-6" style="margin-bottom: 15px;" name="txt"></textarea>
   <input type="submit" value="Post Comment" class="btn btn-primary btn-sm" />
 </form>
