@@ -15,6 +15,13 @@
   </tr>
   </thead>
   <tbody>
+    <tr>
+      <form method="get" action="<%= request.url %>">
+        <td><input name="name" /></td>
+        <td><input name="phone" /></td>
+        <td><input name="email" /><input type="submit" style="display: none;" /></td>
+      </form>
+    </tr>
   <% @list.each do |iter| %>
       <tr>
         <td>

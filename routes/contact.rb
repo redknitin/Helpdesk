@@ -5,7 +5,7 @@ class Helpdesk < Sinatra::Base
   get '/contact-list' do
     self.init_ctx
     #check if role is admin
-    if !self.is_user_logged_in() || @rolename != 'admin'
+    if !self.is_user_logged_in() || !(['admin', 'helpdesk'].include? @rolename)
       redirect '/'
       return #Does execution stop with a redirect, or do we need a return in this framework?
     end
@@ -15,9 +15,14 @@ class Helpdesk < Sinatra::Base
       @skip = @params[:skip].to_i
     end
 
+    @criteria = {}
+    if (@params[:name] != nil && @params[:name] != '') then @criteria[:name] = {  '$regex' => '.*' + Regexp.escape(@params[:name]) + '.*', '$options' => 'i' } end
+    if (@params[:phone] != nil && @params[:phone] != '') then @criteria[:phone] = { '$regex' => '.*' + Regexp.escape(@params[:phone]) + '.*', '$options' => 'i' } end
+    if (@params[:email] != nil && @params[:email] != '') then @criteria[:email] = { '$regex' => '.*' + Regexp.escape(@params[:email]) + '.*', '$options' => 'i' } end
+
     @totalrowcount = 0
     @totalrowcount = @list = @db[:contacts].count()
-    @list = @db[:contacts].find().skip(@skip).limit(@pagesize)
+    @list = @db[:contacts].find(@criteria).skip(@skip).limit(@pagesize)
 
     @showpager = true
 
