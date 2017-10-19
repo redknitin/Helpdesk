@@ -33,7 +33,7 @@ class Helpdesk < Sinatra::Base
   post '/contact-save' do
     self.init_ctx
     #check if role is admin before saving
-    if !self.is_user_logged_in() || @rolename != 'admin'
+    if !self.is_user_logged_in() || (!['admin', 'helpdesk'].include? @rolename)
       redirect '/'
       return #Does execution stop with a redirect, or do we need a return in this framework?
     end
@@ -81,7 +81,7 @@ class Helpdesk < Sinatra::Base
       return
     end
 
-    if @rolename != 'admin'
+    if !['admin', 'helpdesk'].include? @rolename
       redirect '/'
       return
     end

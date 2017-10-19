@@ -2,7 +2,7 @@ class Helpdesk < Sinatra::Base
   #Display the new trouble ticket form
   get '/help-me' do
     self.init_ctx
-    if self.is_user_logged_in
+    if self.is_user_logged_in && @rolename == 'requester'
       rec = @db[:users].find('username' => @username).limit(1).first
       if rec != nil
         @phone = rec[:phone]
@@ -43,15 +43,18 @@ class Helpdesk < Sinatra::Base
       @skip = @params[:skip].to_i
     end
 
+    @criteria = {}
+    if (@params[:code] != nil && @params[:code] != '') then @criteria[:code] = {  '$regex' => '.*' + Regexp.escape(@params[:code]) + '.*', '$options' => 'i' } end
+    if (@params[:complaint] != nil && @params[:complaint] != '') then @criteria[:complaint] = { '$regex' => '.*' + Regexp.escape(@params[:complaint]) + '.*', '$options' => 'i' } end
+    if (@params[:status] != nil && @params[:status] != '') then @criteria[:status] = {  '$regex' => '.*' + Regexp.escape(@params[:status]) + '.*', '$options' => 'i' } end
+
     @totalrowcount = 0
     if @rolename == 'requester'
-      @totalrowcount = @list = @db[:requests].find('createdby' => @username).count()
-      @list = @db[:requests].find('createdby' => @username, :sort => [{'updatedat': -1}]).skip(@skip).limit(@pagesize)
-    else
+      @criteria[:createdby] = @username
       #Helpdesk agents and admins can view the statuses of all requests
-      @totalrowcount = @list = @db[:requests].count()
-      @list = @db[:requests].find({}, :sort => [{'updatedat': -1}]).skip(@skip).limit(@pagesize)
     end
+    @totalrowcount = @list = @db[:requests].find(@criteria).count()
+    @list = @db[:requests].find(@criteria, :sort => [{'updatedat': -1}]).skip(@skip).limit(@pagesize)
 
     @showpager = true
 

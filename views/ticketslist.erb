@@ -7,6 +7,12 @@ TODO: This should append to the query string to ensure it plays nice with the pa
 </div>
 -->
 
+<div style="margin-bottom: 15px">
+  <a href="/help-me" class="btn btn-primary">
+    Create New
+  </a>
+</div>
+
 <table class="table table-striped">
   <thead class="thead-inverse">
   <tr>
@@ -19,6 +25,14 @@ TODO: This should append to the query string to ensure it plays nice with the pa
   </tr>
   </thead>
   <tbody>
+  <tr>
+    <form method="get" action="<%= request.url %>">
+      <td><input name="code" value="<%= @params[:code] %>" /></td>
+      <td><input name="complaint" value="<%= @params[:complaint] %>" /></td>
+      <td></td>
+      <td><input name="status" value="<%= @params[:status] %>" /><input type="submit" style="display: none;" /></td>
+    </form>
+  </tr>
   <% @list.each do |iter| %>
       <tr>
         <td>

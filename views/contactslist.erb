@@ -17,9 +17,9 @@
   <tbody>
     <tr>
       <form method="get" action="<%= request.url %>">
-        <td><input name="name" /></td>
-        <td><input name="phone" /></td>
-        <td><input name="email" /><input type="submit" style="display: none;" /></td>
+        <td><input name="name" value="<%= @params[:name] %>" /></td>
+        <td><input name="phone" value="<%= @params[:phone] %>" /></td>
+        <td><input name="email" value="<%= @params[:email] %>" /><input type="submit" style="display: none;" /></td>
       </form>
     </tr>
   <% @list.each do |iter| %>
@@ -30,10 +30,14 @@
           </a>
         </td>
         <td>
-          <%= iter[:phone] %>
+          <a href="tel:<%= iter[:phone] %>">
+            <%= iter[:phone] %>
+          </a>
         </td>
         <td>
-          <%= iter[:email] %>
+          <a href="mailto:<%= iter[:email] %>">
+            <%= iter[:email] %>
+          </a>
         </td>
       </tr>
   <% end%>
