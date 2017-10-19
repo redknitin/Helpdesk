@@ -40,6 +40,12 @@
           </li>
       <% end %>
 
+      <% if ['helpdesk', 'admin'].include? @rolename %>
+        <li class="nav-item">
+          <a class="nav-link" href="/contact-list">Contacts</a>
+        </li>
+      <% end %>
+
       <% if @username != nil && @username != '' %>
         <li class="nav-item">
           <a class="nav-link" href="/tickets-list">View Request Status</a>

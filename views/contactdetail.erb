@@ -1,0 +1,27 @@
+<h1 style="margin-left: 10px; margin-bottom: 20px;">Edit Contact</h1>
+
+<form method="post" action="/contact-save">
+  <div class="col-6">
+    <input name="code" value="<%= @rec == nil ? '' : @rec[:code] %>" type="hidden" />
+    <div class="form-group">
+      <label>Name</label>
+      <input name="name" value="<%= @rec == nil ? '' : @rec[:name] %>" required="required" class="form-control" />
+    </div>
+    <div class="form-group">
+      <label>Phone</label>
+      <input name="phone" value="<%= @rec == nil ? '' : @rec[:phone] %>" class="form-control" />
+    </div>
+    <div class="form-group">
+      <label>Email</label>
+      <input name="email" value="<%= @rec == nil ? '' : @rec[:email] %>" class="form-control" />
+    </div>
+    <!--
+    TODO: Organization, department, location
+    -->
+  </div>
+  <div class="col-6">
+  </div>
+  <div>
+    <input type="submit" value="Save" class="btn btn-primary" style="margin-left: 20px">
+  </div>
+</form>

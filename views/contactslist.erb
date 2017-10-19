@@ -1,0 +1,34 @@
+<h1 style="margin-top: 20px; margin-bottom: 20px;">Contact List</h1>
+
+<div style="margin-bottom: 15px">
+  <a href="/contact-detail/new" class="btn btn-primary">
+    Create New
+  </a>
+</div>
+
+<table class="table table-striped">
+  <thead class="thead-inverse">
+  <tr>
+    <th>Name</th>
+    <th>Phone</th>
+    <th>Email</th>
+  </tr>
+  </thead>
+  <tbody>
+  <% @list.each do |iter| %>
+      <tr>
+        <td>
+          <a href="/contact-detail/<%= iter[:code] %>">
+            <%= iter[:name] %>
+          </a>
+        </td>
+        <td>
+          <%= iter[:phone] %>
+        </td>
+        <td>
+          <%= iter[:email] %>
+        </td>
+      </tr>
+  <% end%>
+  </tbody>
+</table>

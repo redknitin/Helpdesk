@@ -1,6 +1,7 @@
 require_relative 'auth'
 require_relative 'dashboards'
 require_relative 'filters'
+require_relative 'contact'
 require_relative 'part'
 require_relative 'personnel'
 require_relative 'service'
