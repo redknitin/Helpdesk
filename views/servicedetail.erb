@@ -1,6 +1,6 @@
-<h1 style="margin-left: 10px; margin-bottom: 20px;">Edit Part</h1>
+<h1 style="margin-left: 10px; margin-bottom: 20px;">Edit Service</h1>
 
-<form method="post" action="/part-save">
+<form method="post" action="/service-save">
   <div class="col-6">
     <div class="form-group">
       <label>Code</label>
@@ -25,7 +25,7 @@
     <div class="form-group">
       <label>Type</label>
       <select name="type" class="form-control">
-        <% @parttypes.each do |itertype| %>
+        <% @servicetypes.each do |itertype| %>
             <option<%= @rec == nil ? '' : (@rec[:type] == itertype ? ' selected' : '') %>><%= itertype %></option>
         <% end %>
       </select>

@@ -1,6 +1,6 @@
-<h1 style="margin-left: 10px; margin-bottom: 20px;">Edit Part</h1>
+<h1 style="margin-left: 10px; margin-bottom: 20px;">Edit Personnel</h1>
 
-<form method="post" action="/part-save">
+<form method="post" action="/personnel-save">
   <div class="col-6">
     <div class="form-group">
       <label>Code</label>
@@ -11,21 +11,13 @@
       <input name="name" value="<%= @rec == nil ? '' : @rec[:name] %>" required="required" class="form-control" />
     </div>
     <div class="form-group">
-      <label>Description</label>
-      <input name="description" value="<%= @rec == nil ? '' : @rec[:description] %>" class="form-control" />
-    </div>
-    <div class="form-group">
-      <label>UOM</label>
-      <select name="type" class="form-control">
-        <% @uoms.each do |iteruom| %>
-            <option<%= @rec == nil ? '' : (@rec[:uom] == iteruom ? ' selected' : '') %>><%= iteruom %></option>
-        <% end %>
-      </select>
+      <label>Position</label>
+      <input name="position" value="<%= @rec == nil ? '' : @rec[:position] %>" class="form-control" />
     </div>
     <div class="form-group">
       <label>Type</label>
       <select name="type" class="form-control">
-        <% @parttypes.each do |itertype| %>
+        <% @personneltypes.each do |itertype| %>
             <option<%= @rec == nil ? '' : (@rec[:type] == itertype ? ' selected' : '') %>><%= itertype %></option>
         <% end %>
       </select>
