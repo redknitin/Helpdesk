@@ -79,7 +79,7 @@ class Helpdesk < Sinatra::Base
       return
     end
 
-    @uomtypes = ['Weight', 'Volume', 'Count']
+    @uomtypes = ['Weight', 'Volume', 'Count', 'Time', 'Temperature', 'Pressure', 'Voltage', 'Current', 'Light', 'Sound']
     @rec = @db[:uoms].find('code' => @params[:code]).limit(1).first
 
     erb :uomdetail
