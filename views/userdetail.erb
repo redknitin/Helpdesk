@@ -1,4 +1,4 @@
-<h1 style="margin-left: 10px; margin-bottom: 20px;">Edit User</h1>
+<h1 style="margin-left: 10px; margin-bottom: 20px;">Edit User <%= (@rec == nil) ? '' : (' - ' + @rec[:username]) %></h1>
 
 <form method="post" action="/user-save/update">
   <div class="col-6">

@@ -8,8 +8,11 @@ TODO: This should append to the query string to ensure it plays nice with the pa
 -->
 
 <div style="margin-bottom: 15px">
-  <a href="/help-me" class="btn btn-primary">
+  <a href="/help-me" class="btn btn-primary" style="margin-right: 10px">
     Create New
+  </a>
+  <a href="javascript:document.getElementById('filterRow').style.display = 'table-row'; void(0);" class="btn btn-secondary">
+    Filter Data
   </a>
 </div>
 
@@ -25,12 +28,12 @@ TODO: This should append to the query string to ensure it plays nice with the pa
   </tr>
   </thead>
   <tbody>
-  <tr>
+  <tr id="filterRow" style="<%= @params[:applyFilter] == '1' ? 'display: table-row;' : 'display: none;' %>">
     <form method="get" action="<%= request.url %>">
-      <td><input name="code" value="<%= @params[:code] %>" /></td>
-      <td><input name="complaint" value="<%= @params[:complaint] %>" /></td>
+      <td><input name="code" value="<%= @params[:code] %>" placeholder="Filter by code" class="form-control" /></td>
+      <td><input name="complaint" value="<%= @params[:complaint] %>" placeholder="Filter by complaint" class="form-control" /></td>
       <td></td>
-      <td><input name="status" value="<%= @params[:status] %>" /><input type="submit" style="display: none;" /></td>
+      <td><input name="status" value="<%= @params[:status] %>" placeholder="Filter by status" class="form-control" /><input type="hidden" name="applyFilter" value="1" /><input type="submit" style="display: none;" /></td>
     </form>
   </tr>
   <% @list.each do |iter| %>
