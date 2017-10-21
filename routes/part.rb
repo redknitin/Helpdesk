@@ -1,6 +1,6 @@
 class Helpdesk < Sinatra::Base
   #List all parts
-  get '/part-list' do
+  get '/parts-list' do
     self.init_ctx
     #check if role is admin
     if !self.is_user_logged_in() || @rolename != 'admin'
@@ -19,7 +19,7 @@ class Helpdesk < Sinatra::Base
 
     @showpager = true
 
-    erb :partlist
+    erb :partslist
   end
 
   #Create a user account
@@ -42,7 +42,9 @@ class Helpdesk < Sinatra::Base
       recpart = {
           :code => @params[:code],
           :name => @params[:name],
-          :description=> @params[:description]
+          :description=> @params[:description],
+          :uom=> @params[:uom],
+          :type=> @params[:type]
       }
 
       @db[:parts].insert_one recpart
@@ -50,6 +52,8 @@ class Helpdesk < Sinatra::Base
       recpart = @db[:parts].find('code' => @params[:code]).limit(1).first
       recpart[:name] = @params[:name]
       recpart[:description] = @params[:description]
+      recpart[:uom] = @params[:uom]
+      recpart[:type] = @params[:type]
 
       @db[:parts].update_one(
           {'code' => @params[:code]},
@@ -61,7 +65,7 @@ class Helpdesk < Sinatra::Base
     end
 
     @db.close
-    redirect '/part-list?msg=Saved'
+    redirect '/parts-list?msg=Saved'
   end
 
   #Get info about a single user

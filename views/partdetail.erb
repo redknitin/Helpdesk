@@ -16,7 +16,7 @@
     </div>
     <div class="form-group">
       <label>UOM</label>
-      <select name="type" class="form-control">
+      <select name="uom" class="form-control">
         <% @uoms.each do |iteruom| %>
             <option<%= @rec == nil ? '' : (@rec[:uom] == iteruom ? ' selected' : '') %>><%= iteruom %></option>
         <% end %>
