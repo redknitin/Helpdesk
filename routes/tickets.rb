@@ -54,7 +54,7 @@ class Helpdesk < Sinatra::Base
       #Helpdesk agents and admins can view the statuses of all requests
     end
     @totalrowcount = @list = @db[:requests].find(@criteria).count()
-    @list = @db[:requests].find(@criteria, :sort => [{'updatedat': -1}]).skip(@skip).limit(@pagesize)
+    @list = @db[:requests].find(@criteria, :sort => {'updatedat': -1}).skip(@skip).limit(@pagesize)
 
     @showpager = true
 
