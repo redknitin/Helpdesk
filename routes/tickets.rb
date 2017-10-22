@@ -9,6 +9,10 @@ class Helpdesk < Sinatra::Base
         @email = rec[:email]
         @display = rec[:display]
       end
+    else
+      @phone = @params[:phone] unless (@params[:phone] == nil || @params[:phone] == '')
+      @email = @params[:email] unless (@params[:email] == nil || @params[:email] == '')
+      @display = @params[:display] unless (@params[:display] == nil || @params[:display] == '')
     end
     erb :helpme
   end

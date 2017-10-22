@@ -26,6 +26,8 @@ class Helpdesk < Sinatra::Base
 
     @showpager = true
 
+    require 'cgi'
+
     erb :contactslist
   end
 

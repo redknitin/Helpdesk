@@ -15,6 +15,7 @@
     <th>Name</th>
     <th>Phone</th>
     <th>Email</th>
+    <th>Action</th>
   </tr>
   </thead>
   <tbody>
@@ -23,6 +24,7 @@
         <td><input name="name" value="<%= @params[:name] %>" placeholder="Filter by name" class="form-control" /></td>
         <td><input name="phone" value="<%= @params[:phone] %>" placeholder="Filter by phone" class="form-control" /></td>
         <td><input name="email" value="<%= @params[:email] %>" placeholder="Filter by email" class="form-control" /><input type="hidden" name="applyFilter" value="1" /><input type="submit" style="display: none;" /></td>
+        <td></td>
       </form>
     </tr>
   <% @list.each do |iter| %>
@@ -40,6 +42,11 @@
         <td>
           <a href="mailto:<%= iter[:email] %>">
             <%= iter[:email] %>
+          </a>
+        </td>
+        <td>
+          <a href="/help-me?display=<%= (iter[:name] == nil || iter[:name] == '') ? '' : CGI::escape(iter[:name]) %>&phone=<%= (iter[:phone] == nil || iter[:phone] == '') ? '' : CGI::escape(iter[:phone]) %>&email=<%= (iter[:email] == nil || iter[:email] == '') ? '' : CGI::escape(iter[:email]) %>" class="btn btn-primary">
+            Create Ticket
           </a>
         </td>
       </tr>
