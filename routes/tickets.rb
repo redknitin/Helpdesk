@@ -96,8 +96,10 @@ class Helpdesk < Sinatra::Base
 
     if @rolename == 'requester'
       @rec = @db[:requests].find('createdby' => @username, 'code' => @params[:code]).limit(1).first
+      @personnel = []
     else
       @rec = @db[:requests].find('code' => @params[:code]).limit(1).first
+      @personnel = @db[:personnel].find()
     end
 
     erb :ticketdetail
@@ -128,6 +130,38 @@ class Helpdesk < Sinatra::Base
             :at => Time.now.strftime(@datetimefmt),
             :by => @username
         }}},
+        {:upsert => false}
+    )
+
+    @db.close
+
+    redirect '/ticket-detail/'+@params[:ticket]
+  end
+
+  post '/ticket-assign/:ticket' do
+    self.init_ctx
+    if !self.is_user_logged_in()
+      redirect '/login'
+      return
+    end
+
+    if ['helpdesk', 'admin'].include? @rolename
+      @rec = @db[:requests].find('code' => @params[:ticket]).limit(1).first
+    else
+      redirect '/login'
+      return
+    end
+
+    #TODO: Replace this drama queen of a code with a simple count check if we aren't using any of the record fields when posting
+    if @rec == nil
+      redirect '/'
+      return #Is a return absolutely necessary?
+    end
+
+    @rec['assigned'] = @params[:assigned]
+    @db[:requests].update_one(
+        {'code' => @params[:ticket]},
+        @rec,
         {:upsert => false}
     )
 

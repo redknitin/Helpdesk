@@ -12,7 +12,7 @@ fields = {
     'floor' => 'Floor',
     'room' => 'Room',
     'locationdescription' => 'Location Info',
-    'assigned' => 'Assigned To'
+#    'assigned' => 'Assigned To'
 }
 %>
 
@@ -41,6 +41,20 @@ fields = {
   <div class="col-4" style="border: solid 1px #bbb; border-radius: 4px"><%= @rec[colname] %></div>
 </div>
 <% end %>
+<div class="row" style="margin-bottom: 10px">
+  <div class="col-2" style="font-weight: bold;">Assigned To</div>
+  <div class="col-4" style="">
+    <form method="post" action="/ticket-assign/<%= @rec[:code] %>" style="margin-bottom: 20px;" class="form-inline">
+      <select name="assigned" class="form-control" style="margin-right: 10px">
+        <option></option>
+        <% @personnel.each do |iterperson| %>
+            <option value="<%= iterperson[:code] %>"<%= (@rec[:assigned] == iterperson[:code]) ? ' selected="selected"' : '' %>><%= iterperson[:name] %></option>
+        <% end %>
+      </select>
+      <input type="submit" value="Assign" class="btn btn-primary btn-sm" />
+    </form>
+  </div>
+</div>
 
 
 <%
