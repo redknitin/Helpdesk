@@ -20,28 +20,18 @@ cascadingData = {
     ],
     <% end %>
 };
-</script>
-<script>
-//jQuery is not loaded till the end of the page, so use native JS (?)
-function cascDdl() {
-    deptddl = document.getElementById("dept");
-    deptddl.options.length = 0;
-    ddlvals = cascadingData[document.getElementById("org").value]; //cascadingData[this.value]; //$('#org').val() //$(this).val()
-    if (ddlvals != null) {
-        //deptddl = document.getElementById("dept"); //$('#dept')[0]; //$('#dept').get(0)
 
-        iteropt = document.createElement('option');
-        iteropt.innerHTML = iteropt.value = '';
-        deptddl.appendChild(iteropt);
-
-        for (i=0; i<ddlvals.length; i++) {
-            iteropt = document.createElement('option');
-            iteropt.innerHTML = iteropt.value = ddlvals[i]; //.text
-            deptddl.appendChild(iteropt);
-        }
-    }
-}
+cascadingFloors = {
+    <% @floors.each do |iter| %>
+    '<%= iter[:building] %>' : [
+        <% iter[:floors].each do |subiter| %>
+        '<%= subiter %>',
+        <% end %>
+    ],
+    <% end %>
+};
 </script>
+<script src="/js/helpme.js"></script>
 
 <form method="post" action="#" class="row"><!--confirm.html enctype="multipart/form-data" -->
   <div class="col-6">
@@ -101,11 +91,19 @@ function cascDdl() {
   <div class="col-6">
     <div class="form-group">
       <label>Building</label>
-      <input name="building" class="form-control" />
+      <select name="building" id="building" class="form-control" onchange="cascFloorDdl()">
+        <option></option>
+        <% @floors.each do |iter| %>
+            <option><%= iter[:building] %></option>
+        <% end %>
+      </select>
+      <!--<input name="building" id="building" class="form-control" />-->
     </div>
     <div class="form-group">
       <label>Floor</label>
-      <input name="floor" class="form-control" /><!-- pattern="^\+[0-9]{11,12}$" title="+971501545643"-->
+      <select name="floor" id="floor" class="form-control"></select>
+      <!-- <input name="floor" id="floor" class="form-control" /> -->
+      <!-- pattern="^\+[0-9]{11,12}$" title="+971501545643"-->
     </div>
     <div class="form-group">
       <label>Room</label>
