@@ -1,4 +1,4 @@
-//jQuery is not loaded till the end of the page, so use native JS (?)
+//Cascading dropdowns for Organization and Department
 function cascDdl() {
     deptddl = document.getElementById("dept");
     deptddl.options.length = 0;
@@ -19,7 +19,7 @@ function cascDdl() {
 }
 
 
-//jQuery is not loaded till the end of the page, so use native JS (?)
+//Cascading dropdowns for Building and Floor
 function cascFloorDdl() {
     floorddl = document.getElementById("floor");
     floorddl.options.length = 0;
