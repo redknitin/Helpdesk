@@ -7,6 +7,7 @@ class Helpdesk < Sinatra::Base
           :username => 'admin',
           :password => Digest::SHA1.hexdigest('admin'),
           :rolename => 'admin',
+          :display => 'Administrator',
           :email => 'root@localhost',
           :islocked => 'false'
       }

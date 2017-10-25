@@ -38,9 +38,15 @@ fields = {
 %>
 <div class="row" style="margin-bottom: 10px">
   <div class="col-2" style="font-weight: bold;"><%= labeltxt %></div>
-  <div class="col-4" style="border: solid 1px #bbb; border-radius: 4px"><%= @rec[colname] %></div>
+  <div class="col-4" style="border: solid 1px #bbb; border-radius: 4px">
+    <%= ('phone' == colname) ? '<a href="tel:' + @rec[colname] + '">' : '' %>
+    <%= ('email' == colname) ? '<a href="mailto:' + @rec[colname] + '">' : '' %>
+    <%= @rec[colname] %>
+    <%= (['phone', 'email'].include? colname) ? '</a>' : '' %>
+  </div>
 </div>
 <% end %>
+
 <div class="row" style="margin-bottom: 10px">
   <div class="col-2" style="font-weight: bold;">Assigned To</div>
   <div class="col-4" style="">
@@ -62,7 +68,7 @@ fields = {
   @rec['comments'].each do |itercomm|
 %>
   <div class="col-6" style="background-color: #fff9c2; padding: 8px; margin: 15px 0; border-radius: 8px;">
-    <strong><%= itercomm[:by] %></strong>, <small><%= itercomm[:at] %></small><br />
+    <strong><%= self.get_user_display_from_id(itercomm[:by]) %></strong>, <small><%= itercomm[:at] %></small><br />
     <%= itercomm[:txt] %>
   </div>
 <%

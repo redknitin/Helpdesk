@@ -1,10 +1,12 @@
 <h1 style="margin-left: 10px; margin-bottom: 20px;">Edit Part</h1>
 
+<script src="/js/reformery.js"></script>
+
 <form method="post" action="/part-save">
   <div class="col-6">
     <div class="form-group">
       <label>Code</label>
-      <input name="code" value="<%= @rec == nil ? '' : @rec[:code] %>" required="required" class="form-control" />
+      <input name="code" value="<%= @rec == nil ? '' : @rec[:code] %>" required="required" class="form-control" onblur="toUpperInput(this);" style="text-transform: uppercase;" />
     </div>
     <div class="form-group">
       <label>Name</label>
