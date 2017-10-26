@@ -1,0 +1,7 @@
+1. Install VirtualBox 5.1
+2. Install Vagrant
+3. Install Git
+4. From cmd, run:  git clone https://github.com/redknitin/Helpdesk.git
+5. From cmd, run:  vagrant up
+6. In your browser, navigate to  http://localhost:8000/
+7. Login with username "admin" and password "admin"
