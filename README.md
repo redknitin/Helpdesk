@@ -4,29 +4,37 @@ Helpdesk web application built with Ruby, Sinatra, Bootstrap and jQuery
 
 ## Getting Started
 
-Get a local install of MongoDB with the default configuration (no auth) and create a database named "helpdesk".
+### Option 1
+
+Install Oracle Virtual Box 5.1, install Vagrant, clone the Git repo, run "vagrant up", and go to http://localhost:8000
+
+### Option 2
+
+Get a local install of MongoDB.
 
 Then, install Ruby and Bundler, and run a "bundle install", followed by running app.rb with the Ruby interpreter.
 
+### Notes
+
 The default username is "admin" and the default password is "admin".
 
-TODO: Instructions here will get you a copy of the project up and running on your local machine for development and testing purposes. Deployment notes will explain how to deploy the project on a live system.
+Instructions here will get you a copy of the project up and running on your local machine for development and testing purposes. Deployment notes will explain how to deploy the project on a live system.
 
 ### Prerequisites
 
-TODO: What things you need to install the software and how to install them
+If you are on Debian or Ubuntu Linux, look at bootstrap.sh - it will get you setup in a jiffy (it's used for shell provisioning with Vagrant and the Ubuntu box image).
 
-```
-TODO: Example
-```
 
 ### Installing
 
-TODO: A step by step series of examples that tell you have to get a development env running
+Example 1: Running with Vagrant
 
 ```
-TODO: Example
+git clone https://github.com/redknitin/Helpdesk.git
+vagrant up
 ```
+
+The default scripts will get the application running on port 8000 ( http://localhost:8000 )
 
 ## Running the tests
 
@@ -54,9 +62,9 @@ TODO: Add additional notes about how to deploy this on a live system
 
 ## Built With
 
-* Sinatra - Web microframework
-* [Maven](https://maven.apache.org/) - Dependency Management
-* Ruby - Scripting language
+* [Sinatra](https://github.com/sinatra/sinatra) - Web microframework
+* [Maven](https://github.com/apache/maven) - Dependency Management
+* [Ruby](https://github.com/ruby/ruby) - Scripting language
 
 ## Contributing
 
