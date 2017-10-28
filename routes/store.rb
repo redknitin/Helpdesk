@@ -1,6 +1,6 @@
 class Helpdesk < Sinatra::Base
   #List all uoms
-  get '/store-list' do
+  get '/stores-list' do
     self.init_ctx
     #check if role is admin
     if !self.is_user_logged_in() || @rolename != 'admin'
@@ -19,7 +19,7 @@ class Helpdesk < Sinatra::Base
 
     @showpager = true
 
-    erb :storelist
+    erb :storeslist
   end
 
   #Create a user account
@@ -45,7 +45,7 @@ class Helpdesk < Sinatra::Base
           :description=> @params[:description]
       }
 
-      @db[:stores].insert_one recpersonnel
+      @db[:stores].insert_one recstore
     elsif cnt == 1
       recstore = @db[:stores].find('code' => @params[:code]).limit(1).first
       recstore[:name] = @params[:name]
@@ -61,7 +61,7 @@ class Helpdesk < Sinatra::Base
     end
 
     @db.close
-    redirect '/store-list?msg=Saved'
+    redirect '/stores-list?msg=Saved'
   end
 
   #Get info about a single user
