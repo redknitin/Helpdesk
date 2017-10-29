@@ -1,0 +1,41 @@
+<h1 style="margin-top: 20px; margin-bottom: 20px;">User Profile</h1>
+
+<% if @params[:msg] != nil && @params[:msg] != '' %>
+    <div class="alert alert-warning">
+      <%= @params[:msg] %>
+    </div>
+<% end %>
+
+<%
+fields = {
+    'display' => 'Display Name',
+    'phone' => 'Phone',
+    'email' => 'Email',
+    'rolename' => 'Role',
+}
+%>
+
+<form method="post" action="#">
+
+<%
+  fields.each do |colname,labeltxt|
+%>
+<div class="row" style="margin-bottom: 10px">
+  <div class="col-2" style="font-weight: bold;"><%= labeltxt %></div>
+  	<% if ['rolename'].include? colname %>
+  <div class="col-4" style="border: solid 1px #bbb; border-radius: 4px">
+  		<%= @rec[colname] %>
+  	<% else %>
+  <div class="col-4">
+    	<input name="<%= colname %>" value="<%= @rec[colname] %>" class="form-control" />
+  	<% end %>
+  </div>
+</div>
+<% end %>
+
+<input type="submit" value="Save" class="btn btn-primary">
+	<a href="/change-password" class="btn btn-secondary">Change Password</a>
+
+</form>
+
+

@@ -100,4 +100,27 @@ class Helpdesk < Sinatra::Base
     erb :userprofile
   end
 
+  post '/userprofile' do
+    self.init_ctx
+    if !self.is_user_logged_in()
+      redirect '/login'
+      return
+    end
+
+    @rec = @db[:users].find('username' => @username).limit(1).first
+
+    fields = ['display', 'phone', 'email']
+
+    fields.each do |x|
+      @rec[x] = @params[x]
+    end
+
+    @db[:users].update_one(
+        {'username' => @username},
+        @rec,
+        {:upsert => false}
+    )
+
+    redirect '/userprofile?msg=Saved'
+  end
 end
