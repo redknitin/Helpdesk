@@ -96,8 +96,21 @@ class Helpdesk < Sinatra::Base
         'reset_token' => @params[:token],
     ).limit(1).first
 
-    usr.unset(:reset_token)
-    usr[:password] = Digest::SHA1.hexdigest('password')
+    if usr == nil
+      redirect '/forgot-token?msg=Invalid+token'
+    end
+
+    newpwd = Array.new(10){rand(36).to_s(36)}.join.downcase
+    usr[:password] = Digest::SHA1.hexdigest(newpwd)
+
+    send_email({
+      :recipient_name => usr[:display],
+      :recipient_email => usr[:email],
+      :subject => 'New Password',
+      :body => "Your new password is: #{newpwd}"
+      })
+
+    usr.delete(:reset_token) #Strangely enough, this is .delete and not .delete!
     #TODO: When we have email working, set the password to a random string and send by email
 
     @db[:users].update_one(
