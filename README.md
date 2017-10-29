@@ -1,6 +1,6 @@
 # Helpdesk
 
-Helpdesk web application built with Ruby, Sinatra, Bootstrap and jQuery
+Helpdesk web application built with Ruby, Sinatra, MongoDB, Bootstrap and jQuery
 
 ## Screenshots
 
@@ -73,8 +73,10 @@ TODO: Add additional notes about how to deploy this on a live system
 ## Built With
 
 * [Sinatra](https://github.com/sinatra/sinatra) - Web microframework
-* [Maven](https://github.com/apache/maven) - Dependency Management
+* Bundler - Dependency Management
 * [Ruby](https://github.com/ruby/ruby) - Scripting language
+* MongoDB - Database
+* jQuery - Javascript library
 
 ## Contributing
 
