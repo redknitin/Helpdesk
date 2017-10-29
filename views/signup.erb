@@ -1,0 +1,39 @@
+<h1 style="margin-top: 20px; margin-bottom: 20px;">Sign Up</h1>
+
+<% if @params[:msg] != nil && @params[:msg] != '' %>
+    <div class="alert alert-warning">
+      <%= @params[:msg] %>
+    </div>
+<% end %>
+
+<form method="post" action="#" class="row">
+  <div class="col-6">
+    <div class="form-group">
+        <label>Enter User Name</label>
+        <input name="fullname" required="required" class="form-control" />
+    </div>
+    <div class="form-group">
+        <label>Enter Roll Name</label>
+        <input name="rollname" required="required" class="form-control" />
+    </div>
+    <div class="form-group">
+        <label>Enter Phone Number</label>
+        <input name="Phno" required="required" class="form-control" />
+    </div>
+    <div class="form-group">
+      <label>Email</label>
+      <input name="email" required="required" class="form-control" />
+    </div>
+    <div class="form-group">
+      <label>Password</label>
+      <input name="pw" type="password" class="form-control" />
+    </div>
+    <div style="padding-top: 20px;">
+      <input type="submit" value="Login" class="btn btn-primary" style="margin-right: 10px;">
+    #   <a href="#" class="btn btn-secondary">Forgot Password</a>
+    </div>
+  </div>
+
+  <div class="col-6">
+  </div>
+</form>
