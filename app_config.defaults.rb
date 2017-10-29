@@ -7,8 +7,8 @@ class AppConfig
   #
   # Email settings
   #
-  MAIL_SMTP_HOST = 'localhost'
-  MAIL_SMTP_PORT = 25
+  # MAIL_SMTP_HOST = 'localhost'
+  # MAIL_SMTP_PORT = 25
   # MAIL_SMTP_USER = ''
   # MAIL_SMTP_PASS = ''
   # MAIL_SMTP_AUTH = :plain
@@ -20,6 +20,6 @@ class AppConfig
   # MAIL_SMTP_PASS = ''
   # MAIL_SMTP_AUTH = :cram_md5
 
-  MAIL_SENDER_NAME = 'Helpdesk'
-  MAIL_SENDER_EMAIL = 'nitin@nospam.org'
+  # MAIL_SENDER_NAME = 'Helpdesk'
+  # MAIL_SENDER_EMAIL = 'nitin@nospam.org'
 end
