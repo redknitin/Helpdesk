@@ -24,19 +24,16 @@ class AppConfig
   MASTER_STATUSES = ['New', 'Assigned', 'Suspended', 'Completed', 'Cancelled']
 
   #
-  # Email settings
-  #
-  MAIL_SMTP_HOST = 'smtp.mailtrap.io'
-  MAIL_SMTP_PORT = 25
-  MAIL_SMTP_USER = '901fcb66430405'
-  MAIL_SMTP_PASS = '90d85ae27b4140'
-  MAIL_SMTP_AUTH = :cram_md5
-
-  #
   # UI settings
   #
   UI_PAGE_SIZE = 10
   #UI_LOGO_URL = '/logo.png'
   #UI_LOGO_ALT_TEXT = ''
   #UI_MENU_MODULES = ['Reactive Management', 'Preventive Management', 'Inventory', 'Procurement', 'Personnel']
+
+  if File.exists?('app_config.env.rb')
+    require_relative 'app_config.env' 
+  else
+    require_relative 'app_config.defaults'
+  end
 end
