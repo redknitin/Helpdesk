@@ -1,8 +1,7 @@
+#Send email; the maildata parameter should include receipient_name, recipient_email, subject, body as keys
 def send_email(maildata)
 	require 'net/smtp'
 	require 'socket'
-
-	#Args should include receipient_name, recipient_email, subject, body
 
 	maildata[:smtp_host] = ((defined? AppConfig::MAIL_SMTP_HOST) == nil) ? nil : AppConfig::MAIL_SMTP_HOST
 	maildata[:smtp_port] = ((defined? AppConfig::MAIL_SMTP_PORT) == nil) ? nil : AppConfig::MAIL_SMTP_PORT
@@ -55,13 +54,4 @@ END
 			smtp.send_message message, maildata[:sender_email], maildata[:recipient_email]
 		end
 	end
-end
-
-def test_email()
-	send_email({
-			:receipient_name => 'Anonymous', 
-			:recipient_email => 'appsmabdxb@gmail.com', 
-			:subject => 'Test', 
-			:body => 'Testing'
-			})
 end
