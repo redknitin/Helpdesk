@@ -58,8 +58,45 @@ class Helpdesk < Sinatra::Base
       return #redirect is supposed to stop execution of this method, but just to be sure
     end
 
-    #TODO: Ideally, we should send the user a link by email to confirm the password reset
+    #Send the user a link by email to confirm the password reset
+    usr[:reset_token] = Array.new(10){rand(36).to_s(36)}.join.downcase
+    code_exist = @db[:users].find(:reset_token => usr[:reset_token]).count()
+    while code_exist > 0
+      usr[:reset_token] = Array.new(10){rand(36).to_s(36)}.join.downcase
+      code_exist = @db[:users].find(:reset_token => usr[:reset_token]).count()
+    end
 
+    @db[:users].update_one(
+        {'username' => usr[:username]},
+        usr,
+        {:upsert => false}
+    )
+
+    send_email({
+      :recipient_name => usr[:display],
+      :recipient_email => usr[:email],
+      :subject => 'Password Reset',
+      :body => "Your password reset code is: #{usr[:reset_token]}"
+      })
+
+    #Display a message conveying that the password reset email has been sent
+    redirect '/forgot-token?msg=Password+reset+email+has+been+sent'
+  end
+
+  get '/forgot-token' do
+    self.init_ctx
+
+    erb :forgottoken
+  end
+
+  post '/forgot-token' do
+    self.init_ctx
+
+    usr = @db[:users].find(
+        'reset_token' => @params[:token],
+    ).limit(1).first
+
+    usr.unset(:reset_token)
     usr[:password] = Digest::SHA1.hexdigest('password')
     #TODO: When we have email working, set the password to a random string and send by email
 
@@ -69,7 +106,6 @@ class Helpdesk < Sinatra::Base
         {:upsert => false}
     )
 
-    #TODO: Display a message conveying that the password has been reset
     redirect '/login?msg=Password+has+been+reset'
   end
 end
