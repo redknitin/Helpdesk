@@ -2,6 +2,9 @@
 # NOTES
 #
 # Use rackup and pass command-line parameters for host, port, server instead of set :bind and set :port - see runme.bat for an example
+#
+# This file is a part of the code repository, so you can define environment-specific config in app_config.env.rb
+#
 
 class AppConfig
   #
