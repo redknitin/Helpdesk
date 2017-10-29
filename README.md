@@ -2,6 +2,16 @@
 
 Helpdesk web application built with Ruby, Sinatra, Bootstrap and jQuery
 
+## Screenshots
+
+### Home Screen
+
+![Home Screen](https://raw.githubusercontent.com/redknitin/Helpdesk/master/docs/img/scr-home-01.png)
+
+The home screen contains shortcuts to common functions and would be the landing page for all users, both logged in and unauthenticated. The shortcuts would differ based on the role of the user logging in.
+
+ToDo
+
 ## Getting Started
 
 ### Option 1
