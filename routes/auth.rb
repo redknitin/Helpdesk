@@ -76,7 +76,7 @@ class Helpdesk < Sinatra::Base
       :recipient_name => usr[:display],
       :recipient_email => usr[:email],
       :subject => 'Password Reset',
-      :body => "Your password reset code is: #{usr[:reset_token]}"
+      :body => "Your ID is: #{usr[:username]} and your password reset code is: #{usr[:reset_token]}"
       })
 
     #Display a message conveying that the password reset email has been sent
@@ -107,7 +107,7 @@ class Helpdesk < Sinatra::Base
       :recipient_name => usr[:display],
       :recipient_email => usr[:email],
       :subject => 'New Password',
-      :body => "Your new password is: #{newpwd}"
+      :body => "Your ID is: #{usr[:username]} and your new password is: #{newpwd}"
       })
 
     usr.delete(:reset_token) #Strangely enough, this is .delete and not .delete!

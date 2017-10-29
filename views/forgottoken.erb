@@ -1,0 +1,22 @@
+<h1 style="margin-top: 20px; margin-bottom: 20px;">Password Reset Token</h1>
+
+<% if @params[:msg] != nil && @params[:msg] != '' %>
+    <div class="alert alert-warning">
+      <%= @params[:msg] %>
+    </div>
+<% end %>
+
+<form method="post" action="#" class="row">
+  <div class="col-6">
+    <div class="form-group">
+      <label>Reset Token</label>
+      <input name="token" required="required" class="form-control" />
+    </div>
+    <div style="padding-top: 20px;">
+      <input type="submit" value="Reset" class="btn btn-primary" style="margin-right: 10px;">
+    </div>
+  </div>
+
+  <div class="col-6">
+  </div>
+</form>
