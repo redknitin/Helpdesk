@@ -33,6 +33,12 @@ class Helpdesk < Sinatra::Base
 
     cnt = @db[:users].find('username' => @params[:id]).count()
     if cnt == 0 && @params[:opmode] == 'new'
+      cntemail = @db[:users].find('email' => @params[:email]).count()
+      if cntemail > 0 #!= nil
+        redirect '/users-list?msg=Email+already+exists'
+        return
+      end
+
       recuser = {
           :username => @params[:id],
           :password => Digest::SHA1.hexdigest(@params[:pw]),
@@ -124,5 +130,45 @@ class Helpdesk < Sinatra::Base
     )
 
     redirect '/userprofile?msg=Saved'
+  end
+
+  get '/register-user' do
+    self.init_ctx
+    erb :registeruser
+  end
+
+  post '/register-user' do
+    self.init_ctx
+
+    if @params[:pw] != @params[:confirmpw]
+      redirect '/register-user?msg=Password+and+confirmation+do+not+match'
+      return
+    end
+
+    reccnt = @db[:users].find('username' => @username).count #limit(1).first
+    if reccnt > 0 #!= nil
+      redirect '/register-user?msg=Username+already+exists'
+      return
+    end
+
+    reccnt = @db[:users].find('email' => @params[:email]).count #limit(1).first
+    if reccnt > 0 #!= nil
+      redirect '/register-user?msg=Email+already+exists'
+      return
+    end
+
+    recuser = {
+        :username => @params[:id],
+        :password => Digest::SHA1.hexdigest(@params[:pw]),
+        :rolename => 'requester',
+        :email => @params[:email],
+        :phone => @params[:phone],
+        :display => @params[:display],
+        :islocked => 'false'
+    }
+
+    @db[:users].insert_one recuser
+    
+    redirect '/login'
   end
 end
