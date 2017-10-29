@@ -52,6 +52,8 @@ class Helpdesk < Sinatra::Base
       recuser[:display] = @params[:display]
       #recuser[:islocked] = 'false'
 
+      recuser[:islocked] = @params[:islocked] == 'on' ? 'true' : 'false'
+
       if @params[:pw] != nil && @params[:pw] != ''
         recuser[:password] = Digest::SHA1.hexdigest(@params[:pw])
       end
