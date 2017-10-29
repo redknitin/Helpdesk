@@ -105,6 +105,45 @@ class Helpdesk < Sinatra::Base
     erb :ticketdetail
   end
 
+  #Get info about a single trouble ticket
+  post '/ticket-detail/:code' do
+    self.init_ctx
+    if !self.is_user_logged_in()
+      redirect '/login'
+      return
+    end
+
+    if @rolename == 'requester'
+      @rec = @db[:requests].find('createdby' => @username, 'code' => @params[:code]).limit(1).first
+      # @personnel = []
+    else
+      @rec = @db[:requests].find('code' => @params[:code]).limit(1).first
+      # @personnel = @db[:personnel].find()
+    end
+
+    if @rec == nil
+      redirect '/tickets-list'
+      return
+    end
+
+    editablefields = ['name', 'phone', 'email', 'complaint', 'description', 'room', 'locationdescription']
+
+    editablefields.each do |x|
+      @rec[x] = @params[x]
+    end
+
+
+    @db[:requests].update_one(
+        {'code' => params[:code]},
+        @rec,
+        {:upsert => false}
+    )
+
+    @db.close
+    
+    redirect ('/ticket-detail/' + @params[:code])
+  end
+
   post '/comment-add/:ticket' do
     self.init_ctx
     if !self.is_user_logged_in()

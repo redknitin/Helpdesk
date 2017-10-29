@@ -14,6 +14,8 @@ fields = {
     'locationdescription' => 'Location Info',
 #    'assigned' => 'Assigned To'
 }
+
+editablefields = ['name', 'phone', 'email', 'complaint', 'description', 'room', 'locationdescription']
 %>
 
 <% if @rolename != 'requester' %>
@@ -30,6 +32,7 @@ fields = {
 <% end %>
 
 
+<form method="post" action="">
 <%
   fields.each do |colname,labeltxt|
     if colname=='comments'
@@ -38,14 +41,27 @@ fields = {
 %>
 <div class="row" style="margin-bottom: 10px">
   <div class="col-2" style="font-weight: bold;"><%= labeltxt %></div>
-  <div class="col-4" style="border: solid 1px #bbb; border-radius: 4px">
-    <%= ('phone' == colname) ? '<a href="tel:' + @rec[colname] + '">' : '' %>
-    <%= ('email' == colname) ? '<a href="mailto:' + @rec[colname] + '">' : '' %>
-    <%= @rec[colname] %>
-    <%= (['phone', 'email'].include? colname) ? '</a>' : '' %>
+  <div class="col-4" style="<%= (editablefields.include? colname) ? '' : 'border: solid 1px #bbb; border-radius: 4px' %>">
+    <% if false %>
+      <%= ('phone' == colname) ? '<a href="tel:' + @rec[colname] + '">' : '' %>
+      <%= ('email' == colname) ? '<a href="mailto:' + @rec[colname] + '">' : '' %>
+    <% end %>
+
+    <% if editablefields.include? colname %>
+      <input name="<%= colname %>" value="<%= @rec[colname] %>" class="form-control" />
+    <% else %>
+      <%= colname %>
+    <% end %>
+
+    <% if false %>
+      <%= (['phone', 'email'].include? colname) ? '</a>' : '' %>
+    <% end %>
   </div>
 </div>
 <% end %>
+<input type="submit" value="Save" class="btn btn-primary" />
+</form>
+<br /><br />
 
 <div class="row" style="margin-bottom: 10px">
   <div class="col-2" style="font-weight: bold;">Assigned To</div>
