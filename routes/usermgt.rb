@@ -87,4 +87,17 @@ class Helpdesk < Sinatra::Base
     erb :userdetail
   end
 
+  #Get info about a single user
+  get '/userprofile' do
+    self.init_ctx
+    if !self.is_user_logged_in()
+      redirect '/login'
+      return
+    end
+
+    @rec = @db[:users].find('username' => @username).limit(1).first
+
+    erb :userprofile
+  end
+
 end

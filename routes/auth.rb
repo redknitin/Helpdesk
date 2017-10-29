@@ -111,7 +111,49 @@ class Helpdesk < Sinatra::Base
       })
 
     usr.delete(:reset_token) #Strangely enough, this is .delete and not .delete!
-    #TODO: When we have email working, set the password to a random string and send by email
+
+    @db[:users].update_one(
+        {'username' => usr[:username]},
+        usr,
+        {:upsert => false}
+    )
+
+    redirect '/login?msg=Password+has+been+reset'
+  end
+
+  get '/change-password' do
+    self.init_ctx
+    erb :changepassword
+  end
+
+  post '/change-password' do
+    self.init_ctx
+    if @username == nil || @username == ''
+      redirect '/login'
+    end
+
+    if @params[:newpwd] != @params[:confirmpwd]
+      redirect '/change-password?msg=Password+confirmation+invalid'
+      return
+    end
+
+    usr = @db[:users].find(
+        'username' => @username
+    ).limit(1).first
+
+    if Digest::SHA1.hexdigest(@params[:oldpwd]) != usr[:password]
+      redirect '/change-password?msg=Old+password+invalid'
+      return
+    end
+
+    usr[:password] = Digest::SHA1.hexdigest(@params[:newpwd])
+
+    # send_email({
+    #   :recipient_name => usr[:display],
+    #   :recipient_email => usr[:email],
+    #   :subject => 'New Password',
+    #   :body => "Your ID is: #{usr[:username]} and your new password is: #{newpwd}"
+    #   })
 
     @db[:users].update_one(
         {'username' => usr[:username]},
