@@ -90,10 +90,10 @@ TODO: Add additional notes about how to deploy this on a live system
 ## Built With
 
 * [Sinatra](https://github.com/sinatra/sinatra) - Web microframework
-* Bundler - Dependency Management
+* [Bundler](https://bundler.io/) - Dependency Management
 * [Ruby](https://github.com/ruby/ruby) - Scripting language
-* MongoDB - Database
-* jQuery - Javascript library
+* [MongoDB](https://www.mongodb.com/) - Database
+* [jQuery](https://jquery.com/) - Javascript library
 
 ## Contributing
 
