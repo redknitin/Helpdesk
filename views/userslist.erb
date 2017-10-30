@@ -10,6 +10,11 @@ function toggleCreateUserDiv(e) {
     return false;
 }
 </script>
+<% if @params[:msg] != nil && @params[:msg] != '' %>
+    <div class="alert alert-warning">
+      <%= @params[:msg] %>
+    </div>
+<% end %>
 <a href="javascript:toggleCreateUserDiv(); void(0);" class="btn btn-primary" id="btnCreateUser">Create User</a>
 <br />
 <div id="divCreateUser" style="display: none; margin-top: 20px; margin-bottom: 20px; padding-top: 20px; padding-bottom: 20px; border: solid 1px black;">
