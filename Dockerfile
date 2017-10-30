@@ -10,4 +10,4 @@ ADD ./ /code/
 WORKDIR /code/
 RUN bundle install
 #bundle exec ruby app.rb
-RUN rackup --host 0.0.0.0 -p 8000
+CMD rackup --host 0.0.0.0 -p 8000
