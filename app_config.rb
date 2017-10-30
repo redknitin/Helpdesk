@@ -21,7 +21,7 @@ class AppConfig
     {:org => 'Canonical', :dept => ['System Administration', 'Marketing']}
   ]
   MASTER_ROLES = ['requester', 'helpdesk', 'admin']
-  MASTER_STATUSES = ['New', 'Assigned', 'Suspended', 'Completed', 'Cancelled']
+  MASTER_STATUSES = ['New', 'In Progress', 'Suspended', 'Completed', 'Cancelled']
 
   #
   # UI settings
