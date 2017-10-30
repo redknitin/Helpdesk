@@ -52,6 +52,15 @@ class Helpdesk < Sinatra::Base
       @db[:users].insert_one recuser
     elsif cnt == 1 && @params[:opmode] == 'update'
       recuser = @db[:users].find('username' => @params[:id]).limit(1).first
+
+      if recuser[:email] != @params[:email]
+        cntemail = @db[:users].find('email' => @params[:email]).count()
+        if cntemail > 0 #!= nil
+          redirect "/user-detail/#{@params[:id]}?msg=Email+already+exists"
+          return
+        end
+      end
+
       recuser[:rolename] = @params[:rolename]
       recuser[:email] = @params[:email]
       recuser[:phone] = @params[:phone]
@@ -116,6 +125,12 @@ class Helpdesk < Sinatra::Base
     end
 
     @rec = @db[:users].find('username' => @username).limit(1).first
+
+    reccnt = @db[:users].find('email' => @params[:email]).count #limit(1).first
+    if reccnt > 0 #!= nil
+      redirect '/userprofile?msg=Email+already+exists'
+      return
+    end
 
     fields = ['display', 'phone', 'email']
 
