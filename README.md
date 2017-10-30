@@ -10,7 +10,24 @@ Helpdesk web application built with Ruby, Sinatra, MongoDB, Bootstrap and jQuery
 
 The home screen contains shortcuts to common functions and would be the landing page for all users, both logged in and unauthenticated. The shortcuts would differ based on the role of the user logging in.
 
-ToDo
+### Tickets List
+
+![Tickets List](https://raw.githubusercontent.com/redknitin/Helpdesk/master/docs/img/scr-ticketlist-01.png)
+
+The tickets list screen displays all of the helpdesk tickets that were raised; filters can be applied to view specific tickets. Clicking on the ticket ID opens that ticket.
+
+### Ticket Comments
+
+![Ticket Comments](https://raw.githubusercontent.com/redknitin/Helpdesk/master/docs/img/scr-ticketcomments-01.png)
+
+The ticket comments feature enables users to discuss about a specific ticket.
+
+### Contacts Filter
+
+![Contacts Filter](https://raw.githubusercontent.com/redknitin/Helpdesk/master/docs/img/scr-contactfilter-01.png)
+
+The list view pages have filters to enable users to search by values from one or more columns.
+
 
 ## Getting Started
 
