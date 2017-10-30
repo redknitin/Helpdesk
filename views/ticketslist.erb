@@ -47,7 +47,7 @@ TODO: This should append to the query string to ensure it plays nice with the pa
           <span class="badge badge-info"><%= iter[:status] %></span><!-- TODO: associate status with info, warning, danger -->
           <%= iter[:complaint] %>
         </td>
-        <td><%= iter[:updatedat] %></td>
+        <td><%= DateTime.parse(iter[:updatedat]).strftime('%B %d, %Y %l:%M%P') %></td>
         <% if @rolename != 'requester' %>
             <td>
               <form method="post" action="/ticket-status" class="form-inline">

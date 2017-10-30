@@ -41,7 +41,7 @@ editablefields = ['name', 'phone', 'email', 'complaint', 'description', 'room', 
 %>
 <div class="row" style="margin-bottom: 10px">
   <div class="col-2" style="font-weight: bold;"><%= labeltxt %></div>
-  <div class="col-4" style="<%= (editablefields.include? colname) ? '' : 'border: solid 1px #bbb; border-radius: 4px' %>">
+  <div class="col-4">
     <% if false %>
       <%= ('phone' == colname) ? '<a href="tel:' + @rec[colname] + '">' : '' %>
       <%= ('email' == colname) ? '<a href="mailto:' + @rec[colname] + '">' : '' %>
@@ -50,7 +50,7 @@ editablefields = ['name', 'phone', 'email', 'complaint', 'description', 'room', 
     <% if editablefields.include? colname %>
       <input name="<%= colname %>" value="<%= @rec[colname] %>" class="form-control" />
     <% else %>
-      <%= colname %>
+      <span class="form-control"><%= @rec[colname] %></span>
     <% end %>
 
     <% if false %>
@@ -84,7 +84,7 @@ editablefields = ['name', 'phone', 'email', 'complaint', 'description', 'room', 
   @rec['comments'].each do |itercomm|
 %>
   <div class="col-6" style="background-color: #fff9c2; padding: 8px; margin: 15px 0; border-radius: 8px;">
-    <strong><%= self.get_user_display_from_id(itercomm[:by]) %></strong>, <small><%= itercomm[:at] %></small><br />
+    <strong><%= self.get_user_display_from_id(itercomm[:by]) %></strong> <small><%= DateTime.parse(itercomm[:at]).strftime('on %B %d, %Y at %l:%M%P') %></small><br />
     <%= itercomm[:txt] %>
   </div>
 <%
