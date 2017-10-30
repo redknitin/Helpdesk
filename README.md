@@ -107,8 +107,9 @@ TODO: We will use [SemVer](http://semver.org/) for versioning. For the versions 
 
 The following individuals contributed code to this project:
 
-* **Nitin Reddy**
-* When we accept your pull request or patch, your name will appear here 
+* [Kevin Smith](https://github.com/kvsm)
+* Nitin Reddy
+* _When we accept your pull request or patch, your name will appear here_
 
 ## License
 
