@@ -128,7 +128,7 @@ class Helpdesk < Sinatra::Base
 
     savedfields = ['name', 'phone', 'email', 'complaint', 'description', 'room', 'locationdescription', 'org', 'dept', 'building', 'floor']
 
-    editablefields.each do |x|
+    savedfields.each do |x|
       @rec[x] = @params[x]
     end
 
