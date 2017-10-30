@@ -104,9 +104,11 @@ cascadingFloors = {
     <div class="col-4">
       <select name="dept" id="dept" class="form-control">
         <option></option>
+        <% if @rec[:org] != nil && @rec[:org] != '' %>
         <% @departments.select{|e| e[:org] == @rec[:org]}[0][:dept].each do |iter| %>
         <option <%= @rec[:dept] == iter ? ' selected="selected"' : '' %>><%= iter %></option>
-        <% end %>
+        <% end #do %>
+        <% end #if %>
       </select>
     </div>
 </div>
@@ -133,9 +135,11 @@ cascadingFloors = {
     <div class="col-4">
       <select name="floor" id="floor" class="form-control">
         <option></option>
+        <% if @rec[:building] != nil && @rec[:building] != '' %>
         <% @floors.select{|e| e[:building] == @rec[:building]}[0][:floors].each do |iter| %>
         <option <%= @rec[:floor] == iter ? ' selected="selected"' : '' %>><%= iter %></option>
-        <% end %>
+        <% end #do %>
+        <% end #if %>
       </select>
     </div>
 </div>
