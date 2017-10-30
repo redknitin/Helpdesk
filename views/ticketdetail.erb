@@ -16,7 +16,35 @@ fields = {
 }
 
 editablefields = ['name', 'phone', 'email', 'complaint', 'description', 'room', 'locationdescription']
+dropdownfields = ['org', 'dept', 'building', 'floor']
 %>
+
+
+
+<script>
+cascadingData = {
+    <% @departments.each do |iter| %>
+    '<%= iter[:org] %>' : [
+        <% iter[:dept].each do |subiter| %>
+        '<%= subiter %>',
+        <% end %>
+    ],
+    <% end %>
+};
+
+cascadingFloors = {
+    <% @floors.each do |iter| %>
+    '<%= iter[:building] %>' : [
+        <% iter[:floors].each do |subiter| %>
+        '<%= subiter %>',
+        <% end %>
+    ],
+    <% end %>
+};
+</script>
+<script src="/js/helpme.js"></script>
+
+
 
 <% if @rolename != 'requester' %>
 <form method="post" action="/ticket-status" class="form-inline" style="margin-bottom: 20px;">
@@ -35,18 +63,11 @@ editablefields = ['name', 'phone', 'email', 'complaint', 'description', 'room', 
 <form method="post" action="">
 <%
   fields.each do |colname,labeltxt|
-    if colname=='comments'
-      continue
-    end
+    if !( colname=='comments' ||  (dropdownfields.include? colname) )
 %>
 <div class="row" style="margin-bottom: 10px">
   <div class="col-2" style="font-weight: bold;"><%= labeltxt %></div>
   <div class="col-4">
-    <% if false %>
-      <%= ('phone' == colname) ? '<a href="tel:' + @rec[colname] + '">' : '' %>
-      <%= ('email' == colname) ? '<a href="mailto:' + @rec[colname] + '">' : '' %>
-    <% end %>
-
     <% if editablefields.include? colname %>
       <input name="<%= colname %>" value="<%= @rec[colname] %>" class="form-control" />
     <% else %>
@@ -54,11 +75,72 @@ editablefields = ['name', 'phone', 'email', 'complaint', 'description', 'room', 
     <% end %>
 
     <% if false %>
-      <%= (['phone', 'email'].include? colname) ? '</a>' : '' %>
+      <%= ('phone' == colname) ? '<a href="tel:' + @rec[colname] + '">.</a> ' : '' %>
+      <%= ('email' == colname) ? '<a href="mailto:' + @rec[colname] + '">.</a> ' : '' %>
     <% end %>
   </div>
 </div>
-<% end %>
+<% end #if %>
+<% end #each %>
+
+
+<div class="row" style="margin-bottom: 10px">
+    <div class="col-2">
+      <label style="font-weight: bold;">Organization</label>
+    </div>
+    <div class="col-4">
+      <select name="org" id="org" class="form-control" onchange="cascDdl()">
+        <option></option>
+        <% @departments.each do |iter| %>
+        <option <%= @rec[:org] == iter[:org] ? ' selected="selected"' : '' %>><%= iter[:org] %></option>
+        <% end %>
+      </select>
+    </div>
+</div>
+<div class="row" style="margin-bottom: 10px">
+    <div class="col-2">
+      <label style="font-weight: bold;">Department</label>
+    </div>
+    <div class="col-4">
+      <select name="dept" id="dept" class="form-control">
+        <option></option>
+        <% @departments.select{|e| e[:org] == @rec[:org]}[0][:dept].each do |iter| %>
+        <option <%= @rec[:dept] == iter ? ' selected="selected"' : '' %>><%= iter %></option>
+        <% end %>
+      </select>
+    </div>
+</div>
+
+
+<div class="row" style="margin-bottom: 10px">
+    <div class="col-2">
+      <label style="font-weight: bold;">Building</label>
+    </div>
+    <div class="col-4">
+      <select name="building" id="building" class="form-control" onchange="cascFloorDdl()">
+        <option></option>
+        <% @floors.each do |iter| %>
+            <option <%= @rec[:building] == iter[:building] ? ' selected="selected"' : '' %>><%= iter[:building] %></option>
+        <% end %>
+      </select>
+    </div>
+</div>
+
+<div class="row" style="margin-bottom: 10px">
+    <div class="col-2">
+      <label style="font-weight: bold;">Floor</label>
+    </div>
+    <div class="col-4">
+      <select name="floor" id="floor" class="form-control">
+        <option></option>
+        <% @floors.select{|e| e[:building] == @rec[:building]}[0][:floors].each do |iter| %>
+        <option <%= @rec[:floor] == iter ? ' selected="selected"' : '' %>><%= iter %></option>
+        <% end %>
+      </select>
+    </div>
+</div>
+
+
 <input type="submit" value="Save" class="btn btn-primary" />
 </form>
 <br /><br />
