@@ -23,8 +23,8 @@ fields = {
 <div class="row" style="margin-bottom: 10px">
   <div class="col-2" style="font-weight: bold;"><%= labeltxt %></div>
   	<% if ['rolename'].include? colname %>
-  <div class="col-4" style="border: solid 1px #bbb; border-radius: 4px">
-  		<%= @rec[colname] %>
+  <div class="col-4">
+  		<span class="form-control"><%= @rec[colname] %></span>
   	<% else %>
   <div class="col-4">
     	<input name="<%= colname %>" value="<%= @rec[colname] %>" class="form-control" />
@@ -33,8 +33,10 @@ fields = {
 </div>
 <% end %>
 
-<input type="submit" value="Save" class="btn btn-primary">
+<div style="margin-top: 20px">
+  <input type="submit" value="Save" class="btn btn-primary" style="margin-right: 8px">
 	<a href="/change-password" class="btn btn-secondary">Change Password</a>
+</div>
 
 </form>
 
