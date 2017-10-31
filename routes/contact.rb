@@ -52,15 +52,27 @@ class Helpdesk < Sinatra::Base
           :code => @params[:code],
           :name => @params[:name],
           :phone => @params[:phone],
-          :email => @params[:email]
+          :email => @params[:email],
+          :org => @params[:org],
+          :dept => @params[:dept],
+          :building => @params[:building],
+          :floor => @params[:floor],
+          :room => @params[:room],
+          :locationdescription => @params[:locationdescription],
       }
 
       @db[:contacts].insert_one reccontact
     elsif cnt == 1
-      reccontact = @db[:personnel].find('code' => @params[:code]).limit(1).first
+      reccontact = @db[:contacts].find('code' => @params[:code]).limit(1).first
       reccontact[:name] = @params[:name]
       reccontact[:phone] = @params[:phone]
       reccontact[:email] = @params[:email]
+      reccontact[:org] = @params[:org]
+      reccontact[:dept] = @params[:dept]
+      reccontact[:building] = @params[:building]
+      reccontact[:floor] = @params[:floor]
+      reccontact[:room] = @params[:room]
+      reccontact[:locationdescription] = @params[:locationdescription]
 
       @db[:contacts].update_one(
           {'code' => @params[:code]},

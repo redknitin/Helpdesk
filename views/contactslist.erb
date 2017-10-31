@@ -45,7 +45,7 @@
           </a>
         </td>
         <td>
-          <a href="/help-me?display=<%= (iter[:name] == nil || iter[:name] == '') ? '' : CGI::escape(iter[:name]) %>&phone=<%= (iter[:phone] == nil || iter[:phone] == '') ? '' : CGI::escape(iter[:phone]) %>&email=<%= (iter[:email] == nil || iter[:email] == '') ? '' : CGI::escape(iter[:email]) %>" class="btn btn-primary">
+          <a href="/help-me?display=<%= (iter[:name] == nil || iter[:name] == '') ? '' : CGI::escape(iter[:name]) %>&phone=<%= (iter[:phone] == nil || iter[:phone] == '') ? '' : CGI::escape(iter[:phone]) %>&email=<%= (iter[:email] == nil || iter[:email] == '') ? '' : CGI::escape(iter[:email]) %>&org=<%= (iter[:org] == nil || iter[:org] == '') ? '' : CGI::escape(iter[:org]) %>&dept=<%= (iter[:dept] == nil || iter[:dept] == '') ? '' : CGI::escape(iter[:dept]) %>&building=<%= (iter[:building] == nil || iter[:building] == '') ? '' : CGI::escape(iter[:building]) %>&floor=<%= (iter[:floor] == nil || iter[:floor] == '') ? '' : CGI::escape(iter[:floor]) %>&room=<%= (iter[:room] == nil || iter[:room] == '') ? '' : CGI::escape(iter[:room]) %>&locationdescription=<%= (iter[:locationdescription] == nil || iter[:locationdescription] == '') ? '' : CGI::escape(iter[:locationdescription]) %>" class="btn btn-primary">
             Create Ticket
           </a>
         </td>

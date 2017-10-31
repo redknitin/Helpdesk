@@ -1,5 +1,28 @@
 <h1 style="margin-left: 10px; margin-bottom: 20px;">Edit Contact</h1>
 
+<script>
+cascadingData = {
+    <% @departments.each do |iter| %>
+    '<%= iter[:org] %>' : [
+        <% iter[:dept].each do |subiter| %>
+        '<%= subiter %>',
+        <% end %>
+    ],
+    <% end %>
+};
+
+cascadingFloors = {
+    <% @floors.each do |iter| %>
+    '<%= iter[:building] %>' : [
+        <% iter[:floors].each do |subiter| %>
+        '<%= subiter %>',
+        <% end %>
+    ],
+    <% end %>
+};
+</script>
+<script src="/js/helpme.js"></script>
+
 <form method="post" action="/contact-save">
   <div class="col-6">
     <input name="code" value="<%= @rec == nil ? '' : @rec[:code] %>" type="hidden" />
@@ -15,9 +38,63 @@
       <label>Email</label>
       <input name="email" value="<%= @rec == nil ? '' : @rec[:email] %>" class="form-control" />
     </div>
-    <!--
-    TODO: Organization, department, location
-    -->
+
+
+    <div class="form-group">
+      <label>Organization</label>
+      <select name="org" id="org" class="form-control" onchange="cascDdl()">
+        <option></option>
+        <% @departments.each do |iter| %>
+        <option <%= (@rec != nil && @rec[:org] == iter[:org]) ? ' selected="selected"' : '' %>><%= iter[:org] %></option>
+        <% end %>
+      </select>
+    </div>
+    <div class="form-group">
+      <label>Department</label>
+      <select name="dept" id="dept" class="form-control">
+        <option></option>
+        <% if @rec != nil && @rec[:org] != nil && @rec[:org] != '' %>
+	        <% if @departments.select{|e| e[:org] == @rec[:org]}.count > 0 %>
+		        <% @departments.select{|e| e[:org] == @rec[:org]}[0][:dept].each do |iter| %>
+			        <option <%= @rec[:dept] == iter ? ' selected="selected"' : '' %>><%= iter %></option>
+		        <% end #do %>
+	        <% end #if count %>
+        <% end #if not nil %>
+      </select>
+    </div>
+
+    <div class="form-group">
+      <label>Building</label>
+      <select name="building" id="building" class="form-control" onchange="cascFloorDdl()">
+        <option></option>
+        <% @floors.each do |iter| %>
+            <option <%= (@rec != nil && @rec[:building] == iter[:building]) ? ' selected="selected"' : '' %>><%= iter[:building] %></option>
+        <% end %>
+      </select>
+    </div>
+    <div class="form-group">
+      <label>Floor</label>
+      <select name="floor" id="floor" class="form-control">
+        <option></option>
+        <% if @rec != nil && @rec[:building] != nil && @rec[:building] != '' %>
+	        <% if @floors.select{|e| e[:building] == @rec[:building]}.count > 0 %>
+		        <% @floors.select{|e| e[:building] == @rec[:building]}[0][:floors].each do |iter| %>
+			        <option <%= @rec[:floor] == iter ? ' selected="selected"' : '' %>><%= iter %></option>
+		        <% end #do %>
+	        <% end #if count %>        
+        <% end #if not nil %>
+      </select>
+    </div>
+
+    <div class="form-group">
+      <label>Room</label>
+      <input name="room" value="<%= @rec == nil ? '' : @rec[:room] %>" class="form-control" />
+    </div>
+    <div class="form-group">
+      <label>Location</label>
+      <input name="locationdescription" value="<%= @rec == nil ? '' : @rec[:locationdescription] %>" class="form-control" />
+    </div>
+
   </div>
   <div class="col-6">
   </div>
