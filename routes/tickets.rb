@@ -126,7 +126,7 @@ class Helpdesk < Sinatra::Base
       return
     end
 
-    savedfields = ['name', 'phone', 'email', 'complaint', 'description', 'room', 'locationdescription', 'org', 'dept', 'building', 'floor']
+    savedfields = ['name', 'phone', 'email', 'complaint', 'description', 'room', 'locationdescription', 'org', 'dept', 'building', 'floor', 'locorg', 'locsite', 'locbldg', 'locfloor', 'locroom']
 
     savedfields.each do |x|
       @rec[x] = @params[x]

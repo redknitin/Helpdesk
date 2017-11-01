@@ -33,6 +33,10 @@ cascadingFloors = {
 </script>
 <script src="/js/helpme.js"></script>
 
+
+
+<script src="/js/locstructure.js"></script>
+
 <form method="post" action="#" class="row"><!--confirm.html enctype="multipart/form-data" -->
   <div class="col-6">
     <div class="form-group">
@@ -122,6 +126,87 @@ cascadingFloors = {
     </div>
   </div>
 
+
+
+<% #@rec will always be nil for the loc structure fields on this page %>
+
+  <div class="col-12">
+    <div class="form-group">
+      <label>Location's Organization</label>
+      <select name="locorg" id="locorg" class="form-control" onchange="loadSite(this)">
+        <option></option>
+        <% 
+        if @locstruct != nil 
+          #@locstruct is an array with all the location organizations
+        %>
+          <% @locstruct.each do |iter| %>
+            <option <%= (@rec != nil && @rec[:locorg] == iter[:code]) ? ' selected="selected"' : '' %> value="<%= iter[:code] %>"><%= iter[:name] %></option>
+          <% end #do %>
+        <% end #if %>
+      </select>
+    </div>
+    <div class="form-group">
+      <label>Site</label>
+      <select name="locsite" id="locsite" class="form-control" onchange="loadBldg(this)">
+        <option></option>
+        <% 
+        sites = nil
+        if @locstruct != nil && @rec != nil && @rec[:locorg] != '' && @locstruct.select { |x| x[:code] == @rec[:locorg] }.count > 0 
+          sites = @locstruct.select { |x| x[:code] == @rec[:locorg] }[0][:children]
+          #sites is an array with all the child-sites for the selected location-organization
+        %>
+          <% sites.each do |iter| %>
+            <option <%= (@rec != nil && @rec[:locsite] == iter[:code]) ? ' selected="selected"' : '' %> value="<%= iter[:code] %>"><%= iter[:name] %></option>
+          <% end #do %>
+        <% end #if %>
+      </select>
+    </div>
+    <div class="form-group">
+      <label>Building</label>
+      <select name="locbldg" id="locbldg" class="form-control" onchange="loadFloor(this)">
+        <option></option>
+        <% 
+        bldgs = nil
+        if sites != nil && sites.select { |x| x[:code] == @rec[:locsite] }.count > 0           
+          bldgs = sites.select { |x| x[:code] == @rec[:locsite] }[0][:children]
+        %>
+          <% bldgs.each do |iter| %>
+            <option <%= (@rec != nil && @rec[:locbldg] == iter[:code]) ? ' selected="selected"' : '' %> value="<%= iter[:code] %>"><%= iter[:name] %></option>
+          <% end #do %>
+        <% end #if %>
+      </select>
+    </div>
+    <div class="form-group">
+      <label>Floor</label>
+      <select name="locfloor" id="locfloor" class="form-control" onchange="loadRoom(this)">
+        <option></option>
+        <% 
+        floors = nil
+        if bldgs != nil && bldgs.select { |x| x[:code] == @rec[:locbldg] }.count > 0           
+          floors = bldgs.select { |x| x[:code] == @rec[:locbldg] }[0][:children]
+        %>
+          <% floors.each do |iter| %>
+            <option <%= (@rec != nil && @rec[:locfloor] == iter[:code]) ? ' selected="selected"' : '' %> value="<%= iter[:code] %>"><%= iter[:name] %></option>
+          <% end #do %>
+        <% end #if %>
+      </select>
+    </div>
+    <div class="form-group">
+      <label>Room</label>
+      <select name="locroom" id="locroom" class="form-control">
+        <option></option>
+        <% 
+        rooms = nil
+        if floors != nil && floors.select { |x| x[:code] == @rec[:locfloor] }.count > 0           
+          rooms = floors.select { |x| x[:code] == @rec[:locfloor] }[0][:children]
+        %>
+          <% rooms.each do |iter| %>
+            <option <%= (@rec != nil && @rec[:locroom] == iter[:code]) ? ' selected="selected"' : '' %> value="<%= iter[:code] %>"><%= iter[:name] %></option>
+          <% end #do %>
+        <% end #if %>
+      </select>
+    </div>
+  </div>
 
 
   <div>

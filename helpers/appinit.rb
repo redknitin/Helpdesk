@@ -24,5 +24,7 @@ class Helpdesk < Sinatra::Base
         :smtp_pass => (defined? AppConfig::MAIL_SMTP_PASS != nil) ? AppConfig::MAIL_SMTP_PASS : nil,
         :smtp_auth => (defined? AppConfig::MAIL_SMTP_AUTH != nil) ? AppConfig::MAIL_SMTP_AUTH : :plain,
     }
+
+    @locstruct = (defined? AppConfig::MASTER_LOC_STRUCT != nil) ? AppConfig::MASTER_LOC_STRUCT : nil
   end
 end

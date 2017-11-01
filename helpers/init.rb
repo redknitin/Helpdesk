@@ -1,3 +1,4 @@
+#Convention: Order the require_relative statements in alphabetical order
 require_relative 'appinit'
 require_relative 'emailhelper'
 require_relative 'environments'

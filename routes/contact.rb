@@ -59,6 +59,12 @@ class Helpdesk < Sinatra::Base
           :floor => @params[:floor],
           :room => @params[:room],
           :locationdescription => @params[:locationdescription],
+
+          :locorg   => @params[:locorg]  ,
+          :locsite  => @params[:locsite] ,
+          :locbldg  => @params[:locbldg] ,
+          :locfloor => @params[:locfloor],
+          :locroom  => @params[:locroom] ,
       }
 
       @db[:contacts].insert_one reccontact
@@ -73,6 +79,12 @@ class Helpdesk < Sinatra::Base
       reccontact[:floor] = @params[:floor]
       reccontact[:room] = @params[:room]
       reccontact[:locationdescription] = @params[:locationdescription]
+
+      reccontact[:locorg]   = @params[:locorg]  
+      reccontact[:locsite]  = @params[:locsite] 
+      reccontact[:locbldg]  = @params[:locbldg] 
+      reccontact[:locfloor] = @params[:locfloor]
+      reccontact[:locroom]  = @params[:locroom] 
 
       @db[:contacts].update_one(
           {'code' => @params[:code]},

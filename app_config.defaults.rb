@@ -15,10 +15,71 @@ class AppConfig
   #
   # Master data for the application
   #
+  MASTER_LOC_STRUCT = [
+    {
+      :code => 'KATCO',
+      :name => 'Kat Corp',
+      :type => 'Organization',
+      :children => [
+        {
+          :code => 'DXBBR',
+          :name => 'Dubai Branch',
+          :type => 'Site',
+          :children => [
+            {
+              :code => 'B01-ADM',
+              :name => 'Administration Building',
+              :type => 'Building',
+              :children => [
+                {
+                  :code => 'B01-ADM_F01',
+                  :name => '1st Floor',
+                  :type => 'Floor',
+                  :children => [
+                    {
+                      :code => 'RM101',
+                      :name => 'Tech Support Root',
+                      :type => 'Room',
+                      :children => [] #We don't need assets now; reserve this field for future
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          :code => 'SHJBR',
+          :name => 'Sharjah Branch',
+          :type => 'Site'
+        },
+      ]
+    },
+    {
+      :code => 'REDCO',
+      :name => 'Red Corp',
+      :type => 'Organization',
+      :children => [
+        {
+          :code => 'DXBBR',
+          :name => 'Dubai Branch',
+          :type => 'Site'
+        },
+        {
+          :code => 'AUHBR',
+          :name => 'Abu Dhabi Branch',
+          :type => 'Site'
+        },
+      ]
+    },
+  ]
+
+  #Replace MASTER_BLDG_FLOOR with MASTER_LOC_STRUCT
   MASTER_BLDG_FLOOR = [
     {:building => 'Building 01', :floors => ['Roof Top', '2nd Floor (2)', '1st Floor (1)', 'Ground Floor (0)', 'Lower Ground (B1/-1)', 'Basement 1 (B2/-2)', 'Basement 2 (B3/-3)']},
     {:building => 'Building 02', :floors => ['2nd Floor (2)', '1st Floor (1)', 'Ground Floor (0)', 'Lower Ground (B1/-1)', 'Basement 1 (B2/-2)']}
   ]
+
   MASTER_ORG_DEPT = [
     {:org => 'Apache Foundation', :dept => ['Software Development', 'Quality Control']},
     {:org => 'Canonical', :dept => ['System Administration', 'Marketing']}
