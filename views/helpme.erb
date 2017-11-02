@@ -20,16 +20,6 @@ cascadingData = {
     ],
     <% end %>
 };
-
-cascadingFloors = {
-    <% @floors.each do |iter| %>
-    '<%= iter[:building] %>' : [
-        <% iter[:floors].each do |subiter| %>
-        '<%= subiter %>',
-        <% end %>
-    ],
-    <% end %>
-};
 </script>
 <script src="/js/helpme.js"></script>
 
@@ -89,39 +79,10 @@ cascadingFloors = {
 
 
   <div class="col-6">
-    <div class="form-group">
-      <label>Building</label>
-      <select name="building" id="building" class="form-control" onchange="cascFloorDdl()">
-        <option></option>
-        <% @floors.each do |iter| %>
-            <option <%= (@params != nil && @params[:building] == iter[:building]) ? ' selected="selected"' : '' %>><%= iter[:building] %></option>
-        <% end %>
-      </select>
-    </div>
-    <div class="form-group">
-      <label>Floor</label>
-      <select name="floor" id="floor" class="form-control">
-        <option></option>
-        <% if @params != nil && @params[:building] != nil && @params[:building] != '' %>
-          <% if @floors.select{|e| e[:building] == @params[:building]}.count > 0 %>
-            <% @floors.select{|e| e[:building] == @params[:building]}[0][:floors].each do |iter| %>
-              <option <%= @params[:floor] == iter ? ' selected="selected"' : '' %>><%= iter %></option>
-            <% end #do %>
-          <% end #if count %>        
-        <% end #if not nil %>
-
-      </select>
-      <!-- <input name="floor" id="floor" class="form-control" /> -->
-      <!-- pattern="^\+[0-9]{11,12}$" title="+971501545643"-->
-    </div>
-    <div class="form-group">
-      <label>Room</label>
-      <input name="room" class="form-control" value="<%= (@params == nil || @params[:room] == nil || @params[:room] == '') ? '' : @params[:room] %>" />
-    </div>
   </div>
   <div class="col-6">
     <div class="form-group">
-      <label>Location</label>
+      <label>Location Description</label>
       <input name="locationdescription" class="form-control" value="<%= (@params == nil || @params[:locationdescription] == nil || @params[:locationdescription] == '') ? '' : @params[:locationdescription] %>" />
     </div>
   </div>

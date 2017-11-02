@@ -26,5 +26,6 @@ class Helpdesk < Sinatra::Base
     }
 
     @locstruct = (defined? AppConfig::MASTER_LOC_STRUCT != nil) ? AppConfig::MASTER_LOC_STRUCT : nil
+    @uploaddir = (defined? AppConfig::UPLOAD_DIR != nil) ? AppConfig::UPLOAD_DIR : 'public/uploads'
   end
 end

@@ -20,6 +20,7 @@ function cascDdl() {
 
 
 //Cascading dropdowns for Building and Floor
+/*
 function cascFloorDdl() {
     floorddl = document.getElementById("floor");
     floorddl.options.length = 0;
@@ -38,3 +39,4 @@ function cascFloorDdl() {
         }
     }
 }
+*/

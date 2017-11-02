@@ -208,4 +208,50 @@ class Helpdesk < Sinatra::Base
 
     redirect '/ticket-detail/'+@params[:ticket]
   end
+
+
+  post '/ticket-attach/:ticket' do
+    self.init_ctx
+    if !self.is_user_logged_in()
+      redirect '/login'
+      return
+    end
+
+    if @rolename == 'requester'
+      @rec = @db[:requests].find('createdby' => @username, 'code' => @params[:ticket]).limit(1).first
+    else
+      @rec = @db[:requests].find('code' => @params[:ticket]).limit(1).first
+    end
+    #TODO: Replace this drama queen of a code with a simple count check if we aren't using any of the record fields when posting
+    if @rec == nil
+      redirect '/'
+      return #Is a return absolutely necessary?
+    end
+
+    if @params[:file] == nil
+      redirect '/ticket-detail/'+@params[:ticket] 
+      return
+    end
+
+    Dir.mkdir(@uploaddir) unless File.exists?(@uploaddir)
+    storedas = SecureRandom.uuid
+    require 'fileutils'    
+    FileUtils.cp(params[:file][:tempfile].path, @uploaddir+'/'+storedas)
+
+    @db[:requests].update_one(
+        {'code' => params[:ticket]},
+        {'$push' => {'attachments' => {
+            :filename => @params[:file][:filename],
+            :storedas => storedas,
+            :at => Time.now.strftime(@datetimefmt),
+            :by => @username
+        }}},
+        {:upsert => false}
+    )
+
+    @db.close
+
+    redirect '/ticket-detail/'+@params[:ticket]+'?msg=File+saved'
+  end
+
 end

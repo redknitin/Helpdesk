@@ -103,4 +103,6 @@ class AppConfig
 
   # MAIL_SENDER_NAME = 'Helpdesk'
   # MAIL_SENDER_EMAIL = 'nitin@nospam.org'
+
+  UPLOAD_DIR = 'public/uploads'
 end

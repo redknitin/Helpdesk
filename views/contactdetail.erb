@@ -67,34 +67,7 @@ cascadingFloors = {
     </div>
 
     <div class="form-group">
-      <label>Building</label>
-      <select name="building" id="building" class="form-control" onchange="cascFloorDdl()">
-        <option></option>
-        <% @floors.each do |iter| %>
-            <option <%= (@rec != nil && @rec[:building] == iter[:building]) ? ' selected="selected"' : '' %>><%= iter[:building] %></option>
-        <% end %>
-      </select>
-    </div>
-    <div class="form-group">
-      <label>Floor</label>
-      <select name="floor" id="floor" class="form-control">
-        <option></option>
-        <% if @rec != nil && @rec[:building] != nil && @rec[:building] != '' %>
-	        <% if @floors.select{|e| e[:building] == @rec[:building]}.count > 0 %>
-		        <% @floors.select{|e| e[:building] == @rec[:building]}[0][:floors].each do |iter| %>
-			        <option <%= @rec[:floor] == iter ? ' selected="selected"' : '' %>><%= iter %></option>
-		        <% end #do %>
-	        <% end #if count %>        
-        <% end #if not nil %>
-      </select>
-    </div>
-
-    <div class="form-group">
-      <label>Room</label>
-      <input name="room" value="<%= @rec == nil ? '' : @rec[:room] %>" class="form-control" />
-    </div>
-    <div class="form-group">
-      <label>Location</label>
+      <label>Location Description</label>
       <input name="locationdescription" value="<%= @rec == nil ? '' : @rec[:locationdescription] %>" class="form-control" />
     </div>
 

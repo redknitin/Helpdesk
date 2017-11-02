@@ -8,15 +8,15 @@ fields = {
     'dept' => 'Requester Department',
     'complaint' => 'Complaint',
     'description' => 'Description',
-    'building' => 'Building',
-    'floor' => 'Floor',
-    'room' => 'Room',
-    'locationdescription' => 'Location Info',
+#    'building' => 'Building',
+#    'floor' => 'Floor',
+#    'room' => 'Room',
+    'locationdescription' => 'Location Description',
 #    'assigned' => 'Assigned To'
 }
 
-editablefields = ['name', 'phone', 'email', 'complaint', 'description', 'room', 'locationdescription']
-dropdownfields = ['org', 'dept', 'building', 'floor']
+editablefields = ['name', 'phone', 'email', 'complaint', 'description', 'locationdescription'] #'room', 
+dropdownfields = ['org', 'dept', ] #'building', 'floor']
 %>
 
 
@@ -116,35 +116,7 @@ cascadingFloors = {
 </div>
 
 
-<div class="row" style="margin-bottom: 10px">
-    <div class="col-2">
-      <label style="font-weight: bold;">Building</label>
-    </div>
-    <div class="col-4">
-      <select name="building" id="building" class="form-control" onchange="cascFloorDdl()">
-        <option></option>
-        <% @floors.each do |iter| %>
-            <option <%= @rec[:building] == iter[:building] ? ' selected="selected"' : '' %>><%= iter[:building] %></option>
-        <% end %>
-      </select>
-    </div>
-</div>
 
-<div class="row" style="margin-bottom: 10px">
-    <div class="col-2">
-      <label style="font-weight: bold;">Floor</label>
-    </div>
-    <div class="col-4">
-      <select name="floor" id="floor" class="form-control">
-        <option></option>
-        <% if @rec[:building] != nil && @rec[:building] != '' %>
-        <% @floors.select{|e| e[:building] == @rec[:building]}[0][:floors].each do |iter| %>
-        <option <%= @rec[:floor] == iter ? ' selected="selected"' : '' %>><%= iter %></option>
-        <% end #do %>
-        <% end #if %>
-      </select>
-    </div>
-</div>
 
 
 
@@ -250,6 +222,23 @@ cascadingFloors = {
   </div>
 </div>
 
+<%
+  if @rec['attachments'] != nil
+  @rec['attachments'].each do |itercomm|
+%>
+  <div class="col-6" style="background-color: #fff9c2; padding: 8px; margin: 15px 0; border-radius: 8px;">
+    <strong><%= self.get_user_display_from_id(itercomm[:by]) %></strong> <small><%= DateTime.parse(itercomm[:at]).strftime('on %B %d, %Y at %l:%M%P') %></small><br />
+    <a download="<%= itercomm[:filename] %>" href="/<%= ( ('public/' == @uploaddir[0..('public/'.length-1)]) ? @uploaddir['public/'.length..@uploaddir.length-1] : @uploaddir )+'/'+itercomm[:storedas] %>"><%= itercomm[:filename] %></a>
+  </div>
+<%
+  end
+  end
+%>
+
+<form method="post" action="/ticket-attach/<%= @rec[:code] %>" enctype="multipart/form-data" style="margin-bottom: 20px;">
+  <input type="file" name="file" class="form-control col-6">
+  <input type="submit" value="Upload" class="btn btn-primary">
+</form>
 
 <%
   if @rec['comments'] != nil
