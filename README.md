@@ -1,6 +1,6 @@
 # Helpdesk
 
-Helpdesk web application built with Ruby, Sinatra, MongoDB, Bootstrap and jQuery
+[Helpdesk](https://redknitin.github.io/Helpdesk/) web application built with Ruby, Sinatra, MongoDB, Bootstrap and jQuery
 
 ## Screenshots
 
