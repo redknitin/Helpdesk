@@ -3,6 +3,8 @@
 [Helpdesk](https://redknitin.github.io/Helpdesk/) web application built with Ruby, Sinatra, MongoDB, Bootstrap and jQuery
 
 [![License](https://img.shields.io/badge/license-MIT-green.svg)](https://github.com/redknitin/Helpdesk/blob/master/LICENSE)
+[![Github Releases](https://img.shields.io/github/downloads/redknitin/Helpdesk/latest/total.svg)]()
+[![GitHub tag](https://img.shields.io/github/tag/redknitin/Helpdesk.svg)]()
 
 ## Screenshots
 
