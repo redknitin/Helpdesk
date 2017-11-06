@@ -1,7 +1,7 @@
 #
 # NOTES
 #
-# Use rackup and pass command-line parameters for host, port, server instead of set :bind and set :port - see runme.bat for an example
+# Dev note - only define configuration settings here for hardcoded data that will be moved to master data in future
 
 class AppConfig
   MASTER_ROLES = ['requester', 'helpdesk', 'admin']

@@ -236,7 +236,7 @@ cascadingFloors = {
 %>
 
 <form method="post" action="/ticket-attach/<%= @rec[:code] %>" enctype="multipart/form-data" style="margin-bottom: 20px;">
-  <input type="file" name="file" class="form-control col-6">
+  <input type="file" name="file" class="form-control col-6" <%= (@uploadfilter == []) ? '' : (' accept="' + @uploadfilter.join(',') + '"') %>>
   <input type="submit" value="Upload" class="btn btn-primary">
 </form>
 
