@@ -107,5 +107,5 @@ class AppConfig
   # MAIL_SENDER_EMAIL = 'nitin@nospam.org'
 
   UPLOAD_DIR = 'public/uploads'
-  UPLOAD_FILE_EXTS = ['.doc', '.docx', '.xls', '.xlsx', '.pdf', '.eml']
+  UPLOAD_FILE_EXTS = ['.doc', '.docx', '.xls', '.xlsx', '.pdf', '.eml', '.jpg', '.png', '.jpeg', '.tif']
 end

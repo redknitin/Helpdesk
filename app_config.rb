@@ -14,6 +14,7 @@ class AppConfig
   #UI_LOGO_URL = '/logo.png'
   #UI_LOGO_ALT_TEXT = ''
   #UI_MENU_MODULES = ['Reactive Management', 'Preventive Management', 'Inventory', 'Procurement', 'Personnel']
+  GENERATOR = 'Helpdesk'
 
   if File.exists?('app_config.env.rb')
     require_relative 'app_config.env' 

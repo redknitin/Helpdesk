@@ -26,6 +26,9 @@ class Helpdesk < Sinatra::Base
     }
 
     @locstruct = (defined? AppConfig::MASTER_LOC_STRUCT != nil) ? AppConfig::MASTER_LOC_STRUCT : nil
+
+    @generator = (defined? AppConfig::GENERATOR != nil) ? AppConfig::GENERATOR : nil
+
     @uploaddir = (defined? AppConfig::UPLOAD_DIR != nil) ? AppConfig::UPLOAD_DIR : 'public/uploads'
     @uploadfilter = ((defined? AppConfig::UPLOAD_FILE_EXTS != nil) && AppConfig::UPLOAD_FILE_EXTS != []) ? AppConfig::UPLOAD_FILE_EXTS : []
   end
