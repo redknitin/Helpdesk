@@ -22,7 +22,7 @@ class Helpdesk < Sinatra::Base
     self.init_ctx
     self.generate_code
 
-    @params[:status] = 'New'
+    @params[:status] = @statuses[0] # 'New'
     @params[:updatedat] = @params[:createdat] = Time.now.strftime(@datetimefmt)
     if @username != nil && @username != ''
       @params[:createdby] = @params[:updatedby] = @username

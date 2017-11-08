@@ -28,6 +28,7 @@ cascadingData = {
 <script src="/js/locstructure.js"></script>
 
 <form method="post" action="#" class="row"><!--confirm.html enctype="multipart/form-data" -->
+  <input type="hidden" name="contactid" value="<%= @params[:contactid] %>">
   <div class="col-6">
     <div class="form-group">
       <label>Contact Name</label>
@@ -101,7 +102,7 @@ cascadingData = {
           #@locstruct is an array with all the location organizations
         %>
           <% @locstruct.each do |iter| %>
-            <option <%= (@rec != nil && @rec[:locorg] == iter[:code]) ? ' selected="selected"' : '' %> value="<%= iter[:code] %>"><%= iter[:name] %></option>
+            <option <%= (@params != nil && @params[:locorg] == iter[:code]) ? ' selected="selected"' : '' %> value="<%= iter[:code] %>"><%= iter[:name] %></option>
           <% end #do %>
         <% end #if %>
       </select>
@@ -112,12 +113,12 @@ cascadingData = {
         <option></option>
         <% 
         sites = nil
-        if @locstruct != nil && @rec != nil && @rec[:locorg] != '' && @locstruct.select { |x| x[:code] == @rec[:locorg] }.count > 0 
-          sites = @locstruct.select { |x| x[:code] == @rec[:locorg] }[0][:children]
+        if @locstruct != nil && @params != nil && @params[:locorg] != '' && @locstruct.select { |x| x[:code] == @params[:locorg] }.count > 0 
+          sites = @locstruct.select { |x| x[:code] == @params[:locorg] }[0][:children]
           #sites is an array with all the child-sites for the selected location-organization
         %>
           <% sites.each do |iter| %>
-            <option <%= (@rec != nil && @rec[:locsite] == iter[:code]) ? ' selected="selected"' : '' %> value="<%= iter[:code] %>"><%= iter[:name] %></option>
+            <option <%= (@params != nil && @params[:locsite] == iter[:code]) ? ' selected="selected"' : '' %> value="<%= iter[:code] %>"><%= iter[:name] %></option>
           <% end #do %>
         <% end #if %>
       </select>
@@ -128,11 +129,11 @@ cascadingData = {
         <option></option>
         <% 
         bldgs = nil
-        if sites != nil && sites.select { |x| x[:code] == @rec[:locsite] }.count > 0           
-          bldgs = sites.select { |x| x[:code] == @rec[:locsite] }[0][:children]
+        if sites != nil && sites.select { |x| x[:code] == @params[:locsite] }.count > 0           
+          bldgs = sites.select { |x| x[:code] == @params[:locsite] }[0][:children]
         %>
           <% bldgs.each do |iter| %>
-            <option <%= (@rec != nil && @rec[:locbldg] == iter[:code]) ? ' selected="selected"' : '' %> value="<%= iter[:code] %>"><%= iter[:name] %></option>
+            <option <%= (@params != nil && @params[:locbldg] == iter[:code]) ? ' selected="selected"' : '' %> value="<%= iter[:code] %>"><%= iter[:name] %></option>
           <% end #do %>
         <% end #if %>
       </select>
@@ -143,11 +144,11 @@ cascadingData = {
         <option></option>
         <% 
         floors = nil
-        if bldgs != nil && bldgs.select { |x| x[:code] == @rec[:locbldg] }.count > 0           
-          floors = bldgs.select { |x| x[:code] == @rec[:locbldg] }[0][:children]
+        if bldgs != nil && bldgs.select { |x| x[:code] == @params[:locbldg] }.count > 0           
+          floors = bldgs.select { |x| x[:code] == @params[:locbldg] }[0][:children]
         %>
           <% floors.each do |iter| %>
-            <option <%= (@rec != nil && @rec[:locfloor] == iter[:code]) ? ' selected="selected"' : '' %> value="<%= iter[:code] %>"><%= iter[:name] %></option>
+            <option <%= (@params != nil && @params[:locfloor] == iter[:code]) ? ' selected="selected"' : '' %> value="<%= iter[:code] %>"><%= iter[:name] %></option>
           <% end #do %>
         <% end #if %>
       </select>
@@ -158,11 +159,11 @@ cascadingData = {
         <option></option>
         <% 
         rooms = nil
-        if floors != nil && floors.select { |x| x[:code] == @rec[:locfloor] }.count > 0           
-          rooms = floors.select { |x| x[:code] == @rec[:locfloor] }[0][:children]
+        if floors != nil && floors.select { |x| x[:code] == @params[:locfloor] }.count > 0           
+          rooms = floors.select { |x| x[:code] == @params[:locfloor] }[0][:children]
         %>
           <% rooms.each do |iter| %>
-            <option <%= (@rec != nil && @rec[:locroom] == iter[:code]) ? ' selected="selected"' : '' %> value="<%= iter[:code] %>"><%= iter[:name] %></option>
+            <option <%= (@params != nil && @params[:locroom] == iter[:code]) ? ' selected="selected"' : '' %> value="<%= iter[:code] %>"><%= iter[:name] %></option>
           <% end #do %>
         <% end #if %>
       </select>
