@@ -69,7 +69,11 @@ The default scripts will get the application running on port 8000 ( http://local
 
 ## Running the tests
 
-TODO: Explain how to run the automated tests for this system
+The tests are written using RSpec. To run the tests, execute the following:
+
+```
+rspec spec\app_spec.rb --color --format documentation
+```
 
 ### Break down into end to end tests
 
