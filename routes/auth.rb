@@ -1,4 +1,16 @@
 class Helpdesk < Sinatra::Base
+
+  # Filter for authentication and authorization checks
+  
+  # before /\/(?!(login|forgot\-password))/ do #With regex
+  #   redirect '/login' unless session[:username] != nil
+  # end
+
+  # before do #Without regex
+  #   pass if ['/', '/login', '/forgot-password'].include? request.path_info.split('/')[1]
+  #   redirect '/login' unless session[:username] != nil
+  # end
+
   #Process login inputs
   post '/login' do
     self.init_ctx
