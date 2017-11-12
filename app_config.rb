@@ -6,6 +6,7 @@
 class AppConfig
   MASTER_ROLES = ['requester', 'helpdesk', 'admin']
   MASTER_STATUSES = ['New', 'In Progress', 'Suspended', 'Completed', 'Cancelled']
+  MASTER_FILETAG = ['Request For Quotation', 'Quotation', 'Requisition', 'Purchase Order']
 
   #
   # UI settings

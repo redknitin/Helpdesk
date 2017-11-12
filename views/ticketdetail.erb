@@ -228,7 +228,10 @@ cascadingFloors = {
 %>
   <div class="col-6" style="background-color: #fff9c2; padding: 8px; margin: 15px 0; border-radius: 8px;">
     <strong><%= self.get_user_display_from_id(itercomm[:by]) %></strong> <small><%= DateTime.parse(itercomm[:at]).strftime('on %B %d, %Y at %l:%M%P') %></small><br />
-    <a download="<%= itercomm[:filename] %>" href="/<%= ( ('public/' == @uploaddir[0..('public/'.length-1)]) ? @uploaddir['public/'.length..@uploaddir.length-1] : @uploaddir )+'/'+itercomm[:storedas] %>"><%= itercomm[:filename] %></a>
+    <a download="<%= itercomm[:filename] %>" href="/<%= ( ('public/' == @uploaddir[0..('public/'.length-1)]) ? @uploaddir['public/'.length..@uploaddir.length-1] : @uploaddir )+'/'+itercomm[:storedas] %>"><%= itercomm[:filename] %></a> 
+      <% if itercomm[:tags] != nil && itercomm[:tags] != [] %>
+        <%= '<span class="badge badge-pill badge-info">' + itercomm[:tags].join('</span> <span class="badge badge-secondary">') + '</span>' %>
+      <% end %>
   </div>
 <%
   end
@@ -237,6 +240,12 @@ cascadingFloors = {
 
 <form method="post" action="/ticket-attach/<%= @rec[:code] %>" enctype="multipart/form-data" style="margin-bottom: 20px;">
   <input type="file" name="file" class="form-control col-6" <%= (@uploadfilter == []) ? '' : (' accept="' + @uploadfilter.join(',') + '"') %>>
+  <select class="form-control" name="filetag">
+    <option></option>
+    <% @filetag.each do |itertag| %>
+    <option><%= itertag %></option>
+    <% end %>
+  </select>
   <input type="submit" value="Upload" class="btn btn-primary">
 </form>
 

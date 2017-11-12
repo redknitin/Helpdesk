@@ -16,6 +16,7 @@ class Helpdesk < Sinatra::Base
     @pagesize = (defined? AppConfig::UI_PAGE_SIZE != nil) ? AppConfig::UI_PAGE_SIZE : 10
     @roles = (defined? AppConfig::MASTER_ROLES != nil) ? AppConfig::MASTER_ROLES : ['requester', 'helpdesk', 'admin']
     @statuses = (defined? AppConfig::MASTER_STATUSES != nil) ? AppConfig::MASTER_STATUSES : ['New', 'Assigned', 'Suspended', 'Completed', 'Cancelled']
+    @filetag = (defined? AppConfig::MASTER_FILETAG != nil) ? AppConfig::MASTER_FILETAG : []
 
     @email_settings = {
         :smtp_host => (defined? AppConfig::MAIL_SMTP_HOST != nil) ? AppConfig::MAIL_SMTP_HOST : '127.0.0.1',

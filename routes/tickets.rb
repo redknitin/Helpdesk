@@ -236,16 +236,22 @@ class Helpdesk < Sinatra::Base
     Dir.mkdir(@uploaddir) unless File.exists?(@uploaddir)
     storedas = SecureRandom.uuid
     require 'fileutils'    
-    FileUtils.cp(params[:file][:tempfile].path, @uploaddir+'/'+storedas)
+    FileUtils.cp(@params[:file][:tempfile].path, @uploaddir+'/'+storedas)
+
+    the_attachment = {
+      :filename => @params[:file][:filename],
+      :storedas => storedas,
+      :at => Time.now.strftime(@datetimefmt),
+      :by => @username
+    }
+
+    if @params[:filetag] != nil && @params[:filetag] != ''
+      the_attachment[:tags] = [ @params[:filetag] ]
+    end
 
     @db[:requests].update_one(
         {'code' => params[:ticket]},
-        {'$push' => {'attachments' => {
-            :filename => @params[:file][:filename],
-            :storedas => storedas,
-            :at => Time.now.strftime(@datetimefmt),
-            :by => @username
-        }}},
+        {'$push' => {'attachments' => the_attachment }},
         {:upsert => false}
     )
 
