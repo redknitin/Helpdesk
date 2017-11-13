@@ -208,19 +208,19 @@ cascadingFloors = {
 <br /><br />
 
 <div class="row" style="margin-bottom: 10px">
-  <div class="col-2" style="font-weight: bold;">Assigned To</div>
-  <div class="col-4" style="">
     <form method="post" action="/ticket-assign/<%= @rec[:code] %>" style="margin-bottom: 20px;" class="form-inline">
-      <select name="assigned" class="form-control" style="margin-right: 10px">
+      <label class="md-3" style="margin-right: 10px">Assigned To</label>
+      <select name="assigned" class="form-control md-3" style="margin-right: 10px">
         <option></option>
         <% @personnel.each do |iterperson| %>
             <option value="<%= iterperson[:code] %>"<%= (@rec[:assigned] == iterperson[:code]) ? ' selected="selected"' : '' %>><%= iterperson[:name] %></option>
         <% end %>
       </select>
-      <input type="submit" value="Assign" class="btn btn-primary btn-sm" />
+      <input type="submit" value="Assign" class="btn btn-primary btn-sm md-3" />
     </form>
-  </div>
 </div>
+
+<h4>Attachments</h4>
 
 <%
   if @rec['attachments'] != nil
@@ -238,16 +238,23 @@ cascadingFloors = {
   end
 %>
 
-<form method="post" action="/ticket-attach/<%= @rec[:code] %>" enctype="multipart/form-data" style="margin-bottom: 20px;">
-  <input type="file" name="file" class="form-control col-6" <%= (@uploadfilter == []) ? '' : (' accept="' + @uploadfilter.join(',') + '"') %>>
-  <select class="form-control" name="filetag">
-    <option></option>
-    <% @filetag.each do |itertag| %>
-    <option><%= itertag %></option>
-    <% end %>
-  </select>
-  <input type="submit" value="Upload" class="btn btn-primary">
-</form>
+<div class="row">
+  <div class="col-12">
+    <h5>Add Attachment</h5>
+    <form method="post" style="background-color: #fff9c2; border-radius: 8px; padding: 10px; margin-bottom: 20px" action="/ticket-attach/<%= @rec[:code] %>" enctype="multipart/form-data" style="margin-bottom: 20px;" class="form-inline">
+      <input type="file" style="margin-right: 8px" name="file" class="form-control md-6" <%= (@uploadfilter == []) ? '' : (' accept="' + @uploadfilter.join(',') + '"') %>>
+      <select class="form-control  md-3" style="margin-right: 8px" name="filetag">
+        <option></option>
+        <% @filetag.each do |itertag| %>
+        <option><%= itertag %></option>
+        <% end %>
+      </select>
+      <input type="submit" value="Upload" class="btn btn-primary md-3">
+    </form>
+  </div>
+</div>
+
+<h4>Comments</h4>
 
 <%
   if @rec['comments'] != nil
@@ -263,6 +270,6 @@ cascadingFloors = {
 %>
 
 <form method="post" action="/comment-add/<%= @rec[:code] %>" style="margin-bottom: 20px;">
-  <textarea class="form-control col-6" style="margin-bottom: 15px;" name="txt"></textarea>
+  <textarea class="form-control col-6" style="margin-bottom: 15px;" name="txt" placeholder="Enter comment here"></textarea>
   <input type="submit" value="Post Comment" class="btn btn-primary btn-sm" />
 </form>
