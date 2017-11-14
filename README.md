@@ -2,7 +2,7 @@
 
 [Helpdesk](https://redknitin.github.io/Helpdesk/) is a web application built with Ruby, Sinatra, MongoDB, Bootstrap and jQuery
 
-Please visit [our website](https://redknitin.github.io/Helpdesk/) for project news and other updates
+Please visit [our website](https://redknitin.github.io/Helpdesk/) for project news and other updates. Our current build status can be found on Travis CI on [this page](https://travis-ci.org/redknitin/Helpdesk).
 
 [![License](https://img.shields.io/badge/license-MIT-green.svg)](https://github.com/redknitin/Helpdesk/blob/master/LICENSE)
 
