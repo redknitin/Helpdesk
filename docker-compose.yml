@@ -2,5 +2,12 @@ version: '3'
 services:
   web:
     build: .
+    environment:
+     - MONGODB_URI=mongodb://mongodb:27017/helpdesk
+    links:
+     - mongodb:mongodb
     ports:
      - "8000:8000"
+  mongodb:
+    image: mongo:3.2
+    command: mongod --smallfiles

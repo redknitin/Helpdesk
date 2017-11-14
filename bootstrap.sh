@@ -3,6 +3,7 @@
 sudo apt-get update
 sudo apt-get install -y build-essential ruby-dev git mongodb rubygems rerun
 #export PATH=$PATH:/opt/vagrant_ruby/bin/
+export MONGODB_URI=mongodb://localhost:27017/helpdesk
 gem update --system
 gem install bundler
 cd /vagrant

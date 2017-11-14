@@ -41,6 +41,10 @@ Install Oracle Virtual Box 5.1, install Vagrant, clone the Git repo, run "vagran
 
 ### Option 2
 
+Install Docker, run "docker-compose up", and go to http://localhost:8000
+
+### Option 3
+
 Get a local install of MongoDB.
 
 Then, install Ruby and Bundler, and run a "bundle install", followed by running app.rb with the Ruby interpreter.
@@ -63,6 +67,13 @@ Example 1: Running with Vagrant
 ```
 git clone https://github.com/redknitin/Helpdesk.git
 vagrant up
+```
+
+Example 2: Running with Docker
+
+```
+git clone https://github.com/redknitin/Helpdesk.git
+docker-compose up
 ```
 
 The default scripts will get the application running on port 8000 ( http://localhost:8000 )
