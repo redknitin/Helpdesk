@@ -1,5 +1,8 @@
 language: ruby
 rvm:
  - 2.4
+services:
+  - mongodb
+
 #script:
 #- bin/rake
