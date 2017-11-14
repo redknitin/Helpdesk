@@ -12,7 +12,7 @@ class AppConfig
   #
   # Database settings
   #
-  DB_URL = ENV['MONGODB_URI'] # 'mongodb://127.0.0.1:27017/helpdesk'  #mongodb://user:password@127.0.0.1:27017/helpdesk
+  DB_URL = (ENV['MONGODB_URI'] != nil && ENV['MONGODB_URI'] != '') ? ENV['MONGODB_URI'] : 'mongodb://127.0.0.1:27017/helpdesk'  #mongodb://user:password@127.0.0.1:27017/helpdesk
 
   #
   # Master data for the application
