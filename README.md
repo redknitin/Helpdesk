@@ -136,5 +136,6 @@ This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md
 
 ## Acknowledgments
 
-* TODO: Hat tip to anyone whose code was not directly used in this project
-* TODO: Inspiration
+Hat tip to anyone whose code was not directly used in this project
+
+The inspiration for this project is from Bugzilla, MantisBT and Trac. They were the first of the successful open-source software bug-tracking systems.
