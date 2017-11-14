@@ -13,9 +13,18 @@ describe 'Helpdesk' do
 		Helpdesk
 	end
 
-	it "shows login" do
+	it 'shows login' do
 		get '/login'
 		expect(last_response.status).to eq 200
-		expect(last_response.body).to include("Login")
+		expect(last_response.body).to include('Login')
+	end
+
+	it 'actually logs in' do
+		post '/login', { :id => 'admin', :pw => 'admin' }
+		expect(last_response.status).to eq 302
+
+		get '/tickets-list'
+		expect(last_response.status).to eq 200
+		expect(last_response.body).to include('Click on the request ID to view details of the event')
 	end
 end
