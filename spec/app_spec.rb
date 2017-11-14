@@ -16,6 +16,8 @@ describe 'Helpdesk' do
 
 	#Check if the login page shows
 	it 'shows login' do
+    get '/' #App init is performed in here
+
 		get '/login'
 		expect(last_response.status).to eq 200
 		expect(last_response.body).to include('Login')
@@ -23,7 +25,9 @@ describe 'Helpdesk' do
 
 	#Perform a login with the default user account for admin
 	it 'actually logs in' do
-		post '/login', { :id => 'admin', :pw => 'admin' }
+    get '/' #App init is performed in here
+
+    post '/login', { :id => 'admin', :pw => 'admin' }
 		expect(last_response.status).to eq 302
 
 		get '/tickets-list'
@@ -33,7 +37,9 @@ describe 'Helpdesk' do
 
 	#Ensure it doesn't accept an invalid password
 	it 'stops unauthorized users' do
-		post '/login', { :id => 'admin', :pw => 'notadmin' }
+    get '/' #App init is performed in here
+
+    post '/login', { :id => 'admin', :pw => 'notadmin' }
 		expect(last_response.status).to eq 302
 
 		get '/tickets-list'
@@ -43,7 +49,9 @@ describe 'Helpdesk' do
 
 	#Register as a new user and perform a login
 	it 'registers new users' do
-		randomstr = Array.new(10){rand(36).to_s(36)}.join.downcase
+    get '/' #App init is performed in here
+
+    randomstr = Array.new(10){rand(36).to_s(36)}.join.downcase
 		username = 'test_' + randomstr
 		password = 'nitiniswritingthistest'
 
