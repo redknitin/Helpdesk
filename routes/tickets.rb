@@ -233,6 +233,22 @@ class Helpdesk < Sinatra::Base
       return
     end
 
+    #File extension check
+    if @uploadfilter != []
+      dotsplitfilename = (@params[:file][:filename]).split('.')
+      if dotsplitfilename.count < 2
+        redirect '/ticket-detail/'+@params[:ticket]+'?msg=Invalid+file+extension'
+        return
+      end
+      if !@uploadfilter.include? ('.' + dotsplitfilename[dotsplitfilename.count-1].downcase)
+        redirect '/ticket-detail/'+@params[:ticket]+'?msg=Invalid+file+extension'
+        return
+      end
+    end
+
+    #File size limit check
+    #TODO
+
     Dir.mkdir(@uploaddir) unless File.exists?(@uploaddir)
     storedas = SecureRandom.uuid
     require 'fileutils'    
