@@ -102,6 +102,8 @@ class Helpdesk < Sinatra::Base
       @personnel = @db[:personnel].find()
     end
 
+    @parts = @db[:parts].find()
+
     erb :ticketdetail
   end
 

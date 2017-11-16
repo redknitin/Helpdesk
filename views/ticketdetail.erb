@@ -228,6 +228,45 @@ cascadingFloors = {
     </form>
 </div>
 
+<!-- Parts -->
+
+<h4>Parts</h4>
+
+<%
+  if @rec['parts'] != nil
+  @rec['parts'].each do |itercomm|
+%>
+  <div class="col-6" style="background-color: #fff9c2; padding: 8px; margin: 15px 0; border-radius: 8px;">
+    <%= itercomm[:code] %> <%= itercomm[:qty] %> <%= itercomm[:uom] %>
+  </div>
+<%
+  end
+  end
+%>
+
+<div class="row">
+  <div class="col-12">
+    <h5>Add Parts</h5>
+    <form method="post" style="background-color: #fff9c2; border-radius: 8px; padding: 10px; margin-bottom: 20px" action="/ticket-part/<%= @rec[:code] %>" enctype="multipart/form-data" style="margin-bottom: 20px;" class="form-inline">
+      <input type="text" name="qty" class="form-control md-6" />
+      <select class="form-control  md-3" style="margin-right: 8px" name="code">
+        <option></option>
+        <% @parts.each do |itertag| %>
+          <option value="<%= itertag[:code] %>" data-uom="<%= itertag[:uom] %>">
+            <%= itertag[:code] %> - <%= itertag[:name] %>
+          </option>
+        <% end %>
+      </select>
+      <select class="form-control md-3" style="margin-right: 8px" name="uom">
+        <option></option>
+      </select>
+      <input type="submit" value="Upload" class="btn btn-primary md-3">
+    </form>
+  </div>
+</div>
+
+<!-- Attachments -->
+
 <h4>Attachments</h4>
 
 <%
@@ -261,6 +300,8 @@ cascadingFloors = {
     </form>
   </div>
 </div>
+
+<!-- Comments -->
 
 <h4>Comments</h4>
 
