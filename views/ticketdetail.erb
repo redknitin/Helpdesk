@@ -48,6 +48,14 @@ cascadingFloors = {
 
 <script src="/js/locstructure.js"></script>
 
+
+<% if @params[:msg] != nil && @params[:msg] != '' %>
+    <div class="alert alert-warning">
+      <%= @params[:msg] %>
+    </div>
+<% end %>
+
+
 <% if @rolename != 'requester' %>
 <form method="post" action="/ticket-status" class="form-inline" style="margin-bottom: 20px;">
   <label style="margin-right: 10px;">Status</label>
