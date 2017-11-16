@@ -31,6 +31,6 @@ class Helpdesk < Sinatra::Base
     @generator = (defined? AppConfig::GENERATOR != nil) ? AppConfig::GENERATOR : nil
 
     @uploaddir = (defined? AppConfig::UPLOAD_DIR != nil) ? AppConfig::UPLOAD_DIR : 'public/uploads'
-    @uploadfilter = ((defined? AppConfig::UPLOAD_FILE_EXTS != nil) && AppConfig::UPLOAD_FILE_EXTS != []) ? (AppConfig::UPLOAD_FILE_EXTS.map { |x| x.upcase }) : []
+    @uploadfilter = ((defined? AppConfig::UPLOAD_FILE_EXTS != nil) && AppConfig::UPLOAD_FILE_EXTS != []) ? (AppConfig::UPLOAD_FILE_EXTS.map { |x| x.downcase }) : []
   end
 end
