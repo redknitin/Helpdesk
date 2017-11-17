@@ -63,5 +63,14 @@ describe 'Helpdesk' do
 		expect(last_response.status).to eq 302
 		follow_redirect!
 		expect(last_response.body).to include('View Request Status') #Only logged in users can view request status
-	end
+  end
+
+  #Gets location organizations
+  it 'fetches location structure' do
+    get '/dropdown/locorg'
+    expect(last_response.status).to eq 200
+    expect(last_response.body).to eq (AppConfig::MASTER_LOC_STRUCT.map { |x| { :label => x[:name], :value => x[:code] } }.to_json)
+  end
+
+  #TODO Run tests for other locations based on the config; if config is empty, test passes
 end
