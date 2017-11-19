@@ -46,7 +46,9 @@ cascadingFloors = {
 
 
 
+<script src="/js/ajaxhelper.js"></script>
 <script src="/js/locstructure.js"></script>
+<script src="/js/partsddl.js"></script>
 
 
 <% if @params[:msg] != nil && @params[:msg] != '' %>
@@ -249,7 +251,7 @@ cascadingFloors = {
     <h5>Add Parts</h5>
     <form method="post" style="background-color: #fff9c2; border-radius: 8px; padding: 10px; margin-bottom: 20px" action="/ticket-part/<%= @rec[:code] %>" enctype="multipart/form-data" style="margin-bottom: 20px;" class="form-inline">
       <input type="text" name="qty" class="form-control md-6" />
-      <select class="form-control  md-3" style="margin-right: 8px" name="code">
+      <select class="form-control  md-3" style="margin-right: 8px" name="code" onchange="partselchg(this);">
         <option></option>
         <% @parts.each do |itertag| %>
           <option value="<%= itertag[:code] %>" data-uom="<%= itertag[:uom] %>">
@@ -257,7 +259,7 @@ cascadingFloors = {
           </option>
         <% end %>
       </select>
-      <select class="form-control md-3" style="margin-right: 8px" name="uom">
+      <select class="form-control md-3" style="margin-right: 8px" name="uom" id="uomddl">
         <option></option>
       </select>
       <input type="submit" value="Upload" class="btn btn-primary md-3">
