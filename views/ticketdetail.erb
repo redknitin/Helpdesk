@@ -239,7 +239,9 @@ cascadingFloors = {
   @rec['parts'].each do |itercomm|
 %>
   <div class="col-6" style="background-color: #fff9c2; padding: 8px; margin: 15px 0; border-radius: 8px;">
-    <%= itercomm[:code] %> <%= itercomm[:qty] %> <%= itercomm[:uom] %>
+    <strong>Part Code:</strong> <%= itercomm[:part] %> <br />
+    <strong>Qty:</strong> <%= itercomm[:qty] %> <br />
+    <strong>UOM:</strong> <%= itercomm[:uom] %> <br />
   </div>
 <%
   end
