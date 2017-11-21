@@ -276,6 +276,32 @@ class Helpdesk < Sinatra::Base
     redirect '/ticket-detail/'+@params[:ticket]+'?msg=Part+saved'
   end
 
+  post '/ticket-attach-remove/:ticket' do
+    self.init_ctx
+    if !self.is_user_logged_in()
+      redirect '/login'
+      return
+    end
+
+    if @rolename == 'requester'
+      @rec = @db[:requests].find('createdby' => @username, 'code' => @params[:ticket]).limit(1).first
+    else
+      @rec = @db[:requests].find('code' => @params[:ticket]).limit(1).first
+    end
+    #TODO: Replace this drama queen of a code with a simple count check if we aren't using any of the record fields when posting
+    if @rec == nil
+      redirect '/'
+      return #Is a return absolutely necessary?
+    end
+
+    fileattachment = @rec[:attachments].find { |x| x[:storedas] == @params[:storedas] }
+    filepath = @uploaddir+'/'+fileattachment[:storedas]
+    File.delete(filepath) if File.exist?(filepath)
+    @rec[:attachments].delete( fileattachment )  
+
+    redirect '/ticket-detail/'+@params[:ticket]+'?msg=File+removed'
+  end
+
   post '/ticket-attach/:ticket' do
     self.init_ctx
     if !self.is_user_logged_in()

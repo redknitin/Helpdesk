@@ -287,6 +287,10 @@ cascadingFloors = {
       <% if itercomm[:tags] != nil && itercomm[:tags] != [] %>
         <%= '<span class="badge badge-pill badge-info">' + itercomm[:tags].join('</span> <span class="badge badge-secondary">') + '</span>' %>
       <% end %>
+    <form method="post" action="/ticket-attach-remove/<%= @rec[:code] %>">
+      <input type="hidden" name="storedas" value="<%= itercomm[:storedas] %>" />
+      <input type="submit" value="Delete" class="btn btn-secondary" />
+    </form>
   </div>
 <%
   end
