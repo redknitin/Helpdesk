@@ -211,6 +211,32 @@ class Helpdesk < Sinatra::Base
     redirect '/ticket-detail/'+@params[:ticket]
   end
 
+  post '/ticket-part-remove/:ticket' do
+    partid = @params['part']
+
+    if @rolename == 'requester'
+      @rec = @db[:requests].find('createdby' => @username, 'code' => @params[:ticket]).limit(1).first
+    else
+      @rec = @db[:requests].find('code' => @params[:ticket]).limit(1).first
+    end
+    #TODO: Replace this drama queen of a code with a simple count check if we aren't using any of the record fields when posting
+    if @rec == nil
+      redirect '/ticket-detail/'+@params[:ticket]
+      #redirect '/'
+      return #Is a return absolutely necessary?
+    end
+
+    @rec[:parts].delete(@rec[:parts].find { |x| x[:part] == partid } )
+
+    @db[:requests].update_one(
+        {'code' => @params[:ticket]},
+        @rec,
+        {:upsert => false}
+    )
+
+    redirect '/ticket-detail/'+@params[:ticket]
+  end
+
   post '/ticket-part/:ticket' do
     self.init_ctx
     if !self.is_user_logged_in()
@@ -226,6 +252,13 @@ class Helpdesk < Sinatra::Base
     #TODO: Replace this drama queen of a code with a simple count check if we aren't using any of the record fields when posting
     if @rec == nil
       redirect '/'
+      return #Is a return absolutely necessary?
+    end
+
+    check_existing = @rec[:parts].find { |x| x[:part] == @params[:code] }
+    if check_existing != nil
+      #redirect '/'
+      redirect '/ticket-detail/'+@params[:ticket]+'?msg=Part+already+exists'
       return #Is a return absolutely necessary?
     end
 

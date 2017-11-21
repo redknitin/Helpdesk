@@ -242,6 +242,10 @@ cascadingFloors = {
     <strong>Part Code:</strong> <%= itercomm[:part] %> <br />
     <strong>Qty:</strong> <%= itercomm[:qty] %> <br />
     <strong>UOM:</strong> <%= itercomm[:uom] %> <br />
+    <form method="post" action="/ticket-part-remove/<%= @rec[:code] %>">
+      <input type="hidden" name="part" value="<%= itercomm[:part] %>" />
+      <input type="submit" value="Delete" class="btn btn-secondary" />
+    </form>
   </div>
 <%
   end
