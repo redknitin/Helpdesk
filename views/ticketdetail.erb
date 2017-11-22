@@ -324,6 +324,11 @@ cascadingFloors = {
   <div class="col-6" style="background-color: #fff9c2; padding: 8px; margin: 15px 0; border-radius: 8px;">
     <strong><%= self.get_user_display_from_id(itercomm[:by]) %></strong> <small><%= DateTime.parse(itercomm[:at]).strftime('on %B %d, %Y at %l:%M%P') %></small><br />
     <%= itercomm[:txt] %>
+    <form method="post" action="/comment-delete/<%= @rec[:code] %>">
+      <input type="hidden" name="at" value="<%= itercomm[:at] %>" />
+      <input type="hidden" name="by" value="<%= itercomm[:by] %>" />
+      <input type="submit" value="Delete" class="btn btn-secondary" />
+    </form>
   </div>
 <%
   end

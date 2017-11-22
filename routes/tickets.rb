@@ -146,6 +146,37 @@ class Helpdesk < Sinatra::Base
     redirect ('/ticket-detail/' + @params[:code])
   end
 
+  post '/comment-delete/:ticket' do
+    self.init_ctx
+    if !self.is_user_logged_in()
+      redirect '/login'
+      return
+    end
+
+    if @rolename == 'requester'
+      @rec = @db[:requests].find('createdby' => @username, 'code' => @params[:ticket]).limit(1).first
+    else
+      @rec = @db[:requests].find('code' => @params[:ticket]).limit(1).first
+    end
+    #TODO: Replace this drama queen of a code with a simple count check if we aren't using any of the record fields when posting
+    if @rec == nil
+      redirect '/'
+      return #Is a return absolutely necessary?
+    end
+
+    @rec[:comments].delete(@rec[:comments].find { |x| x[:at] == @params[:at] && x[:by] == @params[:by] } )
+
+    @db[:requests].update_one(
+        {'code' => @params[:ticket]},
+        @rec,
+        {:upsert => false}
+    )
+
+    @db.close
+
+    redirect '/ticket-detail/' + @params[:ticket] + '?msg=Comment+deleted'
+  end
+
   post '/comment-add/:ticket' do
     self.init_ctx
     if !self.is_user_logged_in()
@@ -176,7 +207,7 @@ class Helpdesk < Sinatra::Base
 
     @db.close
 
-    redirect '/ticket-detail/'+@params[:ticket]
+    redirect '/ticket-detail/' + @params[:ticket]
   end
 
   post '/ticket-assign/:ticket' do
@@ -234,7 +265,7 @@ class Helpdesk < Sinatra::Base
         {:upsert => false}
     )
 
-    redirect '/ticket-detail/'+@params[:ticket]
+    redirect '/ticket-detail/' + @params[:ticket] + '?msg=Part+deleted'
   end
 
   post '/ticket-part/:ticket' do
