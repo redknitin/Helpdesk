@@ -370,7 +370,10 @@ class Helpdesk < Sinatra::Base
     end
 
     #File size limit check
-    #TODO
+    if @params[:file][:tempfile].size > 2000000
+      redirect '/ticket-detail/'+@params[:ticket]+'?msg=File: '+@params[:file][:filename]+' has exceeded the 2 MB file size limit.'
+      return
+    end
 
     Dir.mkdir(@uploaddir) unless File.exists?(@uploaddir)
     storedas = SecureRandom.uuid
