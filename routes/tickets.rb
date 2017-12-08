@@ -231,6 +231,48 @@ class Helpdesk < Sinatra::Base
     end
 
     @rec['assigned'] = @params[:assigned]
+
+    assigned_rec = @db[:requests].find('code' => @params[:ticket], 'assigned.assigned' => @params[:assigned]).limit(1).first
+    if assigned_rec == nil
+    @db[:requests].update_one(
+        {'code' => params[:ticket]},
+        {'$push' => {'assigned' => {
+            :assigned => @params[:assigned],
+            :at => Time.now.strftime(@datetimefmt),
+            :by => @username
+        }}},
+        {:upsert => false}
+    )
+    else
+      redirect '/ticket-detail/'+@params[:ticket]+'?msg='+@params[:assigned]+' is already assigned'
+    end
+
+
+    @db.close
+
+    redirect '/ticket-detail/'+@params[:ticket]
+  end
+
+  post '/assign-delete/:ticket' do
+    self.init_ctx
+    if !self.is_user_logged_in()
+      redirect '/login'
+      return
+    end
+
+    if @rolename == 'requester'
+      @rec = @db[:requests].find('createdby' => @username, 'code' => @params[:ticket]).limit(1).first
+    else
+      @rec = @db[:requests].find('code' => @params[:ticket]).limit(1).first
+    end
+    #TODO: Replace this drama queen of a code with a simple count check if we aren't using any of the record fields when posting
+    if @rec == nil
+      redirect '/'
+      return #Is a return absolutely necessary?
+    end
+
+    @rec[:assigned].delete(@rec[:assigned].find { |x| x[:assigned] == @params[:assigned_code]  } )
+
     @db[:requests].update_one(
         {'code' => @params[:ticket]},
         @rec,
@@ -239,7 +281,7 @@ class Helpdesk < Sinatra::Base
 
     @db.close
 
-    redirect '/ticket-detail/'+@params[:ticket]
+    redirect '/ticket-detail/' + @params[:ticket] + '?msg='+self.get_personnel_name_from_id(@params[:assigned_code])+'+deleted'
   end
 
   post '/ticket-part-remove/:ticket' do

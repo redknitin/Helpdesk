@@ -12,11 +12,11 @@ fields = {
 #    'floor' => 'Floor',
 #    'room' => 'Room',
     'locationdescription' => 'Location Description',
-#    'assigned' => 'Assigned To'
+    'assigned' => 'Assigned To'
 }
 
 editablefields = ['name', 'phone', 'email', 'complaint', 'description', 'locationdescription'] #'room', 
-dropdownfields = ['org', 'dept', ] #'building', 'floor']
+dropdownfields = ['org', 'dept','assigned' ] #'building', 'floor']
 %>
 
 
@@ -215,10 +215,30 @@ cascadingFloors = {
 </form>
 <br /><br />
 
+<!-- Assigned to -->
+<h4>Assigned personnel</h4>
+
+<%
+  if @rec['assigned'] != nil
+    @rec['assigned'].each do |itercomm|
+%>
+        <div class="col-6" style="background-color: #fff9c2; padding: 8px; margin: 15px 0; border-radius: 8px;">
+          <strong><%= self.get_user_display_from_id(itercomm[:by]) %></strong> <small><%= DateTime.parse(itercomm[:at]).strftime('on %B %d, %Y at %l:%M%P') %></small><br />
+          <%= self.get_personnel_name_from_id(itercomm[:assigned]) %>
+          <form method="post" action="/assign-delete/<%= @rec[:code] %>">
+            <input type="hidden" name="assigned_code" value="<%= itercomm[:assigned] %>" />
+            <input type="submit" value="Delete" class="btn btn-secondary" />
+          </form>
+        </div>
+<%
+  end
+  end
+%>
+
 <div class="row" style="margin-bottom: 10px">
     <form method="post" action="/ticket-assign/<%= @rec[:code] %>" style="margin-bottom: 20px;" class="form-inline">
-      <label class="md-3" style="margin-right: 10px">Assigned To</label>
-      <select name="assigned" class="form-control md-3" style="margin-right: 10px">
+      <label class="md-3" style="margin-right: 10px">Assign to</label>
+      <select name="assigned" required class="form-control md-3" style="margin-right: 10px">
         <option></option>
         <% @personnel.each do |iterperson| %>
             <option value="<%= iterperson[:code] %>"<%= (@rec[:assigned] == iterperson[:code]) ? ' selected="selected"' : '' %>><%= iterperson[:name] %></option>
