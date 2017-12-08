@@ -108,4 +108,5 @@ class AppConfig
 
   UPLOAD_DIR = 'public/uploads'
   UPLOAD_FILE_EXTS = ['.doc', '.docx', '.xls', '.xlsx', '.pdf', '.eml', '.jpg', '.png', '.jpeg', '.tif']
+  UPLOAD_MAX_SIZE = 2000000  #In bytes
 end

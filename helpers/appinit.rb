@@ -32,5 +32,6 @@ class Helpdesk < Sinatra::Base
 
     @uploaddir = (defined? AppConfig::UPLOAD_DIR != nil) ? AppConfig::UPLOAD_DIR : 'public/uploads'
     @uploadfilter = ((defined? AppConfig::UPLOAD_FILE_EXTS != nil) && AppConfig::UPLOAD_FILE_EXTS != []) ? (AppConfig::UPLOAD_FILE_EXTS.map { |x| x.downcase }) : []
+    @uploadmaxsize = (defined? AppConfig::UPLOAD_MAX_SIZE != nil) && AppConfig::UPLOAD_MAX_SIZE > 0 ? AppConfig::UPLOAD_MAX_SIZE : -1
   end
 end
