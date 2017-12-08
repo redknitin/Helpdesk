@@ -244,7 +244,7 @@ class Helpdesk < Sinatra::Base
         {:upsert => false}
     )
     else
-      redirect '/ticket-detail/'+@params[:ticket]+'?msg='+@params[:assigned]+' is already assigned'
+      redirect '/ticket-detail/'+@params[:ticket]+'?msg='+self.get_personnel_name_from_id(@params[:assigned])+' is already assigned'
     end
 
 
