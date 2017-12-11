@@ -28,14 +28,15 @@ class Helpdesk < Sinatra::Base
 
     session[:rolename] = usr[:rolename]
     session[:username] = usr[:username]
+    session[:ticket_details] = usr[:ticket_details]
     redirect '/'
   end
 
   #Logout the user by clearing session information
   get '/logout' do
     #self.init_ctx
-    session[:username] = session[:rolename] = nil
-    @username = @rolename = nil
+    session[:username] = session[:rolename] = session[:ticket_details] = nil
+    @username = @rolename = session[:ticket_details] = nil
     redirect '/'
   end
 

@@ -33,6 +33,12 @@ fields = {
 </div>
 <% end %>
 
+
+	<div class="form-group">
+		<label>Add ticket details after saving</label>
+		<input type="checkbox" name="ticket_details" <%= @rec[:ticket_details] == false || @rec[:ticket_details].nil? ? '' : ' checked="checked"' %> style="margin-left: 20px" />
+	</div>
+
 <div style="margin-top: 20px">
   <input type="submit" value="Save" class="btn btn-primary" style="margin-right: 8px">
 	<a href="/change-password" class="btn btn-secondary">Change Password</a>

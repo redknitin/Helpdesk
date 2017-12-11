@@ -30,7 +30,11 @@ class Helpdesk < Sinatra::Base
     @params[:myguid] = SecureRandom.uuid
     @db[:requests].insert_one @params
     @db.close
-    redirect '/'
+    if @ticket_details.nil? || @ticket_details == false
+      redirect '/tickets-list'
+    else
+      redirect '/ticket-detail/'+params[:code]
+    end
   end
 
 
