@@ -126,8 +126,9 @@ We use [SemVer](http://semver.org/) for versioning. For the versions available, 
 
 The following individuals contributed code to this project:
 
+* [Ilin Dmitry](https://github.com/IlinDmitry)
 * [Kevin Smith](https://github.com/kvsm)
-* Nitin Reddy
+* [Nitin Reddy](https://github.com/redknitin)
 * _When we accept your pull request or patch, your name will appear here_
 
 ## License
