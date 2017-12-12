@@ -46,6 +46,7 @@ class Helpdesk < Sinatra::Base
           :email => @params[:email],
           :phone => @params[:phone],
           :display => @params[:display],
+          :ticket_details => @params[:ticket_details] == 'on' ? true : false,
           :islocked => 'false'
       }
 
@@ -65,6 +66,7 @@ class Helpdesk < Sinatra::Base
       recuser[:email] = @params[:email]
       recuser[:phone] = @params[:phone]
       recuser[:display] = @params[:display]
+      recuser[:ticket_details] = @params[:ticket_details] == 'on' ? true : false
       #recuser[:islocked] = 'false'
 
       recuser[:islocked] = @params[:islocked] == 'on' ? 'true' : 'false'
@@ -81,6 +83,8 @@ class Helpdesk < Sinatra::Base
     else
       #TODO: Toss a warning
     end
+
+    session[:ticket_details] = @params[:ticket_details] == 'on' ? true : false
 
     @db.close
     redirect '/users-list?msg=Saved'
@@ -126,7 +130,7 @@ class Helpdesk < Sinatra::Base
 
     @rec = @db[:users].find('username' => @username).limit(1).first
 
-    reccnt = @db[:users].find('email' => @params[:email]).count #limit(1).first
+    reccnt = @db[:users].find('email' => @params[:email], 'username' => {'$ne' => @username}).count #limit(1).first issue post #36 Message displayed "Email+already+exists", but only current record has this email.
     if reccnt > 0 #!= nil
       redirect '/userprofile?msg=Email+already+exists'
       return
@@ -138,11 +142,15 @@ class Helpdesk < Sinatra::Base
       @rec[x] = @params[x]
     end
 
+    @rec[:ticket_details] = @params[:ticket_details] == 'on' ? true : false
+
     @db[:users].update_one(
         {'username' => @username},
         @rec,
         {:upsert => false}
     )
+
+    session[:ticket_details] = @rec[:ticket_details]
 
     redirect '/userprofile?msg=Saved'
   end
@@ -179,6 +187,7 @@ class Helpdesk < Sinatra::Base
         :email => @params[:email],
         :phone => @params[:phone],
         :display => @params[:display],
+        :ticket_details => @params[:ticket_details] == 'on' ? true : false,
         :islocked => 'false'
     }
 

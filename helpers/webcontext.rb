@@ -8,5 +8,6 @@ class Helpdesk < Sinatra::Base
   def init_ctx
     @username = session[:username]
     @rolename = session[:rolename]
+    @ticket_details = session[:ticket_details]
   end
 end

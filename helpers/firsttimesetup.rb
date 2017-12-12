@@ -9,7 +9,8 @@ class Helpdesk < Sinatra::Base
           :rolename => 'admin',
           :display => 'Administrator',
           :email => 'root@localhost',
-          :islocked => 'false'
+          :islocked => 'false',
+          :ticket_details => true
       }
 
       @db[:users].insert_one recuser
