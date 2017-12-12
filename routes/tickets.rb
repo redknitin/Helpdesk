@@ -332,7 +332,7 @@ class Helpdesk < Sinatra::Base
       return #Is a return absolutely necessary?
     end
 
-    check_existing = @rec[:parts].find { |x| x[:part] == @params[:code] }
+    check_existing = @rec[:parts] == nil ? nil : @rec[:parts].find { |x| x[:part] == @params[:code] }
     if check_existing != nil
       #redirect '/'
       redirect '/ticket-detail/'+@params[:ticket]+'?msg=Part+already+exists'
