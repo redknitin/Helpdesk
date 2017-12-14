@@ -56,10 +56,6 @@ describe 'Helpdesk' do
 	#Register as a new user and perform a login
 	it 'registers new users' do
     get '/' #App init is performed in here
-
-    #randomstr = Array.new(10){rand(36).to_s(36)}.join.downcase
-		#username = 'test_' + randomstr
-		#password = 'nitiniswritingthistest'
 		post '/register-user', { :id => @username, :pw => @password, :confirmpw => @password, :email => @username + '@nospam.org', :phone => '+971501234567', :display => 'Test User ' + @randomstr }
 		expect(last_response).to be_redirect
 		expect(last_response.location).to include('/login')
