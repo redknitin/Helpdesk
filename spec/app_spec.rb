@@ -14,6 +14,12 @@ describe 'Helpdesk' do
 		Helpdesk
 	end
 
+  before :all do
+		@randomstr = Array.new(10){rand(36).to_s(36)}.join.downcase
+		@username = 'test_' + @randomstr
+		@password = 'nitiniswritingthistest'
+  end
+
 	#Check if the login page shows
 	it 'shows login' do
     get '/' #App init is performed in here
@@ -51,15 +57,14 @@ describe 'Helpdesk' do
 	it 'registers new users' do
     get '/' #App init is performed in here
 
-    randomstr = Array.new(10){rand(36).to_s(36)}.join.downcase
-		username = 'test_' + randomstr
-		password = 'nitiniswritingthistest'
-
-		post '/register-user', { :id => username, :pw => password, :confirmpw => password, :email => username + '@nospam.org', :phone => '+971501234567', :display => 'Test User ' + randomstr }
+    #randomstr = Array.new(10){rand(36).to_s(36)}.join.downcase
+		#username = 'test_' + randomstr
+		#password = 'nitiniswritingthistest'
+		post '/register-user', { :id => @username, :pw => @password, :confirmpw => @password, :email => @username + '@nospam.org', :phone => '+971501234567', :display => 'Test User ' + @randomstr }
 		expect(last_response).to be_redirect
 		expect(last_response.location).to include('/login')
 
-		post '/login', { :id => username, :pw => password }
+		post '/login', { :id => @username, :pw => @password }
 		expect(last_response.status).to eq 302
 		follow_redirect!
 		expect(last_response.body).to include('View Request Status') #Only logged in users can view request status
@@ -70,6 +75,19 @@ describe 'Helpdesk' do
     get '/dropdown/locorg'
     expect(last_response.status).to eq 200
     expect(last_response.body).to eq (AppConfig::MASTER_LOC_STRUCT.map { |x| { :label => x[:name], :value => x[:code] } }.to_json)
+  end
+
+  #Login and create ticket, test ticket_details
+  it 'login and create' do
+		get '/' #App init is performed in here
+		post '/login', { :id => @username, :pw => @password }
+    post '/help-me', {:name => 'test', :complaint => 'test'}
+	  expect(last_response.location).to include('/tickets-list') # :ticket_details => false
+    post '/userprofile', { :email => @username + '@nospam.org', :ticket_details => 'on' }
+		follow_redirect!
+		expect(last_response.body).to include('Saved')
+		post '/help-me', {:name => 'test', :complaint => 'test'}
+		expect(last_response.location).to include('/ticket-detail') # :ticket_details => true
   end
 
   #TODO Run tests for other locations based on the config; if config is empty, test passes
