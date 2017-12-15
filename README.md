@@ -4,6 +4,8 @@
 
 Please visit [our website](https://redknitin.github.io/Helpdesk/) for project news and other updates. Our current build status can be found on Travis CI on [this page](https://travis-ci.org/redknitin/Helpdesk).
 
+Feel free to join the discussions at our [Slack workspace](https://github-helpdesk.slack.com/).
+
 [![License](https://img.shields.io/badge/license-MIT-green.svg)](https://github.com/redknitin/Helpdesk/blob/master/LICENSE)
 
 ## Screenshots
