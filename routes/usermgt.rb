@@ -13,9 +13,16 @@ class Helpdesk < Sinatra::Base
       @skip = @params[:skip].to_i
     end
 
+    @criteria = {}
+    if (@params[:username] != nil && @params[:username] != '') then @criteria[:username] = {  '$regex' => '.*' + Regexp.escape(@params[:username]) + '.*', '$options' => 'i' } end
+    if (@params[:rolename] != nil && @params[:rolename] != '') then @criteria[:rolename] = {  '$regex' => '.*' + Regexp.escape(@params[:rolename]) + '.*', '$options' => 'i' } end
+    if (@params[:email] != nil && @params[:email] != '') then @criteria[:email] = {  '$regex' => '.*' + Regexp.escape(@params[:email]) + '.*', '$options' => 'i' } end
+    if (@params[:display] != nil && @params[:display] != '') then @criteria[:display] = {  '$regex' => '.*' + Regexp.escape(@params[:display]) + '.*', '$options' => 'i' } end
+    if (@params[:phone] != nil && @params[:phone] != '') then @criteria[:phone] = {  '$regex' => '.*' + Regexp.escape(@params[:phone]) + '.*', '$options' => 'i' } end
+
     @totalrowcount = 0
-    @totalrowcount = @list = @db[:users].count()
-    @list = @db[:users].find().skip(@skip).limit(@pagesize)
+    @totalrowcount = @list = @db[:users].find(@criteria).count()
+    @list = @db[:users].find(@criteria).skip(@skip).limit(@pagesize)
 
     @showpager = true
 

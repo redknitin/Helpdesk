@@ -13,9 +13,13 @@ class Helpdesk < Sinatra::Base
       @skip = @params[:skip].to_i
     end
 
+    @criteria = {}
+    if (@params[:code] != nil && @params[:code] != '') then @criteria[:code] = {  '$regex' => '.*' + Regexp.escape(@params[:code]) + '.*', '$options' => 'i' } end
+    if (@params[:name] != nil && @params[:name] != '') then @criteria[:name] = {  '$regex' => '.*' + Regexp.escape(@params[:name]) + '.*', '$options' => 'i' } end
+
     @totalrowcount = 0
-    @totalrowcount = @list = @db[:personnel].count()
-    @list = @db[:personnel].find().skip(@skip).limit(@pagesize)
+    @totalrowcount = @list = @db[:personnel].find(@criteria).count()
+    @list = @db[:personnel].find(@criteria).skip(@skip).limit(@pagesize)
 
     @showpager = true
 

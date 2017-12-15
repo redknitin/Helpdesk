@@ -18,7 +18,7 @@ class Helpdesk < Sinatra::Base
     if (@params[:name] != nil && @params[:name] != '') then @criteria[:name] = { '$regex' => '.*' + Regexp.escape(@params[:name]) + '.*', '$options' => 'i' } end
 
     @totalrowcount = 0
-    @totalrowcount = @list = @db[:parts].count()
+    @totalrowcount = @list = @db[:parts].find(@criteria).count()
     @list = @db[:parts].find(@criteria).skip(@skip).limit(@pagesize)
 
     @showpager = true

@@ -4,6 +4,9 @@
   <a href="/store-detail/new" class="btn btn-primary">
     Create New
   </a>
+  <a href="javascript:document.getElementById('filterRow').style.display = 'table-row'; void(0);" class="btn btn-secondary">
+    Filter Data
+  </a>
 </div>
 
 <table class="table table-striped">
@@ -15,6 +18,18 @@
   </tr>
   </thead>
   <tbody>
+  <tr id="filterRow" style="<%= @params[:applyFilter] == '1' ? 'display: table-row;' : 'display: none;' %>">
+    <form method="get" action="<%= request.url %>">
+      <td><input name="code" value="<%= @params[:code] %>" placeholder="Filter by code" class="form-control" /></td>
+      <td><input name="name" value="<%= @params[:name] %>" placeholder="Filter by name" class="form-control" /></td>
+      <td><input name="description" value="<%= @params[:description] %>" placeholder="Filter by description" class="form-control" /></td>
+      <td></td>
+      <td>
+        <!-- Place a hidden submit button to enable Enter-to-submit in Chrome -->
+        <input type="hidden" name="applyFilter" value="1" /><input type="submit" style="display: none;" />
+      </td>
+    </form>
+  </tr>
   <% @list.each do |iter| %>
       <tr>
         <td>

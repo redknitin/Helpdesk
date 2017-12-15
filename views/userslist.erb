@@ -15,7 +15,12 @@ function toggleCreateUserDiv(e) {
       <%= @params[:msg] %>
     </div>
 <% end %>
+
 <a href="javascript:toggleCreateUserDiv(); void(0);" class="btn btn-primary" id="btnCreateUser">Create User</a>
+<a href="javascript:document.getElementById('filterRow').style.display = 'table-row'; void(0);" class="btn btn-secondary">
+  Filter Data
+</a>
+
 <br />
 <div id="divCreateUser" style="display: none; margin-top: 20px; margin-bottom: 20px; padding-top: 20px; padding-bottom: 20px; border: solid 1px black;">
 <h1 style="margin-left: 10px; margin-bottom: 20px;">Create User</h1>
@@ -76,6 +81,23 @@ function toggleCreateUserDiv(e) {
   </tr>
   </thead>
   <tbody>
+  <tr id="filterRow" style="<%= @params[:applyFilter] == '1' ? 'display: table-row;' : 'display: none;' %>">
+    <form method="get" action="<%= request.url %>">
+      <td><input name="username" value="<%= @params[:username] %>" placeholder="Filter by username" class="form-control" /></td>
+      <td><input name="rolename" value="<%= @params[:rolename] %>" placeholder="Filter by rolename" class="form-control" /></td>
+      <!--
+      <td><input name="email" value="<%= @params[:email] %>" placeholder="Filter by email" class="form-control" /></td>
+      -->
+      <td><input name="display" value="<%= @params[:display] %>" placeholder="Filter by display" class="form-control" /></td>
+      <td>
+        <!--
+        <input name="phone" value="<%= @params[:phone] %>" placeholder="Filter by phone" class="form-control" />
+        -->
+        <!-- Place a hidden submit button to enable Enter-to-submit in Chrome -->
+        <input type="hidden" name="applyFilter" value="1" /><input type="submit" style="display: none;" />
+      </td>
+    </form>
+  </tr>
   <% @list.each do |iter| %>
       <tr>
         <td>
