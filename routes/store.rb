@@ -69,6 +69,74 @@ class Helpdesk < Sinatra::Base
     redirect '/stores-list?msg=Saved'
   end
 
+  #remove part and quantity
+  post '/store-part-remove/:code' do
+    part_code = @params['part_code']
+
+    @rec = @db[:stores].find('code' => @params[:code]).limit(1).first
+
+    #TODO: Replace this drama queen of a code with a simple count check if we aren't using any of the record fields when posting
+    if @rec == nil
+      redirect '/store-detail/'+@params[:code]
+      #redirect '/'
+      return #Is a return absolutely necessary?
+    end
+
+    @rec[:parts].delete(@rec[:parts].find { |x| x[:part_code] == part_code } )
+
+    @db[:stores].update_one(
+        {'code' => @params[:code]},
+        @rec,
+        {:upsert => false}
+    )
+
+    redirect '/store-detail/' + URI.encode_www_form_component(@params[:code]) + '?msg=Part+deleted'
+  end
+
+  #add part and quantity
+  post '/store-part/:code' do
+    part_code = @params['part_code']
+
+    self.init_ctx
+    if !self.is_user_logged_in()
+      redirect '/login'
+      return
+    end
+
+
+      @rec = @db[:stores].find('code' => @params[:code]).limit(1).first
+
+    #TODO: Replace this drama queen of a code with a simple count check if we aren't using any of the record fields when posting
+    if @rec == nil
+      redirect '/'
+      return #Is a return absolutely necessary?
+    end
+
+    check_existing = @rec[:parts] == nil ? nil : @rec[:parts].find { |x| x[:part_code] == part_code }
+    if check_existing
+      @rec[:parts].delete(@rec[:parts].find { |x| x[:part_code] == part_code } )
+
+      @db[:stores].update_one(
+          {'code' => @params[:code]},
+          @rec,
+          {:upsert => false}
+      )
+    end
+
+    part_for_ticket = { :part_code => @params[:part_code], :uom => @params[:uom], :qty => @params[:qty] }
+
+    @db[:stores].update_one(
+        {'code' => @params[:code] },
+        {'$push' => {'parts' => part_for_ticket }},
+        {:upsert => false}
+    )
+
+    @db.close
+
+   redirect '/store-detail/' + URI.encode_www_form_component(@params[:code]) + '?msg=Part+saved'
+
+  end
+
   #Get info about a single user
   get '/store-detail/:code' do
     self.init_ctx
@@ -82,7 +150,11 @@ class Helpdesk < Sinatra::Base
       return
     end
 
+    @params[:code] = URI.decode_www_form_component @params[:code]
+
     @rec = @db[:stores].find('code' => @params[:code]).limit(1).first
+
+    @parts = @db[:parts].find()
 
     erb :storedetail
   end
