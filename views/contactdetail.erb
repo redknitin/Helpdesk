@@ -27,7 +27,7 @@ cascadingFloors = {
 <script src="/js/locstructure.js"></script>
 
 <form method="post" action="/contact-save">
-  <div class="col-6">
+  <div class="col-6 col-md-12 col-sm-12">
     <input name="code" value="<%= @rec == nil ? '' : @rec[:code] %>" type="hidden" />
     <div class="form-group">
       <label>Name</label>
@@ -150,7 +150,7 @@ cascadingFloors = {
 
 
   </div>
-  <div class="col-6">
+  <div class="col-6 col-md-12 col-sm-12">
   </div>
   <div>
     <input type="submit" value="Save" class="btn btn-primary" style="margin-left: 20px">

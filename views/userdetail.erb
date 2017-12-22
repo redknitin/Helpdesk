@@ -7,7 +7,7 @@
 <h1 style="margin-left: 10px; margin-bottom: 20px;">Edit User <%= (@rec == nil) ? '' : (' - ' + @rec[:username]) %></h1>
 
 <form method="post" action="/user-save/update">
-  <div class="col-6">
+  <div class="col-6 col-md-12 col-sm-12">
     <input name="id" value="<%= @rec[:username] %>" type="hidden" required="required" />
     <div class="form-group">
       <label>Change Password (blank for no change)</label>
@@ -42,7 +42,7 @@
       <input type="checkbox" name="ticket_details" <%= @rec[:ticket_details] == false || @rec[:ticket_details].nil? ? '' : ' checked="checked"' %> style="margin-left: 20px" />
     </div>
   </div>
-  <div class="col-6">
+  <div class="col-6 col-md-12 col-sm-12">
   </div>
   <div>
     <input type="submit" value="Save User" class="btn btn-primary" style="margin-left: 20px">

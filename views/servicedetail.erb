@@ -1,7 +1,7 @@
 <h1 style="margin-left: 10px; margin-bottom: 20px;">Edit Service</h1>
 
 <form method="post" action="/service-save">
-  <div class="col-6">
+  <div class="col-6 col-md-12 col-sm-12">
     <div class="form-group">
       <label>Code</label>
       <input name="code" value="<%= @rec == nil ? '' : @rec[:code] %>" required="required" class="form-control" />
@@ -31,7 +31,7 @@
       </select>
     </div>
   </div>
-  <div class="col-6">
+  <div class="col-6 col-md-12 col-sm-12">
   </div>
   <div>
     <input type="submit" value="Save" class="btn btn-primary" style="margin-left: 20px">

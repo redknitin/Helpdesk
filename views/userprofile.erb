@@ -21,12 +21,12 @@ fields = {
   fields.each do |colname,labeltxt|
 %>
 <div class="row" style="margin-bottom: 10px">
-  <div class="col-2" style="font-weight: bold;"><%= labeltxt %></div>
+  <div class="col-2 col-md-4 col-sm-2" style="font-weight: bold;"><%= labeltxt %></div>
   	<% if ['rolename'].include? colname %>
-  <div class="col-4">
+  <div class="col-4 col-md-8 col-sm-10">
   		<span class="form-control"><%= @rec[colname] %></span>
   	<% else %>
-  <div class="col-4">
+	<div class="col-4 col-md-8 col-sm-10">
     	<input name="<%= colname %>" value="<%= @rec[colname] %>" class="form-control" />
   	<% end %>
   </div>

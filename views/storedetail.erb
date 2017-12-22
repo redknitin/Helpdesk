@@ -10,7 +10,7 @@
 <h1 style="margin-left: 10px; margin-bottom: 20px;">Edit Store</h1>
 
 <form method="post" action="/store-save">
-  <div class="col-6">
+  <div class="col-6 col-md-12 col-sm-12">
     <div class="form-group">
       <label>Code</label>
       <input name="code" value="<%= @rec == nil ? '' : @rec[:code] %>" required="required" class="form-control" />
@@ -24,7 +24,7 @@
       <input name="description" value="<%= @rec == nil ? '' : @rec[:description] %>" class="form-control" />
     </div>
   </div>
-  <div class="col-6">
+  <div class="col-6 col-md-12 col-sm-12">
   </div>
   <div>
     <input type="submit" value="Save" class="btn btn-primary" style="margin-left: 20px">
