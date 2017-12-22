@@ -1,3 +1,12 @@
+<script src="/js/partsddl.js"></script>
+<script src="/js/ajaxhelper.js"></script>
+
+<% if @params[:msg] != nil && @params[:msg] != '' %>
+    <div class="alert alert-warning">
+      <%= @params[:msg] %>
+    </div>
+<% end %>
+
 <h1 style="margin-left: 10px; margin-bottom: 20px;">Edit Store</h1>
 
 <form method="post" action="/store-save">
@@ -21,3 +30,47 @@
     <input type="submit" value="Save" class="btn btn-primary" style="margin-left: 20px">
   </div>
 </form>
+
+<% if @rec != nil %>
+    <h4>Parts</h4>
+
+    <%
+      if @rec['parts'] != nil
+        @rec['parts'].each do |itercomm|
+    %>
+            <div class="col-6" style="background-color: #fff9c2; padding: 8px; margin: 15px 0; border-radius: 8px;">
+              <strong>Part:</strong> <%= self.get_part_display_from_id(itercomm[:part_code]) %> <br/>
+              <strong>Qty:</strong> <%= itercomm[:qty] %> <br/>
+              <strong>UOM:</strong> <%= itercomm[:uom] %> <br/>
+              <form method="post" action="/store-part-remove/<%= @rec[:code] %>">
+                <input type="hidden" name="part_code" value="<%= itercomm[:part_code] %>"/>
+                <input type="submit" value="Delete" class="btn btn-secondary"/>
+              </form>
+            </div>
+        <%
+          end
+          end
+        %>
+
+    <div class="row">
+      <div class="col-12">
+        <h5>Add Parts</h5>
+        <form method="post" style="background-color: #fff9c2; border-radius: 8px; padding: 10px; margin-bottom: 20px" action="/store-part/<%= @rec[:code] %>" enctype="multipart/form-data" style="margin-bottom: 20px;" class="form-inline">
+          <input type="number" step="0.01" min = "0" required name="qty" class="form-control md-6"/>
+          <select class="form-control  md-3" required style="margin-right: 8px" name="part_code" onchange="partselchg(this);">
+            <option></option>
+            <% @parts.each do |itertag| %>
+                <option value="<%= itertag[:code] %>" data-uom="<%= itertag[:uom] %>">
+                  <%= itertag[:code] %> - <%= itertag[:name] %>
+                </option>
+            <% end %>
+          </select>
+          <select class="form-control md-3" required style="margin-right: 8px" name="uom" id="uomddl">
+            <option></option>
+          </select>
+          <input type="submit" value="Upload" class="btn btn-primary md-3">
+        </form>
+      </div>
+    </div>
+
+<% end %>
