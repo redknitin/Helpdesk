@@ -415,7 +415,7 @@ cascadingFloors = {
   if @rec['comments'] != nil
   @rec['comments'].each do |itercomm|
 %>
-  <div class="col-6" style="background-color: #fff9c2; padding: 8px; margin: 15px 0; border-radius: 8px;">
+  <div class="col-6 col-md-10 col-sm-12" style="background-color: #fff9c2; padding: 8px; margin: 15px 0; border-radius: 8px;">
     <strong><%= self.get_user_display_from_id(itercomm[:by]) %></strong> <small><%= DateTime.parse(itercomm[:at]).strftime('on %B %d, %Y at %l:%M%P') %></small><br />
     <%= itercomm[:txt] %>
     <form method="post" action="/comment-delete/<%= @rec[:code] %>">
