@@ -222,6 +222,16 @@ cascadingFloors = {
   if @rec['assigned'] != nil
     @rec['assigned'].each do |itercomm|
 %>
+
+    <div class="col-6" style="background-color: #fff9c2; padding: 8px; margin: 15px 0; border-radius: 8px;">
+        <%= self.get_personnel_name_from_id(itercomm[:assigned]) %>
+        <form method="post" action="/assign-delete/<%= @rec[:code] %>" style="display: inline; margin-left: 5px;">
+          <input type="hidden" name="assigned_code" value="<%= itercomm[:assigned] %>" />
+          <input type="submit" value="Unassign" class="btn btn-secondary" />
+        </form>
+    </div>
+
+<!--
         <div class="col-6" style="background-color: #fff9c2; padding: 8px; margin: 15px 0; border-radius: 8px;">
           <strong><%= self.get_user_display_from_id(itercomm[:by]) %></strong> <small><%= DateTime.parse(itercomm[:at]).strftime('on %B %d, %Y at %l:%M%P') %></small><br />
           <%= self.get_personnel_name_from_id(itercomm[:assigned]) %>
@@ -230,6 +240,8 @@ cascadingFloors = {
             <input type="submit" value="Delete" class="btn btn-secondary" />
           </form>
         </div>
+-->
+
 <%
   end
   end
@@ -256,14 +268,18 @@ cascadingFloors = {
   if @rec['parts'] != nil
   @rec['parts'].each do |itercomm|
 %>
-  <div class="col-6" style="background-color: #fff9c2; padding: 8px; margin: 15px 0; border-radius: 8px;">
-    <strong>Part Code:</strong> <%= itercomm[:part] %> <br />
-    <strong>Qty:</strong> <%= itercomm[:qty] %> <br />
-    <strong>UOM:</strong> <%= itercomm[:uom] %> <br />
-    <form method="post" action="/ticket-part-remove/<%= @rec[:code] %>">
-      <input type="hidden" name="part" value="<%= itercomm[:part] %>" />
-      <input type="submit" value="Delete" class="btn btn-secondary" />
-    </form>
+  <div class="row" style="background-color: #fff9c2; padding: 8px; margin: 15px 0; border-radius: 8px;">
+    <div class="col-8">
+      <strong>Part Code:</strong> <%= itercomm[:part] %> <br />
+      <strong>Qty:</strong> <%= itercomm[:qty] %> <br />
+      <strong>UOM:</strong> <%= itercomm[:uom] %> <br />
+    </div>
+    <div class="col-4">
+      <form method="post" action="/ticket-part-remove/<%= @rec[:code] %>">
+        <input type="hidden" name="part" value="<%= itercomm[:part] %>" />
+        <input type="submit" value="Delete" class="btn btn-secondary" />
+      </form>
+    </div>
   </div>
 <%
   end
@@ -273,23 +289,33 @@ cascadingFloors = {
 <div class="row">
   <div class="col-12">
     <h5>Add Parts</h5>
-    <form method="post" style="background-color: #fff9c2; border-radius: 8px; padding: 10px; margin-bottom: 20px" action="/ticket-part/<%= @rec[:code] %>" enctype="multipart/form-data" style="margin-bottom: 20px;" class="form-inline">
-      <input type="text" name="qty" class="form-control md-6" />
-      <select class="form-control  md-3" style="margin-right: 8px" name="code" onchange="partselchg(this);">
-        <option></option>
-        <% @parts.each do |itertag| %>
-          <option value="<%= itertag[:code] %>" data-uom="<%= itertag[:uom] %>">
-            <%= itertag[:code] %> - <%= itertag[:name] %>
-          </option>
-        <% end %>
-      </select>
-      <select class="form-control md-3" style="margin-right: 8px" name="uom" id="uomddl">
-        <option></option>
-      </select>
-      <input type="submit" value="Add / Update" class="btn btn-primary md-3">
-    </form>
   </div>
 </div>
+
+<form method="post" style="background-color: #fff9c2; border-radius: 8px; padding: 10px; margin-bottom: 20px" action="/ticket-part/<%= @rec[:code] %>" enctype="multipart/form-data" style="margin-bottom: 20px;" class="">
+  <strong>Quantity:</strong>
+  <input type="text" name="qty" class="form-control col-md-2" />
+  <br />
+
+  <strong>Part</strong>
+  <select class="form-control col-md-8" style="margin-right: 8px" name="code" onchange="partselchg(this);">
+    <option></option>
+    <% @parts.each do |itertag| %>
+      <option value="<%= itertag[:code] %>" data-uom="<%= itertag[:uom] %>">
+        <%= itertag[:code] %> - <%= itertag[:name] %>
+      </option>
+    <% end %>
+  </select>
+  <br />
+
+  <strong>UOM</strong>
+  <select class="form-control col-md-3" style="margin-right: 8px" name="uom" id="uomddl">
+    <option></option>
+  </select>
+  <br />
+
+  <input type="submit" value="Add / Update" class="btn btn-primary md-3">
+</form>
 
 <!-- Attachments -->
 
@@ -318,14 +344,20 @@ cascadingFloors = {
 <div class="row">
   <div class="col-12">
     <h5>Add Attachment</h5>
-    <form method="post" style="background-color: #fff9c2; border-radius: 8px; padding: 10px; margin-bottom: 20px" action="/ticket-attach/<%= @rec[:code] %>" enctype="multipart/form-data" style="margin-bottom: 20px;" class="form-inline">
-      <input type="file" style="margin-right: 8px" name="file" class="form-control md-6" <%= (@uploadfilter == []) ? '' : (' accept="' + @uploadfilter.join(',') + '"') %>>
-      <select class="form-control  md-3" style="margin-right: 8px" name="filetag">
+    <form method="post" style="background-color: #fff9c2; border-radius: 8px; padding: 10px; margin-bottom: 20px" action="/ticket-attach/<%= @rec[:code] %>" enctype="multipart/form-data" style="margin-bottom: 20px;" class="">
+      <strong>File to Upload: </strong>
+      <input type="file" style="margin-right: 8px" name="file" class="form-control col-md-6" <%= (@uploadfilter == []) ? '' : (' accept="' + @uploadfilter.join(',') + '"') %>>
+      <br />
+
+      <strong>File Tag:</strong>
+      <select class="form-control col-md-3" style="margin-right: 8px" name="filetag">
         <option></option>
         <% @filetag.each do |itertag| %>
         <option><%= itertag %></option>
         <% end %>
       </select>
+      <br />
+
       <input type="submit" value="Upload" class="btn btn-primary md-3">
     </form>
   </div>
