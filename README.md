@@ -7,6 +7,7 @@ Please visit [our website](https://redknitin.github.io/Helpdesk/) for project ne
 Feel free to join the discussions at our [Slack workspace](https://github-helpdesk.slack.com/).
 
 [![License](https://img.shields.io/badge/license-MIT-green.svg)](https://github.com/redknitin/Helpdesk/blob/master/LICENSE)
+[![Open Source Helpers](https://www.codetriage.com/redknitin/helpdesk/badges/users.svg)](https://www.codetriage.com/redknitin/helpdesk)
 
 ## Screenshots
 
